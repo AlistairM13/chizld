@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { colors } from '../../constants/colors';
 import { fonts } from '../../constants/fonts';
-import { TypewriterText } from './TypewriterText';
 import { useUptimeCounter } from '../../hooks/useUptimeCounter';
+import { TypewriterText } from './TypewriterText';
 
 /**
  * Top HUD bar displaying CHIZLD branding and system codes.
@@ -19,12 +19,6 @@ export function HudBarTop() {
         style={styles.branding}
       />
 
-      {/* Right: Cryptic system codes in JetBrains Mono */}
-      <TypewriterText
-        text="SYS::v0.1.0 // INIT::OK"
-        delayMs={30}
-        style={styles.systemCode}
-      />
     </View>
   );
 }
@@ -32,20 +26,25 @@ export function HudBarTop() {
 interface HudBarBottomProps {
   activeZoneCount: number;
   totalZones?: number;
+  isDetailMode?: boolean;
 }
 
 /**
  * Bottom HUD bar displaying zone count and session uptime.
+ * In detail mode, shows BUILD version and ESC TO RETURN.
  * Single line format with bullet separators in system text color.
  */
 export function HudBarBottom({
   activeZoneCount,
   totalZones = 8,
+  isDetailMode = false,
 }: HudBarBottomProps) {
   const uptime = useUptimeCounter();
 
   // Single line format with bullet separators
-  const statusText = `ZONES: ${totalZones} \u2022 ACTIVE: ${activeZoneCount}/${totalZones} \u2022 UPTIME: ${uptime}`;
+  const statusText = isDetailMode
+    ? 'BUILD 2.4.1 \u2022 ESC TO RETURN'
+    : `ZONES: ${totalZones} \u2022 ACTIVE: ${activeZoneCount}/${totalZones} \u2022 UPTIME: ${uptime}`;
 
   return (
     <View style={styles.bottomBar}>
@@ -69,13 +68,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.zone.cold,
     backgroundColor: 'transparent',
   },
   bottomBar: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 68,  // Above tab bar (60px) with margin
     left: 0,
     right: 0,
     height: 40,
@@ -90,12 +87,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.text.primary,
     letterSpacing: 3,
-  },
-  systemCode: {
-    fontFamily: fonts.monoLight,
-    fontSize: 12,
-    color: colors.text.muted,
-    letterSpacing: 0.5,
   },
   statusText: {
     fontFamily: fonts.monoLight,

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, Pressable, BackHandler, useWindowDimensions } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,13 +14,24 @@ import Animated, {
 import { colors } from '../../constants/colors';
 import { BodyCanvas } from '../../components/character/BodyCanvas';
 import { ZoneCard } from '../../components/character/ZoneCard';
+import { StatCard } from '../../components/character/StatCard';
+import { HudBarTop, HudBarBottom } from '../../components/character/HudBar';
 import { useZoneStats } from '../../hooks/useZoneStats';
+import { useDetailStats } from '../../hooks/useDetailStats';
 import { ZONE_CARD_POSITIONS } from '../../constants/layout';
 
 export function CharacterScreen() {
-  const { stats } = useZoneStats();
+  const { stats, warmCount } = useZoneStats();
   const { width, height } = useWindowDimensions();
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
+
+  // Fetch detailed stats for selected zone
+  const detailStats = useDetailStats(selectedZone);
+
+  // Find the zone object for selected zone
+  const selectedZoneData = selectedZone
+    ? stats.find((z) => z.zoneId === selectedZone)
+    : null;
 
   // Animation drivers - character slides FIRST, stat card enters after delay
   const detailProgress = useSharedValue(0);
@@ -80,13 +92,42 @@ export function CharacterScreen() {
     setSelectedZone(zoneId);
   }, []);
 
+  // Handle TRAIN button press
+  const handleTrain = useCallback(() => {
+    // Navigate to Train tab - for now just log, full navigation in Phase 4
+    console.log('TRAIN pressed for zone:', selectedZone);
+    // TODO: navigation.navigate('Train', { zoneId: selectedZone });
+  }, [selectedZone]);
+
+  // Handle Android back button to dismiss detail view
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (selectedZone !== null) {
+          setSelectedZone(null);
+          return true;
+        }
+        return false;
+      };
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => subscription.remove();
+    }, [selectedZone])
+  );
+
   // Calculate whether we're in detail mode for ConnectingLines
   const isDetailMode = selectedZone !== null;
   // Stat card left edge position (will be refined in Plan 02)
   const statCardX = width * 0.4;
 
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => {
+        if (selectedZone !== null) {
+          setSelectedZone(null);
+        }
+      }}
+    >
       {/* Animated wrapper for character slide */}
       <Animated.View style={[StyleSheet.absoluteFill, characterAnimatedStyle]}>
         {/* Base canvas: hex grid, character, glows, connecting lines */}
@@ -112,7 +153,23 @@ export function CharacterScreen() {
           detailProgress={detailProgress}
         />
       ))}
-    </View>
+
+      {/* StatCard - rendered when selectedZone exists */}
+      {selectedZoneData && detailStats && (
+        <StatCard
+          zone={selectedZoneData}
+          stats={detailStats}
+          statCardProgress={statCardProgress}
+          onTrain={handleTrain}
+          onDismiss={() => setSelectedZone(null)}
+          screenWidth={width}
+        />
+      )}
+
+      {/* HUD bars */}
+      <HudBarTop />
+      <HudBarBottom activeZoneCount={warmCount} isDetailMode={isDetailMode} />
+    </Pressable>
   );
 }
 
