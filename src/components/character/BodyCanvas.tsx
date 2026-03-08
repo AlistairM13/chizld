@@ -5,10 +5,17 @@ import { HexGrid } from './HexGrid';
 import { ScanFrame } from './ScanFrame';
 import { ScanLine } from './ScanLine';
 import { PlatformGlow } from './PlatformGlow';
+import { ConnectingLines } from './ConnectingLines';
+import { ZoneGlows } from './ZoneGlow';
 import { getCharacterLayout } from '../../constants/layout';
+import { type ZoneWithIntensity } from '../../hooks/useZoneStats';
 
 // Character image dimensions (3x of 185x372 SVG viewBox)
 const CHARACTER_ASPECT = 555 / 1116;
+
+interface BodyCanvasProps {
+  zones?: ZoneWithIntensity[];
+}
 
 /**
  * BodyCanvas is the main Skia canvas composing all visual layers for
@@ -19,9 +26,11 @@ const CHARACTER_ASPECT = 555 / 1116;
  * 2. ScanFrame - teal corner brackets around character
  * 3. Character Image - muscle-front.png centered
  * 4. PlatformGlow - ember glow at character feet
- * 5. ScanLine - animated vertical sweep
+ * 5. ZoneGlows - pulsing ember glows for warm zones on body
+ * 6. ConnectingLines - dashed lines from cards to body anchors
+ * 7. ScanLine - animated vertical sweep
  */
-export function BodyCanvas() {
+export function BodyCanvas({ zones = [] }: BodyCanvasProps) {
   const { width, height } = useWindowDimensions();
   const image = useImage(require('../../../assets/images/characters/muscle-front.png'));
 
@@ -73,7 +82,25 @@ export function BodyCanvas() {
         characterWidth={characterWidth}
       />
 
-      {/* Layer 5: Animated scan line */}
+      {/* Layer 5: Zone glows for warm zones */}
+      {zones.length > 0 && (
+        <ZoneGlows
+          zones={zones}
+          screenWidth={width}
+          screenHeight={height}
+        />
+      )}
+
+      {/* Layer 6: Connecting lines from cards to body */}
+      {zones.length > 0 && (
+        <ConnectingLines
+          zones={zones}
+          screenWidth={width}
+          screenHeight={height}
+        />
+      )}
+
+      {/* Layer 7: Animated scan line */}
       <ScanLine width={width} height={height} />
     </Canvas>
   );
