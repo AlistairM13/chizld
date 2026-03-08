@@ -18,7 +18,7 @@ export const colors = {
   },
   hud: {
     teal: 'rgba(26,92,92,0.15)',
-    scanLine: 'rgba(255,255,255,0.02)',
+    scanLine: 'rgba(100,200,200,0.15)',
   },
   text: {
     primary: '#F0F0F5',
