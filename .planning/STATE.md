@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 2 — Character Screen (plan 03 complete, phase complete)
+**Current focus:** Phase 3 — Character Detail (Phase 2 complete)
 
 ## Current Position
 
@@ -81,4 +81,4 @@ None yet.
 
 Last session: 2026-03-08
 Stopped at: Completed 02-03-PLAN.md — HUD bars with typewriter animation
-Resume file: None — Phase 2 complete, continue to Phase 3 (workout launcher)
+Resume file: None — Phase 2 complete, continue to Phase 3 (Character Detail)

@@ -20,16 +20,16 @@
 
 ### Character Overview
 
-- [ ] **CHAR-01**: Skia BodyCanvas renders background (#0A0A0F), hex grid pattern at ~5% opacity, teal scan frame behind character
-- [ ] **CHAR-02**: Character SVG (muscle-front.svg) rendered centered in BodyCanvas via Skia
-- [ ] **CHAR-03**: Platform glow line rendered under character feet (horizontal, ember glow)
-- [ ] **CHAR-04**: 8 zone cards positioned symmetrically around the body (4 left: traps, biceps, forearms, tibialis; 4 right: neck, shoulders, abs, quads)
-- [ ] **CHAR-05**: Each zone card shows zone name (Barlow Condensed), level (JetBrains Mono), and "+" photo slot
-- [ ] **CHAR-06**: Dashed connecting lines drawn from each zone card toward the character body
-- [ ] **CHAR-07**: Cold zones display 1px #2A2A3A border, #8888A0 text, no glow
-- [ ] **CHAR-08**: Warm zones (trained within 3 days) display 1px #FF8C1A border, #FF8C1A text, ember glow shadow
-- [ ] **CHAR-09**: Top bar shows "CHIZLD" branding left (Chakra Petch), system text right (JetBrains Mono)
-- [ ] **CHAR-10**: Bottom bar shows system status text (JetBrains Mono, e.g., "ZONES: 8 / ACTIVE: 3/8 / UPTIME: 12d 07h")
+- [x] **CHAR-01**: Skia BodyCanvas renders background (#0A0A0F), hex grid pattern at ~5% opacity, teal scan frame behind character
+- [x] **CHAR-02**: Character SVG (muscle-front.svg) rendered centered in BodyCanvas via Skia
+- [x] **CHAR-03**: Platform glow line rendered under character feet (horizontal, ember glow)
+- [x] **CHAR-04**: 8 zone cards positioned symmetrically around the body (4 left: traps, biceps, forearms, tibialis; 4 right: neck, shoulders, abs, quads)
+- [x] **CHAR-05**: Each zone card shows zone name (Barlow Condensed), level (JetBrains Mono), and "+" photo slot
+- [x] **CHAR-06**: Dashed connecting lines drawn from each zone card toward the character body
+- [x] **CHAR-07**: Cold zones display 1px #2A2A3A border, #8888A0 text, no glow
+- [x] **CHAR-08**: Warm zones (trained within 3 days) display 1px #FF8C1A border, #FF8C1A text, ember glow shadow
+- [x] **CHAR-09**: Top bar shows "CHIZLD" branding left (Chakra Petch), system text right (JetBrains Mono)
+- [x] **CHAR-10**: Bottom bar shows system status text (JetBrains Mono, e.g., "ZONES: 8 / ACTIVE: 3/8 / UPTIME: 12d 07h")
 
 ### Character Detail
 
@@ -119,16 +119,16 @@
 | FOUN-08 | Phase 1 | Complete |
 | FOUN-09 | Phase 1 | Complete |
 | FOUN-10 | Phase 1 | Complete |
-| CHAR-01 | Phase 2 | Pending |
-| CHAR-02 | Phase 2 | Pending |
-| CHAR-03 | Phase 2 | Pending |
-| CHAR-04 | Phase 2 | Pending |
-| CHAR-05 | Phase 2 | Pending |
-| CHAR-06 | Phase 2 | Pending |
-| CHAR-07 | Phase 2 | Pending |
-| CHAR-08 | Phase 2 | Pending |
-| CHAR-09 | Phase 2 | Pending |
-| CHAR-10 | Phase 2 | Pending |
+| CHAR-01 | Phase 2 | Complete |
+| CHAR-02 | Phase 2 | Complete |
+| CHAR-03 | Phase 2 | Complete |
+| CHAR-04 | Phase 2 | Complete |
+| CHAR-05 | Phase 2 | Complete |
+| CHAR-06 | Phase 2 | Complete |
+| CHAR-07 | Phase 2 | Complete |
+| CHAR-08 | Phase 2 | Complete |
+| CHAR-09 | Phase 2 | Complete |
+| CHAR-10 | Phase 2 | Complete |
 | DETL-01 | Phase 3 | Pending |
 | DETL-02 | Phase 3 | Pending |
 | DETL-03 | Phase 3 | Pending |

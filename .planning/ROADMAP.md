@@ -13,7 +13,7 @@ Chizld is built bottom-up: a rock-solid foundation first, then the character scr
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project structure, design system, database, navigation, orientation
-- [ ] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
+- [x] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
 - [ ] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
 - [ ] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
 - [ ] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
@@ -50,9 +50,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Skia BodyCanvas with hex grid, scan frame, character image, platform glow, scan line animation
-- [ ] 02-02-PLAN.md — Zone cards, connecting lines, warm/cold glow states wired to zone_stats
-- [ ] 02-03-PLAN.md — HUD bars (top/bottom), typewriter text animation, uptime counter
+- [x] 02-01-PLAN.md — Skia BodyCanvas with hex grid, scan frame, character image, platform glow, scan line animation
+- [x] 02-02-PLAN.md — Zone cards, connecting lines, warm/cold glow states wired to zone_stats
+- [x] 02-03-PLAN.md — HUD bars (top/bottom), typewriter text animation, uptime counter
 
 ### Phase 3: Character Detail
 **Goal**: Tapping a zone card triggers the detail state — character slides left, selected zone highlights ember-orange, and the RPG stat card slides in from the right showing real zone data (XP, level, stats grid, TRAIN button). Tapping outside or pressing back returns to overview.
@@ -112,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-03-08 |
-| 2. Character Overview | 0/3 | Planned | - |
+| 2. Character Overview | 3/3 | Complete | 2026-03-08 |
 | 3. Character Detail | 0/2 | Not started | - |
 | 4. Workout Module | 0/4 | Not started | - |
 | 5. XP & Leveling | 0/2 | Not started | - |
