@@ -59,6 +59,9 @@ Recent decisions affecting current work:
 - [02-01]: Hex size 20px, line weight 0.5px for subtle background pattern
 - [02-01]: Scan line duration 4000ms for slow ambient sweep
 - [02-01]: Zone card positions defined as percentages (0.0-1.0) for responsive layout
+- [02-02]: ZoneCard hybrid approach: Skia Path for beveled border, RN Text for content
+- [02-02]: Warmth decay: intensity 1.0 (just trained) to 0.0 (at 3 days), linear
+- [02-02]: Dash pattern [4,4] for connecting lines, pulse duration 2000ms for glow
 - [02-03]: TypewriterText default delay 40ms for fast but readable animation
 - [02-03]: useUptimeCounter format: Xm Xs (< 1h), Xh Ym (< 1d), Xd Yh (>= 1d)
 
