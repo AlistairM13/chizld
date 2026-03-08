@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 2.1 — Overview Polish (INSERTED, Phase 2 complete)
+**Current focus:** Phase 2.1 — Overview Polish COMPLETE, ready for Phase 3
 
 ## Current Position
 
-Phase: 2.1 of 5 (Overview Polish - INSERTED)
-Plan: 2 of 3 in current phase
-Status: Plan 02.1-02 complete — Tab bar and HUD polish
-Last activity: 2026-03-08 — Completed 02.1-02-PLAN.md (tab bar border, CHIZLD letter-spacing, HudBarBottom)
+Phase: 2.1 of 5 (Overview Polish - COMPLETE)
+Plan: 3 of 3 in current phase (PHASE COMPLETE)
+Status: Phase 2.1 complete — Overview Polish finished
+Last activity: 2026-03-08 — Completed 02.1-03-PLAN.md (zone card integration)
 
-Progress: [████████░░] ~50% (8/16 plans complete)
+Progress: [█████████░] ~56% (9/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8 (Phase 1 + Phase 2 + Phase 2.1 plans 01-02)
-- Average duration: ~3.1 min
-- Total execution time: ~25 min
+- Total plans completed: 9 (Phase 1 + Phase 2 + Phase 2.1)
+- Average duration: ~2.9 min
+- Total execution time: ~27 min
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [████████░░] ~50% (8/16 plans complete)
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 complete | ~9 min | ~3 min |
 | 02-character-overview | 3/3 complete | ~12 min | ~4 min |
-| 02.1-overview-polish | 2/3 complete | ~3.5 min | ~1.8 min |
+| 02.1-overview-polish | 3/3 complete | ~5.5 min | ~1.8 min |
 
 **Recent Trend:**
-- Last 5 plans: 02.1-02 (2 min), 02.1-01 (1.5 min), 02-03 (2 min), 02-02 (~2 min), 02-01 (8 min)
+- Last 5 plans: 02.1-03 (1.6 min), 02.1-02 (2 min), 02.1-01 (1.5 min), 02-03 (2 min), 02-02 (~2 min)
 - Trend: Polish/styling plans very fast (~2 min)
 
 *Updated after each plan completion*
@@ -69,6 +69,9 @@ Recent decisions affecting current work:
 - [02.1-01]: PhotoSlot accepts solid border on Android as dashed border fallback
 - [02.1-02]: System status single-line format with Unicode bullet separators
 - [02.1-02]: CHIZLD letter-spacing 3px for wider cyberpunk aesthetic
+- [02.1-03]: ZoneCard composes ZoneLabel + PhotoSlot (no Skia/beveled border)
+- [02.1-03]: Left zones row direction (label-slot), right zones row-reverse (slot-label)
+- [02.1-03]: slotOffsetX = +40px for left zones, -40px for right zones
 
 ### Pending Todos
 
@@ -89,5 +92,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Completed 02.1-02-PLAN.md — Tab bar and HUD polish
-Resume file: None — Continue to 02.1-03-PLAN.md (checkpoint verification)
+Stopped at: Completed 02.1-03-PLAN.md — Phase 2.1 Overview Polish COMPLETE
+Resume file: None — Ready for Phase 3 planning or human verification of overview screen
