@@ -47,12 +47,12 @@ Plans:
   3. Each zone card shows zone name, level number, and "+" photo slot using the correct fonts (Barlow Condensed for name, JetBrains Mono for level)
   4. Zones trained within 3 days display ember-orange (#FF8C1A) borders, text, and glow; untrained zones display cold grey (#2A2A3A border, #8888A0 text)
   5. Top bar shows "CHIZLD" branding left and system text right; bottom bar shows active zone count and uptime — both using JetBrains Mono
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 02-01: Skia BodyCanvas (background, hex grid, scan frame, character image, platform glow)
-- [ ] 02-02: Zone cards, connecting lines, warm/cold glow states wired to zone_stats
-- [ ] 02-03: Top bar, bottom bar, HUD status text
+- [ ] 02-01-PLAN.md — Skia BodyCanvas with hex grid, scan frame, character image, platform glow, scan line animation
+- [ ] 02-02-PLAN.md — Zone cards, connecting lines, warm/cold glow states wired to zone_stats
+- [ ] 02-03-PLAN.md — HUD bars (top/bottom), typewriter text animation, uptime counter
 
 ### Phase 3: Character Detail
 **Goal**: Tapping a zone card triggers the detail state — character slides left, selected zone highlights ember-orange, and the RPG stat card slides in from the right showing real zone data (XP, level, stats grid, TRAIN button). Tapping outside or pressing back returns to overview.
@@ -112,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-03-08 |
-| 2. Character Overview | 0/3 | Not started | - |
+| 2. Character Overview | 0/3 | Planned | - |
 | 3. Character Detail | 0/2 | Not started | - |
 | 4. Workout Module | 0/4 | Not started | - |
 | 5. XP & Leveling | 0/2 | Not started | - |
