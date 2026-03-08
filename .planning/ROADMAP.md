@@ -12,7 +12,7 @@ Chizld is built bottom-up: a rock-solid foundation first, then the character scr
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Project structure, design system, database, navigation, orientation
+- [x] **Phase 1: Foundation** - Project structure, design system, database, navigation, orientation
 - [ ] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
 - [ ] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
 - [ ] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
@@ -33,9 +33,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — File structure, design system constants, TypeScript types, SVG-to-PNG conversion
-- [ ] 01-02-PLAN.md — SQLite database schema, seed data, MMKV initialization
-- [ ] 01-03-PLAN.md — React Navigation setup (replace Expo Router), font loading, orientation lock, placeholder screens
+- [x] 01-01-PLAN.md — File structure, design system constants, TypeScript types, SVG-to-PNG conversion
+- [x] 01-02-PLAN.md — SQLite database schema, seed data, MMKV initialization
+- [x] 01-03-PLAN.md — React Navigation setup (replace Expo Router), font loading, orientation lock, placeholder screens
 
 ### Phase 2: Character Overview
 **Goal**: The character overview screen is fully rendered — the Skia canvas with hex grid background, the anatomical figure centered in a teal scan frame, 8 zone cards positioned symmetrically around the body with connecting lines, HUD bars top and bottom, and warm/cold glow states driven by real data.
@@ -111,7 +111,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Not started | - |
+| 1. Foundation | 3/3 | Complete | 2026-03-08 |
 | 2. Character Overview | 0/3 | Not started | - |
 | 3. Character Detail | 0/2 | Not started | - |
 | 4. Workout Module | 0/4 | Not started | - |

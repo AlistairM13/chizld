@@ -7,16 +7,16 @@
 
 ### Foundation
 
-- [ ] **FOUN-01**: Project file structure matches PRD spec (src/navigation, src/screens, src/components, src/db, src/hooks, src/constants, src/types, src/services)
-- [ ] **FOUN-02**: Design system constants created (colors.ts with full palette, fonts.ts with font family names, zones.ts with 8 zone configs, xp.ts with level thresholds)
-- [ ] **FOUN-03**: TypeScript type definitions created for all domain entities (Zone, Exercise, WorkoutSession, WorkoutSet, ZoneStats, XPHistory)
-- [ ] **FOUN-04**: SQLite database initialized with all tables from PRD schema on first app launch
-- [ ] **FOUN-05**: Seed data loaded — exercises for all 8 zones, zone_stats initialized with defaults
-- [ ] **FOUN-06**: MMKV key-value store initialized with default preference values
-- [ ] **FOUN-07**: Custom fonts loaded at app startup (Chakra Petch, Barlow Condensed, JetBrains Mono)
-- [ ] **FOUN-08**: React Navigation set up with bottom tabs (Home, Train, Sleep placeholder, Fuel placeholder) + native stack
-- [ ] **FOUN-09**: Expo Router replaced with React Navigation throughout the app
-- [ ] **FOUN-10**: App locked to landscape orientation globally on startup via expo-screen-orientation
+- [x] **FOUN-01**: Project file structure matches PRD spec (src/navigation, src/screens, src/components, src/db, src/hooks, src/constants, src/types, src/services)
+- [x] **FOUN-02**: Design system constants created (colors.ts with full palette, fonts.ts with font family names, zones.ts with 8 zone configs, xp.ts with level thresholds)
+- [x] **FOUN-03**: TypeScript type definitions created for all domain entities (Zone, Exercise, WorkoutSession, WorkoutSet, ZoneStats, XPHistory)
+- [x] **FOUN-04**: SQLite database initialized with all tables from PRD schema on first app launch
+- [x] **FOUN-05**: Seed data loaded — exercises for all 8 zones, zone_stats initialized with defaults
+- [x] **FOUN-06**: MMKV key-value store initialized with default preference values
+- [x] **FOUN-07**: Custom fonts loaded at app startup (Chakra Petch, Barlow Condensed, JetBrains Mono)
+- [x] **FOUN-08**: React Navigation set up with bottom tabs (Home, Train, Sleep placeholder, Fuel placeholder) + native stack
+- [x] **FOUN-09**: Expo Router replaced with React Navigation throughout the app
+- [x] **FOUN-10**: App locked to landscape orientation globally on startup via expo-screen-orientation
 
 ### Character Overview
 
@@ -109,16 +109,16 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | Phase 1 | Pending |
-| FOUN-02 | Phase 1 | Pending |
-| FOUN-03 | Phase 1 | Pending |
-| FOUN-04 | Phase 1 | Pending |
-| FOUN-05 | Phase 1 | Pending |
-| FOUN-06 | Phase 1 | Pending |
-| FOUN-07 | Phase 1 | Pending |
-| FOUN-08 | Phase 1 | Pending |
-| FOUN-09 | Phase 1 | Pending |
-| FOUN-10 | Phase 1 | Pending |
+| FOUN-01 | Phase 1 | Complete |
+| FOUN-02 | Phase 1 | Complete |
+| FOUN-03 | Phase 1 | Complete |
+| FOUN-04 | Phase 1 | Complete |
+| FOUN-05 | Phase 1 | Complete |
+| FOUN-06 | Phase 1 | Complete |
+| FOUN-07 | Phase 1 | Complete |
+| FOUN-08 | Phase 1 | Complete |
+| FOUN-09 | Phase 1 | Complete |
+| FOUN-10 | Phase 1 | Complete |
 | CHAR-01 | Phase 2 | Pending |
 | CHAR-02 | Phase 2 | Pending |
 | CHAR-03 | Phase 2 | Pending |
