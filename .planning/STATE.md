@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 2.1 — Overview Polish COMPLETE, ready for Phase 3
+**Current focus:** Phase 3 — Character Detail (in progress)
 
 ## Current Position
 
-Phase: 2.1 of 5 (Overview Polish - COMPLETE)
-Plan: 3 of 3 in current phase (PHASE COMPLETE)
-Status: Phase 2.1 complete — Overview Polish finished
-Last activity: 2026-03-08 — Completed 02.1-03-PLAN.md (zone card integration)
+Phase: 3 of 5 (Character Detail)
+Plan: 1 of 3 in current phase
+Status: In progress — Detail mode animations complete
+Last activity: 2026-03-08 — Completed 03-01-PLAN.md (detail mode animations)
 
-Progress: [█████████░] ~56% (9/16 plans complete)
+Progress: [██████████░] ~63% (10/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9 (Phase 1 + Phase 2 + Phase 2.1)
-- Average duration: ~2.9 min
-- Total execution time: ~27 min
+- Total plans completed: 10 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 partial)
+- Average duration: ~3.1 min
+- Total execution time: ~31 min
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [█████████░] ~56% (9/16 plans complete)
 | 01-foundation | 3/3 complete | ~9 min | ~3 min |
 | 02-character-overview | 3/3 complete | ~12 min | ~4 min |
 | 02.1-overview-polish | 3/3 complete | ~5.5 min | ~1.8 min |
+| 03-character-detail | 1/3 complete | ~4 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02.1-03 (1.6 min), 02.1-02 (2 min), 02.1-01 (1.5 min), 02-03 (2 min), 02-02 (~2 min)
-- Trend: Polish/styling plans very fast (~2 min)
+- Last 5 plans: 03-01 (4 min), 02.1-03 (1.6 min), 02.1-02 (2 min), 02.1-01 (1.5 min), 02-03 (2 min)
+- Trend: Animation plans slightly longer than polish (~4 min)
 
 *Updated after each plan completion*
 
@@ -72,6 +73,10 @@ Recent decisions affecting current work:
 - [02.1-03]: ZoneCard composes ZoneLabel + PhotoSlot (no Skia/beveled border)
 - [02.1-03]: Left zones row direction (label-slot), right zones row-reverse (slot-label)
 - [02.1-03]: slotOffsetX = +40px for left zones, -40px for right zones
+- [03-01]: Character slides 50% left (not 30%) per user decision for more dramatic effect
+- [03-01]: Choreography: character slides FIRST, then stat card enters after 100ms delay
+- [03-01]: Non-selected cards fade out at 50% detailProgress (early in animation)
+- [03-01]: Selected zone glow: full intensity override, 1.5x radius, 1000ms pulse (vs 2000ms normal)
 
 ### Pending Todos
 
@@ -92,5 +97,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Completed 02.1-03-PLAN.md — Phase 2.1 Overview Polish COMPLETE
-Resume file: None — Ready for Phase 3 planning or human verification of overview screen
+Stopped at: Completed 03-01-PLAN.md — Detail mode animations
+Resume file: None — Ready for 03-02-PLAN.md (stat card component)
