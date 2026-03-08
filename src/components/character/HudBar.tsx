@@ -36,7 +36,7 @@ interface HudBarBottomProps {
 
 /**
  * Bottom HUD bar displaying zone count and session uptime.
- * Uses TypewriterText for terminal boot animation.
+ * Single line format with bullet separators in system text color.
  */
 export function HudBarBottom({
   activeZoneCount,
@@ -44,24 +44,15 @@ export function HudBarBottom({
 }: HudBarBottomProps) {
   const uptime = useUptimeCounter();
 
-  // Format zone status text
-  const zoneText = `ZONES: ${totalZones} / ACTIVE: ${activeZoneCount}/${totalZones}`;
-  const uptimeText = `UPTIME: ${uptime}`;
+  // Single line format with bullet separators
+  const statusText = `ZONES: ${totalZones} \u2022 ACTIVE: ${activeZoneCount}/${totalZones} \u2022 UPTIME: ${uptime}`;
 
   return (
     <View style={styles.bottomBar}>
-      {/* Left: Zone status */}
       <TypewriterText
-        text={zoneText}
+        text={statusText}
         delayMs={25}
-        style={styles.statusText}
-      />
-
-      {/* Right: Uptime counter */}
-      <TypewriterText
-        text={uptimeText}
-        delayMs={35}
-        style={styles.statusText}
+        style={styles.systemStatusText}
       />
     </View>
   );
@@ -89,18 +80,16 @@ const styles = StyleSheet.create({
     right: 0,
     height: 40,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 16,
-    borderTopWidth: 1,
-    borderTopColor: colors.zone.cold,
     backgroundColor: 'transparent',
   },
   branding: {
     fontFamily: fonts.display,
     fontSize: 18,
     color: colors.text.primary,
-    letterSpacing: 2,
+    letterSpacing: 3,
   },
   systemCode: {
     fontFamily: fonts.monoLight,
@@ -112,6 +101,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.monoLight,
     fontSize: 11,
     color: colors.text.secondary,
+    letterSpacing: 0.5,
+  },
+  systemStatusText: {
+    fontFamily: fonts.monoLight,
+    fontSize: 10,
+    color: colors.text.system,
     letterSpacing: 0.5,
   },
 });

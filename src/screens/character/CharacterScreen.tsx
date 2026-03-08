@@ -27,9 +27,9 @@ export function CharacterScreen() {
         />
       ))}
 
-      {/* HUD bars - absolute positioned overlay */}
+      {/* HUD bars - absolute positioned overlays */}
       <HudBarTop />
-      <HudBarBottom activeZoneCount={warmCount} totalZones={8} />
+      <HudBarBottom activeZoneCount={warmCount} />
     </View>
   );
 }
