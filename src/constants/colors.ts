@@ -14,6 +14,7 @@ export const colors = {
   zone: {
     cold: '#2A2A3A',
     warm: 'rgba(255,140,26,0.25)',
+    selected: '#CC6600',
   },
   hud: {
     teal: 'rgba(26,92,92,0.15)',

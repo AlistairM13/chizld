@@ -7,6 +7,7 @@ interface ZoneLabelProps {
   zoneName: string;       // e.g., "TRAPS"
   level: number;          // e.g., 5
   isWarm: boolean;        // drives color selection
+  isSelected?: boolean;   // cyan highlight when selected
   side: 'left' | 'right'; // text alignment (left-side zones align right, right-side zones align left)
 }
 
@@ -14,15 +15,24 @@ interface ZoneLabelProps {
  * ZoneLabel displays zone name and level as floating text.
  *
  * - No background or border - just text elements
+ * - Selected zones: cyan text (highest priority)
  * - Warm zones: ember-orange text colors
  * - Cold zones: grey muted text colors
  * - Left-side zones align text to the right (flex-end)
  * - Right-side zones align text to the left (flex-start)
  */
-export function ZoneLabel({ zoneName, level, isWarm, side }: ZoneLabelProps) {
-  // Color scheme based on warmth
-  const nameColor = isWarm ? colors.ember[500] : colors.text.secondary;
-  const levelColor = isWarm ? colors.ember[300] : colors.text.muted;
+export function ZoneLabel({ zoneName, level, isWarm, isSelected = false, side }: ZoneLabelProps) {
+  // Color scheme: selected > warm (ember) > cold (grey)
+  const nameColor = isSelected
+    ? colors.zone.selected
+    : isWarm
+      ? colors.ember[500]
+      : colors.text.secondary;
+  const levelColor = isSelected
+    ? colors.zone.selected
+    : isWarm
+      ? colors.ember[300]
+      : colors.text.muted;
 
   // Text alignment: left-side zones align right, right-side zones align left
   const alignItems = side === 'left' ? 'flex-end' : 'flex-start';
@@ -41,7 +51,8 @@ export function ZoneLabel({ zoneName, level, isWarm, side }: ZoneLabelProps) {
 
 const styles = StyleSheet.create({
   container: {
-    // No background, no border - just a flex container for text
+    // Fixed width ensures PhotoSlots align vertically across all zone cards
+    width: 80,
   },
   zoneName: {
     fontFamily: fonts.heading, // Barlow Condensed SemiBold

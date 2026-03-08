@@ -10,6 +10,8 @@ interface ZoneCardProps {
   position: ZoneCardPosition;
   screenWidth: number;
   screenHeight: number;
+  isSelected?: boolean;
+  onPress?: () => void;
 }
 
 /**
@@ -22,7 +24,14 @@ interface ZoneCardProps {
  * The connecting lines originate from the PhotoSlot center,
  * creating visual connection to body anchor points.
  */
-export function ZoneCard({ zone, position, screenWidth, screenHeight }: ZoneCardProps) {
+export function ZoneCard({
+  zone,
+  position,
+  screenWidth,
+  screenHeight,
+  isSelected = false,
+  onPress,
+}: ZoneCardProps) {
   // Calculate absolute position (position is percentage-based)
   const cardX = position.x * screenWidth;
   const cardY = position.y * screenHeight;
@@ -41,20 +50,20 @@ export function ZoneCard({ zone, position, screenWidth, screenHeight }: ZoneCard
           flexDirection: isLeftSide ? 'row' : 'row-reverse',
         },
       ]}
-      onPress={() => {
-        // No-op for now - Phase 3 implements tap
-      }}
+      onPress={onPress}
     >
       <ZoneLabel
         zoneName={zone.name}
         level={zone.level}
         isWarm={zone.isWarm}
+        isSelected={isSelected}
         side={zone.side}
       />
       <View style={styles.gap} />
       <PhotoSlot
         photoPath={null} // No photos yet - future feature
         isWarm={zone.isWarm}
+        isSelected={isSelected}
         size={50}
       />
     </Pressable>

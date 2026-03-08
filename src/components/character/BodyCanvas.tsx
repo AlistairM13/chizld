@@ -1,20 +1,31 @@
-import React from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
-import { Canvas, useImage, Image } from '@shopify/react-native-skia';
+import React, { useCallback } from 'react';
+import { StyleSheet, useWindowDimensions, Pressable, GestureResponderEvent } from 'react-native';
+import {
+  Canvas,
+  Path,
+  Skia,
+  Group,
+} from '@shopify/react-native-skia';
 import { HexGrid } from './HexGrid';
 import { ScanFrame } from './ScanFrame';
 import { ScanLine } from './ScanLine';
-import { PlatformGlow } from './PlatformGlow';
 import { ConnectingLines } from './ConnectingLines';
 import { ZoneGlows } from './ZoneGlow';
 import { getCharacterLayout } from '../../constants/layout';
 import { type ZoneWithIntensity } from '../../hooks/useZoneStats';
+import { ZONE_FULL_PATHS } from '../ui/body-svg';
+import { colors } from '../../constants/colors';
 
-// Character image dimensions (3x of 185x372 SVG viewBox)
-const CHARACTER_ASPECT = 555 / 1116;
+// SVG viewBox dimensions from the original SVG
+const SVG_WIDTH = 185;
+const SVG_HEIGHT = 372;
+const CHARACTER_ASPECT = SVG_WIDTH / SVG_HEIGHT;
+
 
 interface BodyCanvasProps {
   zones?: ZoneWithIntensity[];
+  selectedZone?: string | null;
+  onSelectZone?: (zoneId: string | null) => void;
 }
 
 /**
@@ -24,84 +35,126 @@ interface BodyCanvasProps {
  * Render order (back to front):
  * 1. HexGrid - subtle background pattern
  * 2. ScanFrame - teal corner brackets around character
- * 3. Character Image - muscle-front.png centered
+ * 3. Interactive body parts - SVG paths from body-svg.tsx (tappable)
  * 4. PlatformGlow - ember glow at character feet
  * 5. ZoneGlows - pulsing ember glows for warm zones on body
  * 6. ConnectingLines - dashed lines from cards to body anchors
  * 7. ScanLine - animated vertical sweep
  */
-export function BodyCanvas({ zones = [] }: BodyCanvasProps) {
-  const { width, height } = useWindowDimensions();
-  const image = useImage(require('../../../assets/images/characters/muscle-front.png'));
+// Pre-parse all zone paths for better performance
+const parsedZonePaths: Record<string, ReturnType<typeof Skia.Path.MakeFromSVGString>[]> = {};
+Object.entries(ZONE_FULL_PATHS).forEach(([zone, pathStrings]) => {
+  parsedZonePaths[zone] = pathStrings
+    .map((d) => Skia.Path.MakeFromSVGString(d))
+    .filter((p): p is NonNullable<typeof p> => p !== null);
+});
 
-  // Handle async image loading
-  if (!image) {
-    return null;
-  }
+export function BodyCanvas({
+  zones = [],
+  selectedZone = null,
+  onSelectZone,
+}: BodyCanvasProps) {
+  const { width, height } = useWindowDimensions();
 
   const layout = getCharacterLayout(width, height);
 
-  // Calculate character positioning
-  const characterHeight = height * 0.8;
-  const characterWidth = characterHeight * CHARACTER_ASPECT;
-  const characterX = (width - characterWidth) / 2;
-  const characterY = (height - characterHeight) / 2;
+  // Use layout values for character positioning
+  const { characterWidth, characterHeight, characterX, characterY } = layout;
 
-  // Platform glow position (bottom center of character)
-  const platformCx = characterX + characterWidth / 2;
-  const platformCy = characterY + characterHeight * 0.95;
+  // Scale factor to transform SVG coordinates to screen coordinates
+  const scale = characterHeight / SVG_HEIGHT;
+
+
+  // Check if a point is inside any path of a zone
+  const getZoneAtPoint = useCallback(
+    (x: number, y: number): string | null => {
+      // Convert screen coordinates to SVG coordinates
+      const svgX = (x - characterX) / scale;
+      const svgY = (y - characterY) / scale;
+
+      for (const [zone, paths] of Object.entries(parsedZonePaths)) {
+        for (const path of paths) {
+          if (path.contains(svgX, svgY)) {
+            return zone;
+          }
+        }
+      }
+      return null;
+    },
+    [characterX, characterY, scale]
+  );
+
+  const handlePress = useCallback(
+    (event: GestureResponderEvent) => {
+      const { locationX, locationY } = event.nativeEvent;
+      const zone = getZoneAtPoint(locationX, locationY);
+      onSelectZone?.(zone);
+    },
+    [getZoneAtPoint, onSelectZone]
+  );
 
   return (
-    <Canvas style={StyleSheet.absoluteFill}>
-      {/* Layer 1: Hex grid background */}
-      <HexGrid width={width} height={height} />
+    <Pressable style={StyleSheet.absoluteFill} onPress={handlePress}>
+      <Canvas style={StyleSheet.absoluteFill}>
+          {/* Layer 1: Hex grid background */}
+          <HexGrid width={width} height={height} />
 
-      {/* Layer 2: Scan frame brackets */}
-      <ScanFrame
-        x={characterX}
-        y={characterY}
-        width={characterWidth}
-        height={characterHeight}
-        padding={layout.scanFramePadding}
-      />
+          {/* Layer 2: Scan frame brackets */}
+          <ScanFrame
+            x={characterX}
+            y={characterY}
+            width={characterWidth}
+            height={characterHeight}
+            padding={layout.scanFramePadding}
+          />
 
-      {/* Layer 3: Character image */}
-      <Image
-        image={image}
-        x={characterX}
-        y={characterY}
-        width={characterWidth}
-        height={characterHeight}
-        fit="contain"
-      />
+          {/* Layer 3: Interactive body parts */}
+          <Group
+            transform={[
+              { translateX: characterX },
+              { translateY: characterY },
+              { scale },
+            ]}
+          >
+            {Object.entries(parsedZonePaths).map(([zone, paths]) =>
+              paths.map((path, idx) => (
+                <Path
+                  key={`${zone}-${idx}`}
+                  path={path}
+                  color={
+                    selectedZone === zone
+                      ? colors.zone.selected
+                      : colors.text.secondary
+                  }
+                  style="fill"
+                />
+              ))
+            )}
+          </Group>
 
-      {/* Layer 4: Platform glow at feet */}
-      <PlatformGlow
-        cx={platformCx}
-        cy={platformCy}
-        characterWidth={characterWidth}
-      />
 
-      {/* Layer 5: Zone glows for warm zones */}
-      {zones.length > 0 && (
-        <ZoneGlows
-          zones={zones}
-          screenWidth={width}
-          screenHeight={height}
-        />
-      )}
+          {/* Layer 5: Zone glows for warm zones */}
+          {zones.length > 0 && (
+            <ZoneGlows
+              zones={zones}
+              screenWidth={width}
+              screenHeight={height}
+            />
+          )}
 
-      {/* Layer 6: Connecting lines from cards to body */}
-      {zones.length > 0 && (
-        <ConnectingLines
-          zones={zones}
-          screenWidth={width}
-          screenHeight={height}
-        />
-      )}
+          {/* Layer 6: Connecting lines from cards to body */}
+          {zones.length > 0 && (
+            <ConnectingLines
+              zones={zones}
+              screenWidth={width}
+              screenHeight={height}
+              selectedZone={selectedZone}
+            />
+          )}
 
-      {/* Layer 7: Animated scan line */}
-      <ScanLine width={width} height={height} />
-    </Canvas>
+          {/* Layer 7: Animated scan line */}
+          <ScanLine width={width} height={height} />
+      </Canvas>
+    </Pressable>
   );
 }

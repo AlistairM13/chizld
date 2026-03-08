@@ -1,28 +1,79 @@
 import React, { useMemo } from 'react';
 import { Path, Skia, DashPathEffect, Group } from '@shopify/react-native-skia';
+import { useSharedValue, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import { type ZoneWithIntensity } from '../../hooks/useZoneStats';
 import { ZONE_CARD_POSITIONS } from '../../constants/layout';
+import { colors } from '../../constants/colors';
 
 interface ConnectingLinesProps {
   zones: ZoneWithIntensity[];
   screenWidth: number;
   screenHeight: number;
+  selectedZone?: string | null;
 }
 
 // Dash pattern: 4px dash, 4px gap
 const DASH_INTERVALS = [4, 4] as const;
 
-// Colors for warm and cold lines
+// Colors for warm, cold, and selected lines
 const WARM_LINE_COLOR = 'rgba(255,140,26,0.6)';
 const COLD_LINE_COLOR = 'rgba(136,136,160,0.4)';
+const SELECTED_LINE_COLOR = colors.zone.selected;
+
+// PhotoSlot size (must match PhotoSlot component)
+const PHOTO_SLOT_SIZE = 50;
+const HALF_SLOT = PHOTO_SLOT_SIZE / 2;
 
 /**
  * ConnectingLines renders dashed lines from zone cards to body anchor points.
  *
  * Uses Skia DashPathEffect for blueprint/schematic aesthetic.
  * Warm zones get ember-orange lines, cold zones get grey lines.
+ * Selected zones have animated marching ants effect.
  */
-export function ConnectingLines({ zones, screenWidth, screenHeight }: ConnectingLinesProps) {
+
+// Animated line with its own animation loop
+function AnimatedLine({
+  path,
+  color,
+}: {
+  path: ReturnType<typeof Skia.Path.Make>;
+  color: string;
+}) {
+  const phase = useSharedValue(0);
+
+  // Start animation on mount
+  React.useEffect(() => {
+    phase.value = withRepeat(
+      withTiming(8, { duration: 500, easing: Easing.linear }),
+      -1,
+      false
+    );
+  }, [phase]);
+
+  return (
+    <Path path={path} style="stroke" color={color} strokeWidth={1}>
+      <DashPathEffect intervals={[...DASH_INTERVALS]} phase={phase} />
+    </Path>
+  );
+}
+
+// Static line component for non-selected state
+function StaticLine({
+  path,
+  color,
+}: {
+  path: ReturnType<typeof Skia.Path.Make>;
+  color: string;
+}) {
+  return (
+    <Path path={path} style="stroke" color={color} strokeWidth={1}>
+      <DashPathEffect intervals={[...DASH_INTERVALS]} phase={0} />
+    </Path>
+  );
+}
+
+export function ConnectingLines({ zones, screenWidth, screenHeight, selectedZone }: ConnectingLinesProps) {
   // Pre-compute all line paths
   const linePaths = useMemo(() => {
     return zones.map((zone) => {
@@ -34,16 +85,23 @@ export function ConnectingLines({ zones, screenWidth, screenHeight }: Connecting
       const cardY = positions.y * screenHeight;
 
       // Photo slot center (offset from card center)
-      const slotX = cardX + positions.slotOffsetX;
+      const slotCenterX = cardX + positions.slotOffsetX;
       const slotY = cardY; // Same Y position
+
+      // Line starts from slot EDGE, not center
+      // Left-side zones (positive slotOffsetX): start from right edge + extra clearance
+      // Right-side zones (negative slotOffsetX): start from left edge
+      const isLeftSide = positions.slotOffsetX > 0;
+      const edgeOffset = isLeftSide ? HALF_SLOT + 10 : -HALF_SLOT;
+      const lineStartX = slotCenterX + edgeOffset;
 
       // Anchor position on body
       const anchorX = positions.anchorX * screenWidth;
       const anchorY = positions.anchorY * screenHeight;
 
-      // Create line path from PHOTO SLOT to anchor
+      // Create line path from PHOTO SLOT EDGE to anchor
       const path = Skia.Path.Make();
-      path.moveTo(slotX, slotY); // Start from slot, not card center
+      path.moveTo(lineStartX, slotY); // Start from slot edge
       path.lineTo(anchorX, anchorY);
 
       return {
@@ -54,21 +112,37 @@ export function ConnectingLines({ zones, screenWidth, screenHeight }: Connecting
     }).filter(Boolean);
   }, [zones, screenWidth, screenHeight]);
 
+  // Get line color based on selection and warm state
+  const getLineColor = (zoneId: string, isWarm: boolean) => {
+    if (selectedZone === zoneId) return SELECTED_LINE_COLOR;
+    if (isWarm) return WARM_LINE_COLOR;
+    return COLD_LINE_COLOR;
+  };
+
   return (
     <Group>
       {linePaths.map((lineData) => {
         if (!lineData) return null;
 
+        const isSelected = selectedZone === lineData.zoneId;
+        const color = getLineColor(lineData.zoneId, lineData.isWarm);
+
+        if (isSelected) {
+          return (
+            <AnimatedLine
+              key={lineData.zoneId}
+              path={lineData.path}
+              color={color}
+            />
+          );
+        }
+
         return (
-          <Path
+          <StaticLine
             key={lineData.zoneId}
             path={lineData.path}
-            style="stroke"
-            color={lineData.isWarm ? WARM_LINE_COLOR : COLD_LINE_COLOR}
-            strokeWidth={1}
-          >
-            <DashPathEffect intervals={[...DASH_INTERVALS]} phase={0} />
-          </Path>
+            color={color}
+          />
         );
       })}
     </Group>
