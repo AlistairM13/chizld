@@ -30,12 +30,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Custom fonts (Chakra Petch, Barlow Condensed, JetBrains Mono) render on screen — no system font fallback
   4. SQLite database contains all tables and seed data — 8 zone_stats rows exist, 30+ exercises seeded across all zones
   5. File structure matches PRD spec with all src/ subdirectories present and constants files created
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: File structure, design system constants, TypeScript types
-- [ ] 01-02: SQLite database schema, seed data, MMKV initialization
-- [ ] 01-03: React Navigation setup (replace Expo Router), font loading, orientation lock
+- [ ] 01-01-PLAN.md — File structure, design system constants, TypeScript types, SVG-to-PNG conversion
+- [ ] 01-02-PLAN.md — SQLite database schema, seed data, MMKV initialization
+- [ ] 01-03-PLAN.md — React Navigation setup (replace Expo Router), font loading, orientation lock, placeholder screens
 
 ### Phase 2: Character Overview
 **Goal**: The character overview screen is fully rendered — the Skia canvas with hex grid background, the anatomical figure centered in a teal scan frame, 8 zone cards positioned symmetrically around the body with connecting lines, HUD bars top and bottom, and warm/cold glow states driven by real data.
