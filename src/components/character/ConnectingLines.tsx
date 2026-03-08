@@ -83,40 +83,8 @@ export function ConnectingLines({
   detailMode = false,
   statCardX,
 }: ConnectingLinesProps) {
-  // In detail mode, draw only the selected zone's line to the stat card
-  if (detailMode && selectedZone) {
-    const zone = zones.find((z) => z.zoneId === selectedZone);
-    if (zone) {
-      const positions = ZONE_CARD_POSITIONS[zone.zoneId];
-      if (positions) {
-        // Card center position
-        const cardX = positions.x * screenWidth;
-        const cardY = positions.y * screenHeight;
-
-        // Photo slot center (offset from card center)
-        const slotCenterX = cardX + positions.slotOffsetX;
-
-        // Line starts from slot EDGE
-        const isLeftSide = positions.slotOffsetX > 0;
-        const edgeOffset = isLeftSide ? HALF_SLOT + 10 : -HALF_SLOT;
-        const lineStartX = slotCenterX + edgeOffset;
-        const lineStartY = cardY;
-
-        // End at stat card left edge, vertically centered
-        const lineEndX = statCardX ?? screenWidth * 0.4;
-        const lineEndY = screenHeight / 2;
-
-        const path = Skia.Path.Make();
-        path.moveTo(lineStartX, lineStartY);
-        path.lineTo(lineEndX, lineEndY);
-
-        return (
-          <Group>
-            <AnimatedLine path={path} color={SELECTED_LINE_COLOR} />
-          </Group>
-        );
-      }
-    }
+  // In detail mode, hide all connecting lines for a cleaner look
+  if (detailMode) {
     return null;
   }
 
