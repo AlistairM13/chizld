@@ -14,6 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project structure, design system, database, navigation, orientation
 - [x] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
+- [ ] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
 - [ ] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
 - [ ] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
 - [ ] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
@@ -53,6 +54,23 @@ Plans:
 - [x] 02-01-PLAN.md — Skia BodyCanvas with hex grid, scan frame, character image, platform glow, scan line animation
 - [x] 02-02-PLAN.md — Zone cards, connecting lines, warm/cold glow states wired to zone_stats
 - [x] 02-03-PLAN.md — HUD bars (top/bottom), typewriter text animation, uptime counter
+
+### Phase 2.1: Overview Polish (INSERTED)
+**Goal**: Polish the character overview screen with refined card design including photo slots, proper warm/cold zone visual states, and complete the tab bar and system text styling.
+**Depends on**: Phase 2
+**Requirements**: TBD (extracted from Phase 2 polish items)
+**Success Criteria** (what must be TRUE):
+  1. Zone cards display photo slot ("+" placeholder) that is visually distinct
+  2. Warm zones (trained within 3 days) show ember-orange glow, borders, and text
+  3. Cold zones show grey borders and text with no glow
+  4. Tab bar styling matches design system (colors, fonts)
+  5. System text in HUD bars uses correct fonts and positioning
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02.1-01-PLAN.md — ZoneLabel and PhotoSlot components (separated from combined card)
+- [ ] 02.1-02-PLAN.md — Tab bar polish and HudBarBottom integration
+- [ ] 02.1-03-PLAN.md — ZoneCard refactor, layout positions, connecting line origins
 
 ### Phase 3: Character Detail
 **Goal**: Tapping a zone card triggers the detail state — character slides left, selected zone highlights ember-orange, and the RPG stat card slides in from the right showing real zone data (XP, level, stats grid, TRAIN button). Tapping outside or pressing back returns to overview.
@@ -107,12 +125,13 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-03-08 |
 | 2. Character Overview | 3/3 | Complete | 2026-03-08 |
+| 2.1 Overview Polish (INSERTED) | 0/3 | Not started | - |
 | 3. Character Detail | 0/2 | Not started | - |
 | 4. Workout Module | 0/4 | Not started | - |
 | 5. XP & Leveling | 0/2 | Not started | - |
