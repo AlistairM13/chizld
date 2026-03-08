@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Circle, RadialGradient, vec, Group } from '@shopify/react-native-skia';
+import React, { useEffect, useMemo } from 'react';
+import { Circle, RadialGradient, vec, Group, Skia } from '@shopify/react-native-skia';
 import {
   useSharedValue,
   withRepeat,
@@ -8,7 +8,8 @@ import {
   useDerivedValue,
 } from 'react-native-reanimated';
 import { type ZoneWithIntensity } from '../../hooks/useZoneStats';
-import { ZONE_CARD_POSITIONS } from '../../constants/layout';
+import { getCharacterLayout } from '../../constants/layout';
+import { ZONE_FULL_PATHS } from '../ui/body-svg';
 
 interface ZoneGlowProps {
   zone: ZoneWithIntensity;
@@ -17,26 +18,70 @@ interface ZoneGlowProps {
   isSelected?: boolean;  // Force full intensity ember glow when selected
 }
 
+// SVG viewBox dimensions from body-svg
+const SVG_HEIGHT = 372;
+
 // Base glow radius for warm zones
-const BASE_GLOW_RADIUS = 40;
+const BASE_GLOW_RADIUS = 30;
 
 // Pulse animation parameters
 const PULSE_DURATION = 2000; // 2 seconds for organic breathing feel
 const PULSE_MIN_OPACITY = 0.2;
 const PULSE_MAX_OPACITY = 0.5;
 
-/**
- * ZoneGlow renders a pulsing ember glow on the character body for warm zones.
- *
- * - Only renders if zone.isWarm is true
- * - Uses Reanimated withRepeat for breathing animation
- * - Glow intensity and radius scale with zone.intensity
- */
 // Faster pulse for selected zone
 const SELECTED_PULSE_DURATION = 1000; // 1 second for more intense feel
 
+/**
+ * Calculate glow centers for each path in a zone
+ */
+function getPathCenters(
+  zoneId: string,
+  screenWidth: number,
+  screenHeight: number
+): { cx: number; cy: number }[] {
+  const pathStrings = ZONE_FULL_PATHS[zoneId];
+  if (!pathStrings) return [];
+
+  const layout = getCharacterLayout(screenWidth, screenHeight);
+  const { characterX, characterY, characterHeight } = layout;
+  const scale = characterHeight / SVG_HEIGHT;
+
+  const centers: { cx: number; cy: number }[] = [];
+
+  for (const pathStr of pathStrings) {
+    const path = Skia.Path.MakeFromSVGString(pathStr);
+    if (path) {
+      const bounds = path.getBounds();
+      // Calculate center of bounding box in SVG coordinates, then transform to screen
+      const svgCenterX = (bounds.x + bounds.width / 2);
+      const svgCenterY = (bounds.y + bounds.height / 2);
+      centers.push({
+        cx: characterX + svgCenterX * scale,
+        cy: characterY + svgCenterY * scale,
+      });
+    }
+  }
+
+  return centers;
+}
+
+/**
+ * ZoneGlow renders pulsing ember glows on the character body for warm zones.
+ *
+ * - Only renders if zone.isWarm is true
+ * - Renders a glow at the center of EACH path in the zone
+ * - Uses Reanimated withRepeat for breathing animation
+ * - Glow intensity and radius scale with zone.intensity
+ */
 export function ZoneGlow({ zone, screenWidth, screenHeight, isSelected = false }: ZoneGlowProps) {
   const pulseProgress = useSharedValue(0);
+
+  // Calculate glow centers for all paths in this zone
+  const glowCenters = useMemo(
+    () => getPathCenters(zone.zoneId, screenWidth, screenHeight),
+    [zone.zoneId, screenWidth, screenHeight]
+  );
 
   // Start breathing animation - faster when selected
   useEffect(() => {
@@ -56,14 +101,9 @@ export function ZoneGlow({ zone, screenWidth, screenHeight, isSelected = false }
     return null;
   }
 
-  // Get anchor position on body
-  const positions = ZONE_CARD_POSITIONS[zone.zoneId];
-  if (!positions) {
+  if (glowCenters.length === 0) {
     return null;
   }
-
-  const cx = positions.anchorX * screenWidth;
-  const cy = positions.anchorY * screenHeight;
 
   // When selected: full intensity and 1.5x radius
   const effectiveIntensity = isSelected ? 1.0 : zone.intensity;
@@ -80,13 +120,15 @@ export function ZoneGlow({ zone, screenWidth, screenHeight, isSelected = false }
 
   return (
     <Group blendMode="screen">
-      <Circle cx={cx} cy={cy} r={radius} opacity={animatedOpacity}>
-        <RadialGradient
-          c={vec(cx, cy)}
-          r={radius}
-          colors={['rgba(255,140,26,0.6)', 'rgba(255,140,26,0)']}
-        />
-      </Circle>
+      {glowCenters.map((center, idx) => (
+        <Circle key={idx} cx={center.cx} cy={center.cy} r={radius} opacity={animatedOpacity}>
+          <RadialGradient
+            c={vec(center.cx, center.cy)}
+            r={radius}
+            colors={['rgba(255,140,26,0.6)', 'rgba(255,140,26,0)']}
+          />
+        </Circle>
+      ))}
     </Group>
   );
 }

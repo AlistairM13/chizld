@@ -48,14 +48,12 @@ export function ZoneCard({
   // Right-side zones: slot left, label right
   const isLeftSide = zone.side === 'left';
 
-  // Animated opacity: non-selected cards fade out during detail mode
+  // Animated opacity: ALL cards fade out during detail mode (StatCard takes over)
   const animatedStyle = useAnimatedStyle(() => {
     if (!detailProgress) return { opacity: 1 };
 
-    // Selected card stays visible, others fade out
-    const opacity = isSelected
-      ? 1
-      : interpolate(detailProgress.value, [0, 0.5], [1, 0], Extrapolation.CLAMP);
+    // All cards fade out - the StatCard on the right shows the detail info
+    const opacity = interpolate(detailProgress.value, [0, 0.5], [1, 0], Extrapolation.CLAMP);
 
     return { opacity };
   });

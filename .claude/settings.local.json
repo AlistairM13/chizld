@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(C:/Users/alist/AppData/Local/Android/Sdk/platform-tools/adb -s emulator-5554 shell df -h /data)",
+      "Bash(adb devices:*)",
+      "Bash(adb exec-out:*)"
+    ]
+  }
+}

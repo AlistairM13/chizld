@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SQLiteProvider } from 'expo-sqlite';
 import * as SplashScreen from 'expo-splash-screen';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { setStatusBarHidden } from 'expo-status-bar';
 import { useFonts } from '@expo-google-fonts/chakra-petch';
 import {
   ChakraPetch_700Bold,
@@ -37,9 +38,10 @@ export default function App() {
     JetBrainsMono_400Regular,
   });
 
-  // Lock to landscape on mount
+  // Lock to landscape and hide status bar on mount
   useEffect(() => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    setStatusBarHidden(true, 'none');
   }, []);
 
   // Initialize MMKV defaults on mount
