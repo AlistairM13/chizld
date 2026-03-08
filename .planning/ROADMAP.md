@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project structure, design system, database, navigation, orientation
 - [x] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
-- [ ] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
+- [x] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
 - [ ] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
 - [ ] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
 - [ ] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
@@ -68,13 +68,13 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02.1-01-PLAN.md — ZoneLabel and PhotoSlot components (separated from combined card)
-- [ ] 02.1-02-PLAN.md — Tab bar polish and HudBarBottom integration
-- [ ] 02.1-03-PLAN.md — ZoneCard refactor, layout positions, connecting line origins
+- [x] 02.1-01-PLAN.md — ZoneLabel and PhotoSlot components (separated from combined card)
+- [x] 02.1-02-PLAN.md — Tab bar polish and HudBarBottom integration
+- [x] 02.1-03-PLAN.md — ZoneCard refactor, layout positions, connecting line origins
 
 ### Phase 3: Character Detail
 **Goal**: Tapping a zone card triggers the detail state — character slides left, selected zone highlights ember-orange, and the RPG stat card slides in from the right showing real zone data (XP, level, stats grid, TRAIN button). Tapping outside or pressing back returns to overview.
-**Depends on**: Phase 2
+**Depends on**: Phase 2.1
 **Requirements**: DETL-01, DETL-02, DETL-03, DETL-04, DETL-05, DETL-06, DETL-07, DETL-08, DETL-09, DETL-10, DETL-11, DETL-12
 **Success Criteria** (what must be TRUE):
   1. Tapping any zone card smoothly slides the character left (Reanimated) and slides the stat card in from the right — no jank, no flash
@@ -82,11 +82,11 @@ Plans:
   3. The stat card displays: zone name (Chakra Petch bold), level badge, XP progress bar with XP numbers, and the 3x2 stats grid (STREAK, VOLUME 7D, SESSIONS, TOTAL SETS, MAX, LAST) populated from zone_stats
   4. The TRAIN button is full-width, ember-orange background, and navigates to the workout flow for the selected zone
   5. Tapping outside the stat card or pressing the Android back button returns smoothly to overview state
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 03-01: Overview-to-detail state machine, Reanimated slide animations, zone highlight on character
-- [ ] 03-02: Stat card UI (header, XP bar, stats grid, photo placeholders, TRAIN button), bottom bar change, back navigation
+- [ ] 03-01-PLAN.md — State machine, Reanimated slide animations, zone highlight on character, zone card fade
+- [ ] 03-02-PLAN.md — Stat card UI (header, XP bar, stats grid, TRAIN button), bottom bar change, dismiss behavior
 
 ### Phase 4: Workout Module
 **Goal**: The complete workout loop is functional — exercise selection filtered by zone, active session screen for logging sets (weight, reps, RPE), voice tempo countdown via expo-speech, configurable rest timer, and a session summary screen showing completion data.
@@ -131,7 +131,7 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-03-08 |
 | 2. Character Overview | 3/3 | Complete | 2026-03-08 |
-| 2.1 Overview Polish (INSERTED) | 0/3 | Not started | - |
+| 2.1 Overview Polish (INSERTED) | 3/3 | Complete | 2026-03-08 |
 | 3. Character Detail | 0/2 | Not started | - |
 | 4. Workout Module | 0/4 | Not started | - |
 | 5. XP & Leveling | 0/2 | Not started | - |
