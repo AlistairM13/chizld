@@ -29,17 +29,21 @@ export function ConnectingLines({ zones, screenWidth, screenHeight }: Connecting
       const positions = ZONE_CARD_POSITIONS[zone.zoneId];
       if (!positions) return null;
 
-      // Card position (center of card)
+      // Card center position
       const cardX = positions.x * screenWidth;
       const cardY = positions.y * screenHeight;
+
+      // Photo slot center (offset from card center)
+      const slotX = cardX + positions.slotOffsetX;
+      const slotY = cardY; // Same Y position
 
       // Anchor position on body
       const anchorX = positions.anchorX * screenWidth;
       const anchorY = positions.anchorY * screenHeight;
 
-      // Create line path from card to anchor
+      // Create line path from PHOTO SLOT to anchor
       const path = Skia.Path.Make();
-      path.moveTo(cardX, cardY);
+      path.moveTo(slotX, slotY); // Start from slot, not card center
       path.lineTo(anchorX, anchorY);
 
       return {
