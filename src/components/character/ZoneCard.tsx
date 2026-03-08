@@ -1,5 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  interpolate,
+  Extrapolation,
+  type SharedValue,
+} from 'react-native-reanimated';
 import { ZoneLabel } from './ZoneLabel';
 import { PhotoSlot } from './PhotoSlot';
 import { type ZoneWithIntensity } from '../../hooks/useZoneStats';
@@ -12,6 +18,7 @@ interface ZoneCardProps {
   screenHeight: number;
   isSelected?: boolean;
   onPress?: () => void;
+  detailProgress?: SharedValue<number>;  // From CharacterScreen for fade animation
 }
 
 /**
@@ -31,6 +38,7 @@ export function ZoneCard({
   screenHeight,
   isSelected = false,
   onPress,
+  detailProgress,
 }: ZoneCardProps) {
   // Calculate absolute position (position is percentage-based)
   const cardX = position.x * screenWidth;
@@ -40,42 +48,60 @@ export function ZoneCard({
   // Right-side zones: slot left, label right
   const isLeftSide = zone.side === 'left';
 
+  // Animated opacity: non-selected cards fade out during detail mode
+  const animatedStyle = useAnimatedStyle(() => {
+    if (!detailProgress) return { opacity: 1 };
+
+    // Selected card stays visible, others fade out
+    const opacity = isSelected
+      ? 1
+      : interpolate(detailProgress.value, [0, 0.5], [1, 0], Extrapolation.CLAMP);
+
+    return { opacity };
+  });
+
   return (
-    <Pressable
+    <Animated.View
       style={[
-        styles.container,
-        {
-          left: cardX,
-          top: cardY,
-          flexDirection: isLeftSide ? 'row' : 'row-reverse',
-        },
+        styles.wrapper,
+        { left: cardX, top: cardY },
+        animatedStyle,
       ]}
-      onPress={onPress}
     >
-      <ZoneLabel
-        zoneName={zone.name}
-        level={zone.level}
-        isWarm={zone.isWarm}
-        isSelected={isSelected}
-        side={zone.side}
-      />
-      <View style={styles.gap} />
-      <PhotoSlot
-        photoPath={null} // No photos yet - future feature
-        isWarm={zone.isWarm}
-        isSelected={isSelected}
-        size={50}
-      />
-    </Pressable>
+      <Pressable
+        style={[
+          styles.container,
+          { flexDirection: isLeftSide ? 'row' : 'row-reverse' },
+        ]}
+        onPress={onPress}
+      >
+        <ZoneLabel
+          zoneName={zone.name}
+          level={zone.level}
+          isWarm={zone.isWarm}
+          isSelected={isSelected}
+          side={zone.side}
+        />
+        <View style={styles.gap} />
+        <PhotoSlot
+          photoPath={null} // No photos yet - future feature
+          isWarm={zone.isWarm}
+          isSelected={isSelected}
+          size={50}
+        />
+      </Pressable>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     position: 'absolute',
-    alignItems: 'center',
     // Transform to center on position point
     transform: [{ translateX: -65 }, { translateY: -25 }],
+  },
+  container: {
+    alignItems: 'center',
   },
   gap: {
     width: 8, // Space between label and slot

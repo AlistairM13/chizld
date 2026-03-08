@@ -10,6 +10,8 @@ interface ConnectingLinesProps {
   screenWidth: number;
   screenHeight: number;
   selectedZone?: string | null;
+  detailMode?: boolean;      // When true, draw line to stat card
+  statCardX?: number;        // Left edge X position of stat card
 }
 
 // Dash pattern: 4px dash, 4px gap
@@ -73,7 +75,52 @@ function StaticLine({
   );
 }
 
-export function ConnectingLines({ zones, screenWidth, screenHeight, selectedZone }: ConnectingLinesProps) {
+export function ConnectingLines({
+  zones,
+  screenWidth,
+  screenHeight,
+  selectedZone,
+  detailMode = false,
+  statCardX,
+}: ConnectingLinesProps) {
+  // In detail mode, draw only the selected zone's line to the stat card
+  if (detailMode && selectedZone) {
+    const zone = zones.find((z) => z.zoneId === selectedZone);
+    if (zone) {
+      const positions = ZONE_CARD_POSITIONS[zone.zoneId];
+      if (positions) {
+        // Card center position
+        const cardX = positions.x * screenWidth;
+        const cardY = positions.y * screenHeight;
+
+        // Photo slot center (offset from card center)
+        const slotCenterX = cardX + positions.slotOffsetX;
+
+        // Line starts from slot EDGE
+        const isLeftSide = positions.slotOffsetX > 0;
+        const edgeOffset = isLeftSide ? HALF_SLOT + 10 : -HALF_SLOT;
+        const lineStartX = slotCenterX + edgeOffset;
+        const lineStartY = cardY;
+
+        // End at stat card left edge, vertically centered
+        const lineEndX = statCardX ?? screenWidth * 0.4;
+        const lineEndY = screenHeight / 2;
+
+        const path = Skia.Path.Make();
+        path.moveTo(lineStartX, lineStartY);
+        path.lineTo(lineEndX, lineEndY);
+
+        return (
+          <Group>
+            <AnimatedLine path={path} color={SELECTED_LINE_COLOR} />
+          </Group>
+        );
+      }
+    }
+    return null;
+  }
+
+  // Normal mode: render lines from all zones to body anchors
   // Pre-compute all line paths
   const linePaths = useMemo(() => {
     return zones.map((zone) => {
