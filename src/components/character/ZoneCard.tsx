@@ -1,158 +1,74 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Canvas, Path, Skia } from '@shopify/react-native-skia';
-import { colors } from '../../constants/colors';
-import { fonts } from '../../constants/fonts';
+import React from 'react';
+import { View, StyleSheet, Pressable } from 'react-native';
+import { ZoneLabel } from './ZoneLabel';
+import { PhotoSlot } from './PhotoSlot';
 import { type ZoneWithIntensity } from '../../hooks/useZoneStats';
+import { type ZoneCardPosition } from '../../constants/layout';
 
 interface ZoneCardProps {
   zone: ZoneWithIntensity;
-  position: { x: number; y: number };
+  position: ZoneCardPosition;
   screenWidth: number;
   screenHeight: number;
 }
 
-// Card dimensions
-const CARD_WIDTH = 100;
-const CARD_HEIGHT = 60;
-const BEVEL = 8; // Corner bevel size
-
 /**
- * Creates a beveled/angular path for cyberpunk HUD aesthetic.
- * Clips the top-left and bottom-right corners.
- */
-function createBeveledPath(w: number, h: number, bevel: number) {
-  const path = Skia.Path.Make();
-  // Start at top-left bevel
-  path.moveTo(bevel, 0);
-  // Top edge to top-right
-  path.lineTo(w, 0);
-  // Right edge to bottom-right bevel
-  path.lineTo(w, h - bevel);
-  // Bottom-right bevel
-  path.lineTo(w - bevel, h);
-  // Bottom edge to bottom-left
-  path.lineTo(0, h);
-  // Left edge to top-left bevel
-  path.lineTo(0, bevel);
-  // Top-left bevel back to start
-  path.lineTo(bevel, 0);
-  path.close();
-  return path;
-}
-
-/**
- * ZoneCard displays a beveled card with zone information.
+ * ZoneCard composes ZoneLabel + PhotoSlot side by side.
  *
- * - Warm zones: ember-orange border and text
- * - Cold zones: grey border and muted text
- * - Shows zone name, level number, and + photo slot
+ * Layout:
+ * - Left-side zones: label left, slot right (row)
+ * - Right-side zones: slot left, label right (row-reverse)
+ *
+ * The connecting lines originate from the PhotoSlot center,
+ * creating visual connection to body anchor points.
  */
 export function ZoneCard({ zone, position, screenWidth, screenHeight }: ZoneCardProps) {
-  const beveledPath = useMemo(() => createBeveledPath(CARD_WIDTH, CARD_HEIGHT, BEVEL), []);
-
   // Calculate absolute position (position is percentage-based)
-  const cardX = position.x * screenWidth - CARD_WIDTH / 2;
-  const cardY = position.y * screenHeight - CARD_HEIGHT / 2;
+  const cardX = position.x * screenWidth;
+  const cardY = position.y * screenHeight;
 
-  const borderColor = zone.isWarm ? colors.ember[500] : colors.zone.cold;
-  const textColor = zone.isWarm ? colors.ember[500] : colors.text.secondary;
+  // Left-side zones: label left, slot right
+  // Right-side zones: slot left, label right
+  const isLeftSide = zone.side === 'left';
 
   return (
     <Pressable
       style={[
-        styles.card,
+        styles.container,
         {
           left: cardX,
           top: cardY,
-          width: CARD_WIDTH,
-          height: CARD_HEIGHT,
+          flexDirection: isLeftSide ? 'row' : 'row-reverse',
         },
       ]}
       onPress={() => {
-        // No-op for Phase 2 - tapping will be implemented in Phase 3
+        // No-op for now - Phase 3 implements tap
       }}
     >
-      {/* Beveled border rendered via Skia */}
-      <Canvas style={StyleSheet.absoluteFill}>
-        <Path
-          path={beveledPath}
-          style="stroke"
-          color={borderColor}
-          strokeWidth={1.5}
-        />
-      </Canvas>
-
-      {/* Card content */}
-      <View style={styles.content}>
-        {/* Zone name */}
-        <Text
-          style={[
-            styles.zoneName,
-            { color: textColor },
-          ]}
-          numberOfLines={1}
-        >
-          {zone.name}
-        </Text>
-
-        {/* Level and photo slot row */}
-        <View style={styles.bottomRow}>
-          <Text
-            style={[
-              styles.levelNumber,
-              { color: textColor },
-            ]}
-          >
-            LV{zone.level}
-          </Text>
-
-          {/* Photo slot placeholder */}
-          <View style={[styles.photoSlot, { borderColor }]}>
-            <Text style={[styles.plusIcon, { color: textColor }]}>+</Text>
-          </View>
-        </View>
-      </View>
+      <ZoneLabel
+        zoneName={zone.name}
+        level={zone.level}
+        isWarm={zone.isWarm}
+        side={zone.side}
+      />
+      <View style={styles.gap} />
+      <PhotoSlot
+        photoPath={null} // No photos yet - future feature
+        isWarm={zone.isWarm}
+        size={50}
+      />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
     position: 'absolute',
-    backgroundColor: 'rgba(10,10,15,0.8)',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    justifyContent: 'space-between',
-  },
-  zoneName: {
-    fontFamily: fonts.heading,
-    fontSize: 14,
-    letterSpacing: 1,
-  },
-  bottomRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    // Transform to center on position point
+    transform: [{ translateX: -65 }, { translateY: -25 }],
   },
-  levelNumber: {
-    fontFamily: fonts.mono,
-    fontSize: 12,
-  },
-  photoSlot: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  plusIcon: {
-    fontFamily: fonts.mono,
-    fontSize: 14,
-    lineHeight: 16,
+  gap: {
+    width: 8, // Space between label and slot
   },
 });
