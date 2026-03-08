@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project structure, design system, database, navigation, orientation
 - [x] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
 - [x] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
-- [ ] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
+- [x] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
 - [ ] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
 - [ ] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
 
@@ -85,8 +85,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — State machine, Reanimated slide animations, zone highlight on character, zone card fade
-- [ ] 03-02-PLAN.md — Stat card UI (header, XP bar, stats grid, TRAIN button), bottom bar change, dismiss behavior
+- [x] 03-01-PLAN.md — State machine, Reanimated slide animations, zone highlight on character, zone card fade
+- [x] 03-02-PLAN.md — Stat card UI (header, XP bar, stats grid, TRAIN button), bottom bar change, dismiss behavior
 
 ### Phase 4: Workout Module
 **Goal**: The complete workout loop is functional — exercise selection filtered by zone, active session screen for logging sets (weight, reps, RPE), voice tempo countdown via expo-speech, configurable rest timer, and a session summary screen showing completion data.
@@ -132,6 +132,6 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete | 2026-03-08 |
 | 2. Character Overview | 3/3 | Complete | 2026-03-08 |
 | 2.1 Overview Polish (INSERTED) | 3/3 | Complete | 2026-03-08 |
-| 3. Character Detail | 0/2 | Not started | - |
+| 3. Character Detail | 2/2 | Complete | 2026-03-08 |
 | 4. Workout Module | 0/4 | Not started | - |
 | 5. XP & Leveling | 0/2 | Not started | - |
