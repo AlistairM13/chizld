@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   cell: {
     width: '33.33%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingVertical: 4,
   },
   label: {

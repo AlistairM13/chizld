@@ -15,7 +15,7 @@ import { colors } from '../../constants/colors';
 import { BodyCanvas } from '../../components/character/BodyCanvas';
 import { ZoneCard } from '../../components/character/ZoneCard';
 import { StatCard } from '../../components/character/StatCard';
-import { HudBarTop, HudBarBottom } from '../../components/character/HudBar';
+import { HudBarTop } from '../../components/character/HudBar';
 import { useZoneStats } from '../../hooks/useZoneStats';
 import { useDetailStats } from '../../hooks/useDetailStats';
 import { ZONE_CARD_POSITIONS } from '../../constants/layout';
@@ -69,14 +69,15 @@ export function CharacterScreen() {
     }
   }, [selectedZone, detailProgress, statCardProgress]);
 
-  // Character slides ~50% left when detail mode is active
+  // Character slides left when detail mode is active
+  // Target: center character in left ~40% of screen (so translate ~25% left)
   const characterAnimatedStyle = useAnimatedStyle(() => ({
     transform: [
       {
         translateX: interpolate(
           detailProgress.value,
           [0, 1],
-          [0, -width * 0.5],
+          [0, -width * 0.25],
           Extrapolation.CLAMP
         ),
       },
@@ -166,9 +167,8 @@ export function CharacterScreen() {
         />
       )}
 
-      {/* HUD bars */}
+      {/* HUD bar */}
       <HudBarTop />
-      <HudBarBottom activeZoneCount={warmCount} isDetailMode={isDetailMode} />
     </Pressable>
   );
 }

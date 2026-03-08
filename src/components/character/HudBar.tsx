@@ -41,10 +41,13 @@ export function HudBarBottom({
 }: HudBarBottomProps) {
   const uptime = useUptimeCounter();
 
+  // Hide in detail mode
+  if (isDetailMode) {
+    return null;
+  }
+
   // Single line format with bullet separators
-  const statusText = isDetailMode
-    ? 'BUILD 2.4.1 \u2022 ESC TO RETURN'
-    : `ZONES: ${totalZones} \u2022 ACTIVE: ${activeZoneCount}/${totalZones} \u2022 UPTIME: ${uptime}`;
+  const statusText = `ZONES: ${totalZones} \u2022 ACTIVE: ${activeZoneCount}/${totalZones} \u2022 UPTIME: ${uptime}`;
 
   return (
     <View style={styles.bottomBar}>

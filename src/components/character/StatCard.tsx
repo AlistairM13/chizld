@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { colors } from '../../constants/colors';
 import { fonts } from '../../constants/fonts';
-import { XPProgressBar } from './XPProgressBar';
+import { LEVEL_THRESHOLDS } from '../../constants/xp';
 import { StatsGrid } from './StatsGrid';
 import { PhotoHistoryRow } from './PhotoHistoryRow';
 import { type ZoneWithIntensity } from '../../hooks/useZoneStats';
@@ -35,6 +35,23 @@ export function StatCard({
   onDismiss,
   screenWidth,
 }: StatCardProps) {
+  // Calculate XP progress
+  const currentThreshold = LEVEL_THRESHOLDS.find((t) => t.level === stats.level);
+  const nextThreshold = LEVEL_THRESHOLDS.find((t) => t.level === stats.level + 1);
+  const isMaxLevel = stats.level >= 10 || !nextThreshold;
+
+  let xpProgress = 1;
+  let xpInLevel = 0;
+  let xpNeeded = 0;
+
+  if (!isMaxLevel && currentThreshold && nextThreshold) {
+    xpInLevel = stats.totalXp - currentThreshold.xpRequired;
+    xpNeeded = nextThreshold.xpRequired - currentThreshold.xpRequired;
+    xpProgress = Math.min(1, Math.max(0, xpInLevel / xpNeeded));
+  } else if (currentThreshold) {
+    xpInLevel = stats.totalXp - currentThreshold.xpRequired;
+  }
+
   // Slide in from off-screen right to ~40% from left
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -63,17 +80,21 @@ export function StatCard({
         }}
         style={styles.inner}
       >
-        {/* Header row */}
+        {/* Header row with inline XP */}
         <View style={styles.header}>
-          <Text style={styles.fireIcon}>🔥</Text>
           <Text style={styles.zoneName}>{stats.zoneName}</Text>
           <View style={styles.levelBadge}>
             <Text style={styles.levelText}>LV.{stats.level}</Text>
           </View>
+          <View style={styles.xpContainer}>
+            <Text style={styles.xpText}>
+              {isMaxLevel ? `${xpInLevel} XP` : `${xpInLevel} / ${xpNeeded} XP`}
+            </Text>
+            <View style={styles.xpBarContainer}>
+              <View style={[styles.xpBarFill, { width: `${xpProgress * 100}%` }]} />
+            </View>
+          </View>
         </View>
-
-        {/* XP Progress */}
-        <XPProgressBar currentXp={stats.totalXp} level={stats.level} />
 
         {/* Stats Grid */}
         <StatsGrid
@@ -88,7 +109,7 @@ export function StatCard({
         {/* Photo History */}
         <PhotoHistoryRow photos={[]} maxSlots={5} />
 
-        {/* TRAIN Button - at bottom of content */}
+        {/* TRAIN Button */}
         <Pressable style={styles.trainButton} onPress={onTrain}>
           <Text style={styles.trainButtonText}>TRAIN</Text>
         </Pressable>
@@ -109,40 +130,55 @@ const styles = StyleSheet.create({
     borderLeftColor: colors.ember[500],
   },
   inner: {
-    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
+    gap: 8,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
-  },
-  fireIcon: {
-    fontSize: 20,
-    marginRight: 8,
   },
   zoneName: {
     fontFamily: fonts.display,
     fontSize: 22,
     color: colors.text.primary,
-    flex: 1,
   },
   levelBadge: {
     backgroundColor: colors.ember[500],
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
     borderRadius: 4,
+    marginLeft: 10,
   },
   levelText: {
     fontFamily: fonts.mono,
-    fontSize: 13,
+    fontSize: 12,
     color: colors.bg.primary,
     fontWeight: 'bold',
   },
+  xpContainer: {
+    marginLeft: 'auto',
+    alignItems: 'flex-end',
+  },
+  xpText: {
+    fontFamily: fonts.mono,
+    fontSize: 11,
+    color: colors.text.secondary,
+  },
+  xpBarContainer: {
+    width: 80,
+    height: 3,
+    backgroundColor: colors.zone.cold,
+    borderRadius: 1.5,
+    overflow: 'hidden',
+    marginTop: 3,
+  },
+  xpBarFill: {
+    height: '100%',
+    backgroundColor: colors.ember[500],
+    borderRadius: 1.5,
+  },
   trainButton: {
-    marginTop: 8,
-    width: '100%',
     height: 44,
     backgroundColor: colors.ember[500],
     alignItems: 'center',
