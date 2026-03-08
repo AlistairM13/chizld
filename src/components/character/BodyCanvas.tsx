@@ -26,6 +26,8 @@ interface BodyCanvasProps {
   zones?: ZoneWithIntensity[];
   selectedZone?: string | null;
   onSelectZone?: (zoneId: string | null) => void;
+  detailMode?: boolean;  // When true, draw connection to stat card
+  statCardX?: number;    // Left edge X position of stat card
 }
 
 /**
@@ -53,6 +55,8 @@ export function BodyCanvas({
   zones = [],
   selectedZone = null,
   onSelectZone,
+  detailMode = false,
+  statCardX,
 }: BodyCanvasProps) {
   const { width, height } = useWindowDimensions();
 
@@ -86,11 +90,15 @@ export function BodyCanvas({
 
   const handlePress = useCallback(
     (event: GestureResponderEvent) => {
+      // In detail mode, body taps are handled by dismiss handler (not here)
+      if (selectedZone !== null) {
+        return;
+      }
       const { locationX, locationY } = event.nativeEvent;
       const zone = getZoneAtPoint(locationX, locationY);
       onSelectZone?.(zone);
     },
-    [getZoneAtPoint, onSelectZone]
+    [getZoneAtPoint, onSelectZone, selectedZone]
   );
 
   return (
@@ -139,6 +147,7 @@ export function BodyCanvas({
               zones={zones}
               screenWidth={width}
               screenHeight={height}
+              selectedZone={selectedZone}
             />
           )}
 
@@ -149,6 +158,8 @@ export function BodyCanvas({
               screenWidth={width}
               screenHeight={height}
               selectedZone={selectedZone}
+              detailMode={detailMode}
+              statCardX={statCardX}
             />
           )}
 
