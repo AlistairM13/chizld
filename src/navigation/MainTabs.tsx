@@ -18,7 +18,7 @@ export function MainTabs() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.bg.primary,
-          borderTopColor: colors.zone.cold,
+          borderTopColor: colors.bg.elevated,
           borderTopWidth: 1,
           height: 52,
         },
