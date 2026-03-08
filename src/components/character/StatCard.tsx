@@ -88,10 +88,7 @@ export function StatCard({
         {/* Photo History */}
         <PhotoHistoryRow photos={[]} maxSlots={5} />
 
-        {/* Spacer to push TRAIN button to bottom */}
-        <View style={styles.spacer} />
-
-        {/* TRAIN Button */}
+        {/* TRAIN Button - at bottom of content */}
         <Pressable style={styles.trainButton} onPress={onTrain}>
           <Text style={styles.trainButtonText}>TRAIN</Text>
         </Pressable>
@@ -105,7 +102,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 44, // Below HudBarTop
-    bottom: 108, // Above HudBarBottom and tab bar
+    bottom: 60, // Just above tab bar
     width: '55%',
     backgroundColor: colors.bg.card,
     borderLeftWidth: 2,
@@ -113,8 +110,8 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   header: {
     flexDirection: 'row',
@@ -143,12 +140,10 @@ const styles = StyleSheet.create({
     color: colors.bg.primary,
     fontWeight: 'bold',
   },
-  spacer: {
-    flex: 1,
-  },
   trainButton: {
+    marginTop: 8,
     width: '100%',
-    height: 56,
+    height: 44,
     backgroundColor: colors.ember[500],
     alignItems: 'center',
     justifyContent: 'center',
@@ -157,8 +152,8 @@ const styles = StyleSheet.create({
   trainButtonText: {
     fontFamily: fonts.display,
     fontSize: 16,
-    color: colors.text.primary,
-    textTransform: 'uppercase',
+    fontWeight: '700',
+    color: '#FFFFFF',
     letterSpacing: 2,
   },
 });

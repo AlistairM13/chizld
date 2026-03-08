@@ -128,7 +128,7 @@ export function CharacterScreen() {
         }
       }}
     >
-      {/* Animated wrapper for character slide */}
+      {/* Animated wrapper for character slide - includes body canvas AND zone cards */}
       <Animated.View style={[StyleSheet.absoluteFill, characterAnimatedStyle]}>
         {/* Base canvas: hex grid, character, glows, connecting lines */}
         <BodyCanvas
@@ -138,21 +138,21 @@ export function CharacterScreen() {
           detailMode={isDetailMode}
           statCardX={statCardX}
         />
-      </Animated.View>
 
-      {/* Zone cards overlaid on canvas (RN Views for text rendering) */}
-      {stats.map((zone) => (
-        <ZoneCard
-          key={zone.zoneId}
-          zone={zone}
-          position={ZONE_CARD_POSITIONS[zone.zoneId]}
-          screenWidth={width}
-          screenHeight={height}
-          isSelected={selectedZone === zone.zoneId}
-          onPress={() => handleSelectZone(zone.zoneId)}
-          detailProgress={detailProgress}
-        />
-      ))}
+        {/* Zone cards overlaid on canvas - must be inside animated wrapper to slide with character */}
+        {stats.map((zone) => (
+          <ZoneCard
+            key={zone.zoneId}
+            zone={zone}
+            position={ZONE_CARD_POSITIONS[zone.zoneId]}
+            screenWidth={width}
+            screenHeight={height}
+            isSelected={selectedZone === zone.zoneId}
+            onPress={() => handleSelectZone(zone.zoneId)}
+            detailProgress={detailProgress}
+          />
+        ))}
+      </Animated.View>
 
       {/* StatCard - rendered when selectedZone exists */}
       {selectedZoneData && detailStats && (

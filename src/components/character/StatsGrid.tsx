@@ -73,24 +73,24 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginVertical: 12,
+    marginVertical: 4,
   },
   cell: {
     width: '33.33%',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
   label: {
     fontFamily: fonts.label,
-    fontSize: 10,
+    fontSize: 9,
     color: colors.text.muted,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
-    marginBottom: 2,
+    marginBottom: 1,
   },
   value: {
     fontFamily: fonts.mono,
-    fontSize: 22,
+    fontSize: 16,
     color: colors.text.primary,
   },
 });

@@ -41,23 +41,23 @@ export function PhotoHistoryRow({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
+    marginVertical: 6,
   },
   label: {
     fontFamily: fonts.label,
-    fontSize: 10,
+    fontSize: 9,
     color: colors.text.muted,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
-    marginBottom: 8,
+    marginBottom: 6,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   slot: {
-    width: 48,
-    height: 48,
+    width: 36,
+    height: 36,
     backgroundColor: colors.bg.elevated,
     borderWidth: 1,
     borderColor: colors.text.muted,
