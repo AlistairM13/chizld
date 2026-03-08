@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 3 — Character Detail (Phase 2 complete)
+**Current focus:** Phase 2.1 — Overview Polish (INSERTED, Phase 2 complete)
 
 ## Current Position
 
-Phase: 2 of 5 (Character Screen) — COMPLETE
-Plan: 3 of 3 in current phase
-Status: Plan 02-03 complete — HUD bars with typewriter animation, terminal boot aesthetic
-Last activity: 2026-03-08 — Completed 02-03-PLAN.md (HudBarTop, HudBarBottom, TypewriterText)
+Phase: 2.1 of 5 (Overview Polish - INSERTED)
+Plan: 1 of 3 in current phase
+Status: Plan 02.1-01 complete — ZoneLabel and PhotoSlot components
+Last activity: 2026-03-08 — Completed 02.1-01-PLAN.md (ZoneLabel, PhotoSlot)
 
-Progress: [██████░░░░] ~40% (6/15 plans complete)
+Progress: [███████░░░] ~44% (7/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6 (Phase 1 complete + Phase 2 complete)
-- Average duration: ~4 min
-- Total execution time: ~21 min
+- Total plans completed: 7 (Phase 1 + Phase 2 + Phase 2.1 plan 01)
+- Average duration: ~3.2 min
+- Total execution time: ~23 min
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [██████░░░░] ~40% (6/15 plans complete)
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 complete | ~9 min | ~3 min |
 | 02-character-overview | 3/3 complete | ~12 min | ~4 min |
+| 02.1-overview-polish | 1/3 complete | ~1.5 min | ~1.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (2 min), 02-02 (~2 min), 02-01 (8 min), 01-03 (2 min + human verify), 01-02 (2 min)
-- Trend: Component plans fast after canvas foundation established
+- Last 5 plans: 02.1-01 (1.5 min), 02-03 (2 min), 02-02 (~2 min), 02-01 (8 min), 01-03 (2 min + human verify)
+- Trend: Simple component plans very fast (~1-2 min)
 
 *Updated after each plan completion*
 
@@ -64,10 +65,16 @@ Recent decisions affecting current work:
 - [02-02]: Dash pattern [4,4] for connecting lines, pulse duration 2000ms for glow
 - [02-03]: TypewriterText default delay 40ms for fast but readable animation
 - [02-03]: useUptimeCounter format: Xm Xs (< 1h), Xh Ym (< 1d), Xd Yh (>= 1d)
+- [02.1-01]: ZoneLabel left-side zones align text right, right-side zones align left (text flows toward body)
+- [02.1-01]: PhotoSlot accepts solid border on Android as dashed border fallback
 
 ### Pending Todos
 
 None yet.
+
+### Roadmap Evolution
+
+- Phase 2.1 inserted after Phase 2: Overview screen polish — card redesign with photo slots, warm/cold zone states, tab bar and system text (URGENT)
 
 ### Blockers/Concerns
 
@@ -80,5 +87,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Completed 02-03-PLAN.md — HUD bars with typewriter animation
-Resume file: None — Phase 2 complete, continue to Phase 3 (Character Detail)
+Stopped at: Completed 02.1-01-PLAN.md — ZoneLabel and PhotoSlot components
+Resume file: None — Continue to 02.1-02-PLAN.md (ZoneAnnotation composition)
