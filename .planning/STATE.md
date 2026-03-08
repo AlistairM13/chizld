@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 3 of 5 (Character Detail)
-Plan: 1 of 3 in current phase
-Status: In progress — Detail mode animations complete
-Last activity: 2026-03-08 — Completed 03-01-PLAN.md (detail mode animations)
+Plan: 2 of 3 in current phase
+Status: In progress — Stat card component complete
+Last activity: 2026-03-08 — Completed 03-02-PLAN.md (stat card component)
 
-Progress: [██████████░] ~63% (10/16 plans complete)
+Progress: [███████████░] ~69% (11/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 partial)
+- Total plans completed: 11 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 partial)
 - Average duration: ~3.1 min
-- Total execution time: ~31 min
+- Total execution time: ~34 min
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [██████████░] ~63% (10/16 plans complete)
 | 01-foundation | 3/3 complete | ~9 min | ~3 min |
 | 02-character-overview | 3/3 complete | ~12 min | ~4 min |
 | 02.1-overview-polish | 3/3 complete | ~5.5 min | ~1.8 min |
-| 03-character-detail | 1/3 complete | ~4 min | ~4 min |
+| 03-character-detail | 2/3 complete | ~7 min | ~3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (4 min), 02.1-03 (1.6 min), 02.1-02 (2 min), 02.1-01 (1.5 min), 02-03 (2 min)
-- Trend: Animation plans slightly longer than polish (~4 min)
+- Last 5 plans: 03-02 (3 min), 03-01 (4 min), 02.1-03 (1.6 min), 02.1-02 (2 min), 02.1-01 (1.5 min)
+- Trend: Component plans faster than animation plans (~3 min vs ~4 min)
 
 *Updated after each plan completion*
 
@@ -77,6 +77,9 @@ Recent decisions affecting current work:
 - [03-01]: Choreography: character slides FIRST, then stat card enters after 100ms delay
 - [03-01]: Non-selected cards fade out at 50% detailProgress (early in animation)
 - [03-01]: Selected zone glow: full intensity override, 1.5x radius, 1000ms pulse (vs 2000ms normal)
+- [03-02]: XP bar uses toLocaleString for number formatting
+- [03-02]: Photo history row uses colors.text.muted for dashed border (colors.border.default doesn't exist)
+- [03-02]: StatCard positioned top: 44px (below HudBarTop), bottom: 108px (above HudBarBottom + tab bar)
 
 ### Pending Todos
 
@@ -97,5 +100,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Completed 03-01-PLAN.md — Detail mode animations
-Resume file: None — Ready for 03-02-PLAN.md (stat card component)
+Stopped at: Completed 03-02-PLAN.md — Stat card component
+Resume file: None — Ready for 03-03-PLAN.md (zone glow & selection polish)
