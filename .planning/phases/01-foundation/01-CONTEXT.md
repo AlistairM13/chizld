@@ -42,7 +42,7 @@ Set up the project foundation: file structure matching PRD spec, design system c
 - Placeholder screens should feel like locked sections of a game menu — "Coming Soon" in the HUD style, not a generic "under construction" message
 - The PRD is the definitive design reference for colors (#0A0A0F bg, #FF8C1A ember, etc.), fonts (Chakra Petch, Barlow Condensed, JetBrains Mono), and database schema
 - app.json orientation must change from "portrait" to "landscape"
-- package.json "main" must change from "expo-router/entry" to "expo/entry"
+- package.json "main" must change from "expo-router/entry" to "src/main.tsx" (using registerRootComponent — research confirmed this is required for custom entry files replacing Expo Router)
 
 </specifics>
 
