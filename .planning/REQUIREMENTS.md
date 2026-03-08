@@ -119,52 +119,52 @@
 | FOUN-08 | Phase 1 | Pending |
 | FOUN-09 | Phase 1 | Pending |
 | FOUN-10 | Phase 1 | Pending |
-| CHAR-01 | TBD | Pending |
-| CHAR-02 | TBD | Pending |
-| CHAR-03 | TBD | Pending |
-| CHAR-04 | TBD | Pending |
-| CHAR-05 | TBD | Pending |
-| CHAR-06 | TBD | Pending |
-| CHAR-07 | TBD | Pending |
-| CHAR-08 | TBD | Pending |
-| CHAR-09 | TBD | Pending |
-| CHAR-10 | TBD | Pending |
-| DETL-01 | TBD | Pending |
-| DETL-02 | TBD | Pending |
-| DETL-03 | TBD | Pending |
-| DETL-04 | TBD | Pending |
-| DETL-05 | TBD | Pending |
-| DETL-06 | TBD | Pending |
-| DETL-07 | TBD | Pending |
-| DETL-08 | TBD | Pending |
-| DETL-09 | TBD | Pending |
-| DETL-10 | TBD | Pending |
-| DETL-11 | TBD | Pending |
-| DETL-12 | TBD | Pending |
-| WORK-01 | TBD | Pending |
-| WORK-02 | TBD | Pending |
-| WORK-03 | TBD | Pending |
-| WORK-04 | TBD | Pending |
-| WORK-05 | TBD | Pending |
-| WORK-06 | TBD | Pending |
-| WORK-07 | TBD | Pending |
-| WORK-08 | TBD | Pending |
-| WORK-09 | TBD | Pending |
-| WORK-10 | TBD | Pending |
-| XPLV-01 | TBD | Pending |
-| XPLV-02 | TBD | Pending |
-| XPLV-03 | TBD | Pending |
-| XPLV-04 | TBD | Pending |
-| XPLV-05 | TBD | Pending |
-| XPLV-06 | TBD | Pending |
-| XPLV-07 | TBD | Pending |
-| XPLV-08 | TBD | Pending |
+| CHAR-01 | Phase 2 | Pending |
+| CHAR-02 | Phase 2 | Pending |
+| CHAR-03 | Phase 2 | Pending |
+| CHAR-04 | Phase 2 | Pending |
+| CHAR-05 | Phase 2 | Pending |
+| CHAR-06 | Phase 2 | Pending |
+| CHAR-07 | Phase 2 | Pending |
+| CHAR-08 | Phase 2 | Pending |
+| CHAR-09 | Phase 2 | Pending |
+| CHAR-10 | Phase 2 | Pending |
+| DETL-01 | Phase 3 | Pending |
+| DETL-02 | Phase 3 | Pending |
+| DETL-03 | Phase 3 | Pending |
+| DETL-04 | Phase 3 | Pending |
+| DETL-05 | Phase 3 | Pending |
+| DETL-06 | Phase 3 | Pending |
+| DETL-07 | Phase 3 | Pending |
+| DETL-08 | Phase 3 | Pending |
+| DETL-09 | Phase 3 | Pending |
+| DETL-10 | Phase 3 | Pending |
+| DETL-11 | Phase 3 | Pending |
+| DETL-12 | Phase 3 | Pending |
+| WORK-01 | Phase 4 | Pending |
+| WORK-02 | Phase 4 | Pending |
+| WORK-03 | Phase 4 | Pending |
+| WORK-04 | Phase 4 | Pending |
+| WORK-05 | Phase 4 | Pending |
+| WORK-06 | Phase 4 | Pending |
+| WORK-07 | Phase 4 | Pending |
+| WORK-08 | Phase 4 | Pending |
+| WORK-09 | Phase 4 | Pending |
+| WORK-10 | Phase 4 | Pending |
+| XPLV-01 | Phase 5 | Pending |
+| XPLV-02 | Phase 5 | Pending |
+| XPLV-03 | Phase 5 | Pending |
+| XPLV-04 | Phase 5 | Pending |
+| XPLV-05 | Phase 5 | Pending |
+| XPLV-06 | Phase 5 | Pending |
+| XPLV-07 | Phase 5 | Pending |
+| XPLV-08 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 40 total
-- Mapped to phases: 10 (Foundation to Phase 1)
-- Unmapped: 30 (TBD — roadmapper will assign)
+- Mapped to phases: 40/40
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-08*
-*Last updated: 2026-03-08 after initial definition*
+*Last updated: 2026-03-08 — traceability completed by roadmapper*
