@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 2 — Character Screen (Phase 1 complete)
+**Current focus:** Phase 2 — Character Screen (plan 01 complete, 02 next)
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation) — COMPLETE
-Plan: 3 of 3 in current phase (all complete and human-verified)
-Status: Phase 1 complete — ready to begin Phase 2 (Character Screen)
-Last activity: 2026-03-08 — Completed 01-03 human verification; Phase 1 Foundation fully done
+Phase: 2 of 5 (Character Screen) — IN PROGRESS
+Plan: 1 of 3 in current phase
+Status: Plan 02-01 complete — BodyCanvas rendering, ready for zone cards
+Last activity: 2026-03-08 — Completed 02-01-PLAN.md (BodyCanvas with hex grid, scan frame, animations)
 
-Progress: [███░░░░░░░] ~20% (3/15 plans complete)
+Progress: [████░░░░░░] ~27% (4/15 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3 (Phase 1 complete)
-- Average duration: ~3 min
-- Total execution time: ~9 min
+- Total plans completed: 4 (Phase 1 complete + Phase 2 plan 01)
+- Average duration: ~4 min
+- Total execution time: ~17 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 complete | ~9 min | ~3 min |
+| 02-character-overview | 1/3 complete | ~8 min | ~8 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (2 min + human verify), 01-02 (2 min), 01-01 (3 min)
-- Trend: Fast foundation setup; Phase 1 done in under 10 min of execution time
+- Last 5 plans: 02-01 (8 min), 01-03 (2 min + human verify), 01-02 (2 min), 01-01 (3 min)
+- Trend: Phase 2 tasks more substantial (Skia canvas composition)
 
 *Updated after each plan completion*
 
@@ -55,6 +56,9 @@ Recent decisions affecting current work:
 - [01-03]: SplashScreen.hideAsync called on both fontsLoaded and fontError — prevents indefinite splash on font load failure
 - [01-03]: SQLiteProvider wraps NavigationContainer (outermost) — all screens can call useSQLiteContext()
 - [01-03]: src/app/ left in place as dead code — registerRootComponent takes over, less risk than deleting
+- [02-01]: Hex size 20px, line weight 0.5px for subtle background pattern
+- [02-01]: Scan line duration 4000ms for slow ambient sweep
+- [02-01]: Zone card positions defined as percentages (0.0-1.0) for responsive layout
 
 ### Pending Todos
 
@@ -66,9 +70,10 @@ None yet.
 - [Phase 1]: ~~Expo Router driving entry point~~ RESOLVED — src/main.tsx with registerRootComponent is now the entry point
 - [Phase 1]: ~~app.json portrait orientation~~ RESOLVED — orientation is now "landscape", ScreenOrientation.lockAsync also called in useEffect
 - [Phase 1]: ~~Human verification of app visual output~~ RESOLVED — user verified on device: 4 tabs, correct fonts, landscape locked, Cyberpunk HUD screens rendering correctly
+- [Phase 2]: tsc --noEmit shows Skia type declaration errors (esModuleInterop) — does not affect Expo build/runtime, known issue in library types
 
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Phase 1 complete — 01-03 human verification approved, SUMMARY.md and STATE.md updated
-Resume file: None — begin Phase 2 (Character Screen) next
+Stopped at: Completed 02-01-PLAN.md — BodyCanvas with hex grid, scan frame, scan line, platform glow
+Resume file: None — continue to 02-02 (zone cards) next
