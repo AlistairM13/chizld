@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 2.1 of 5 (Overview Polish - INSERTED)
-Plan: 1 of 3 in current phase
-Status: Plan 02.1-01 complete — ZoneLabel and PhotoSlot components
-Last activity: 2026-03-08 — Completed 02.1-01-PLAN.md (ZoneLabel, PhotoSlot)
+Plan: 2 of 3 in current phase
+Status: Plan 02.1-02 complete — Tab bar and HUD polish
+Last activity: 2026-03-08 — Completed 02.1-02-PLAN.md (tab bar border, CHIZLD letter-spacing, HudBarBottom)
 
-Progress: [███████░░░] ~44% (7/16 plans complete)
+Progress: [████████░░] ~50% (8/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7 (Phase 1 + Phase 2 + Phase 2.1 plan 01)
-- Average duration: ~3.2 min
-- Total execution time: ~23 min
+- Total plans completed: 8 (Phase 1 + Phase 2 + Phase 2.1 plans 01-02)
+- Average duration: ~3.1 min
+- Total execution time: ~25 min
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [███████░░░] ~44% (7/16 plans complete)
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 complete | ~9 min | ~3 min |
 | 02-character-overview | 3/3 complete | ~12 min | ~4 min |
-| 02.1-overview-polish | 1/3 complete | ~1.5 min | ~1.5 min |
+| 02.1-overview-polish | 2/3 complete | ~3.5 min | ~1.8 min |
 
 **Recent Trend:**
-- Last 5 plans: 02.1-01 (1.5 min), 02-03 (2 min), 02-02 (~2 min), 02-01 (8 min), 01-03 (2 min + human verify)
-- Trend: Simple component plans very fast (~1-2 min)
+- Last 5 plans: 02.1-02 (2 min), 02.1-01 (1.5 min), 02-03 (2 min), 02-02 (~2 min), 02-01 (8 min)
+- Trend: Polish/styling plans very fast (~2 min)
 
 *Updated after each plan completion*
 
@@ -67,6 +67,8 @@ Recent decisions affecting current work:
 - [02-03]: useUptimeCounter format: Xm Xs (< 1h), Xh Ym (< 1d), Xd Yh (>= 1d)
 - [02.1-01]: ZoneLabel left-side zones align text right, right-side zones align left (text flows toward body)
 - [02.1-01]: PhotoSlot accepts solid border on Android as dashed border fallback
+- [02.1-02]: System status single-line format with Unicode bullet separators
+- [02.1-02]: CHIZLD letter-spacing 3px for wider cyberpunk aesthetic
 
 ### Pending Todos
 
@@ -87,5 +89,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-08
-Stopped at: Completed 02.1-01-PLAN.md — ZoneLabel and PhotoSlot components
-Resume file: None — Continue to 02.1-02-PLAN.md (ZoneAnnotation composition)
+Stopped at: Completed 02.1-02-PLAN.md — Tab bar and HUD polish
+Resume file: None — Continue to 02.1-03-PLAN.md (checkpoint verification)
