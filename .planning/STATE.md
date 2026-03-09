@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 4 in progress — Workout module
+**Current focus:** Phase 5 in progress — XP & Leveling system
 
 ## Current Position
 
-Phase: 4 of 5 (Workout Module - COMPLETE)
-Plan: 4 of 4 in current phase (COMPLETE)
-Status: Phase 4 complete - Full workout flow from zone selection to session summary
-Last activity: 2026-03-09 — Completed 04-04-PLAN.md
+Phase: 5 of 5 (XP & Leveling)
+Plan: 1 of 2 in current phase
+Status: In progress - XP calculation engine complete
+Last activity: 2026-03-09 — Completed 05-01-PLAN.md
 
-Progress: [███████████████] ~88% (15/17 plans complete)
+Progress: [████████████████] ~94% (16/17 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 + Phase 4)
-- Average duration: ~3.1 min
-- Total execution time: ~46.3 min
+- Total plans completed: 16 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 + Phase 4 + Phase 5)
+- Average duration: ~3.0 min
+- Total execution time: ~48.3 min
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [███████████████] ~88% (15/17 plans comp
 | 02.1-overview-polish | 3/3 complete | ~5.5 min | ~1.8 min |
 | 03-character-detail | 2/2 complete | ~7 min | ~3.5 min |
 | 04-workout-module | 4/4 complete | ~12.3 min | ~3.1 min |
+| 05-xp-leveling | 1/2 complete | ~2 min | ~2 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-04 (1.8 min), 04-03 (3.5 min), 04-02 (3.5 min), 04-01 (3.5 min), 03-02 (3 min)
-- Trend: Summary/aggregation plans very fast (~2 min)
+- Last 5 plans: 05-01 (2 min), 04-04 (1.8 min), 04-03 (3.5 min), 04-02 (3.5 min), 04-01 (3.5 min)
+- Trend: Pure logic plans fastest (~2 min)
 
 *Updated after each plan completion*
 
@@ -91,6 +92,9 @@ Recent decisions affecting current work:
 - [04-03]: useFocusEffect + BackHandler for Android back button confirmation — React Navigation pattern
 - [04-04]: XP placeholder totalSets * 10 — Phase 5 replaces with real XP calculation
 - [04-04]: Navigation reset to Main after summary — prevents back navigation to workout
+- [05-01]: Consistency bonus controlled by applyConsistencyBonus flag — caller decides timing (once per session)
+- [05-01]: awardSetXP calculates but does NOT write to DB — accumulation happens in caller
+- [05-01]: PR detection uses reps >= comparison — weight must beat all prior sets at same or higher reps
 
 ### Pending Todos
 
@@ -111,6 +115,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 04-04-PLAN.md (Session Summary Screen) - PHASE 4 COMPLETE
-Resume file: None — Ready for Phase 5 (XP System)
-Note: Task 3 checkpoint (full flow verification) skipped - no emulator available
+Stopped at: Completed 05-01-PLAN.md (XP Engine)
+Resume file: None — Ready for 05-02-PLAN.md (Session XP Integration)
