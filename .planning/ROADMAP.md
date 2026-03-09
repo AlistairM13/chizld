@@ -116,11 +116,13 @@ Plans:
   3. Zone level (1-10) updates correctly after a session — a zone at 0 XP reaching 100 XP shows as Level 2 on the character screen
   4. After completing a workout, returning to the character screen shows the trained zone now glowing ember-orange (warm state) with updated XP and level data
   5. Each XP award is recorded in xp_history with its source type — database contains readable transaction history
-**Plans**: TBD
+**Plans:** 4 plans
 
 Plans:
-- [ ] 05-01: XP calculation hook (useXPCalculation) with all bonus rules
-- [ ] 05-02: Zone stats write-back (total_xp, level recalculation, streak, last_trained_at, xp_history insert)
+- [ ] 05-01-PLAN.md — XP calculator service (pure functions) and useXPService hook (database operations)
+- [ ] 05-02-PLAN.md — XPFloater component, real-time XP feedback during workout session
+- [ ] 05-03-PLAN.md — XPBreakdown component, session summary with real XP and level-up celebration
+- [ ] 05-04-PLAN.md — Character screen refresh on focus, animated StatCard XP bar
 
 ## Progress
 
@@ -134,4 +136,4 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
 | 2.1 Overview Polish (INSERTED) | 3/3 | Complete | 2026-03-08 |
 | 3. Character Detail | 2/2 | Complete | 2026-03-08 |
 | 4. Workout Module | 4/4 | Complete | 2026-03-09 |
-| 5. XP & Leveling | 0/2 | Not started | - |
+| 5. XP & Leveling | 0/4 | Not started | - |
