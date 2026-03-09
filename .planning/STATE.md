@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 5 of 5 (XP & Leveling)
-Plan: 1 of 2 in current phase
-Status: In progress - XP calculation engine complete
-Last activity: 2026-03-09 — Completed 05-01-PLAN.md
+Plan: 2 of 4 in current phase
+Status: In progress - Session XP integration complete
+Last activity: 2026-03-09 — Completed 05-02-PLAN.md
 
-Progress: [████████████████] ~94% (16/17 plans complete)
+Progress: [█████████████████] ~95% (17/19 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 + Phase 4 + Phase 5)
-- Average duration: ~3.0 min
-- Total execution time: ~48.3 min
+- Total plans completed: 17 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 + Phase 4 + Phase 5)
+- Average duration: ~3.1 min
+- Total execution time: ~52.3 min
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: [████████████████] ~94% (16/17 plans c
 | 02.1-overview-polish | 3/3 complete | ~5.5 min | ~1.8 min |
 | 03-character-detail | 2/2 complete | ~7 min | ~3.5 min |
 | 04-workout-module | 4/4 complete | ~12.3 min | ~3.1 min |
-| 05-xp-leveling | 1/2 complete | ~2 min | ~2 min |
+| 05-xp-leveling | 2/4 complete | ~6 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (2 min), 04-04 (1.8 min), 04-03 (3.5 min), 04-02 (3.5 min), 04-01 (3.5 min)
-- Trend: Pure logic plans fastest (~2 min)
+- Last 5 plans: 05-02 (4 min), 05-01 (2 min), 04-04 (1.8 min), 04-03 (3.5 min), 04-02 (3.5 min)
+- Trend: Integration plans slightly longer than pure logic
 
 *Updated after each plan completion*
 
@@ -95,6 +95,9 @@ Recent decisions affecting current work:
 - [05-01]: Consistency bonus controlled by applyConsistencyBonus flag — caller decides timing (once per session)
 - [05-01]: awardSetXP calculates but does NOT write to DB — accumulation happens in caller
 - [05-01]: PR detection uses reps >= comparison — weight must beat all prior sets at same or higher reps
+- [05-02]: XPFloater animation 800ms upward float with 400ms fade-out
+- [05-02]: Consistency bonus applied on first set of session only
+- [05-02]: XP badge in controls row between tempo toggle and exercise nav
 
 ### Pending Todos
 
@@ -115,5 +118,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 05-01-PLAN.md (XP Engine)
-Resume file: None — Ready for 05-02-PLAN.md (Session XP Integration)
+Stopped at: Completed 05-02-PLAN.md (Session XP Integration)
+Resume file: None — Ready for 05-03-PLAN.md (Summary XP Finalization)
