@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 3 COMPLETE, ready for Phase 4
+**Current focus:** Phase 4 in progress — Workout module
 
 ## Current Position
 
-Phase: 3 of 5 (Character Detail - COMPLETE)
-Plan: 2 of 2 in current phase (PHASE COMPLETE)
-Status: Phase 3 complete — Detail mode fully implemented
-Last activity: 2026-03-08 — Completed phase 3 verification
+Phase: 4 of 5 (Workout Module)
+Plan: 1 of 3 in current phase (COMPLETE)
+Status: Exercise selection flow implemented
+Last activity: 2026-03-09 — Completed 04-01-PLAN.md
 
-Progress: [███████████░] ~65% (11/17 plans complete)
+Progress: [████████████░] ~70% (12/17 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 partial)
+- Total plans completed: 12 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 + Phase 4 partial)
 - Average duration: ~3.1 min
-- Total execution time: ~34 min
+- Total execution time: ~37.5 min
 
 **By Phase:**
 
@@ -31,9 +31,10 @@ Progress: [███████████░] ~65% (11/17 plans complete)
 | 02-character-overview | 3/3 complete | ~12 min | ~4 min |
 | 02.1-overview-polish | 3/3 complete | ~5.5 min | ~1.8 min |
 | 03-character-detail | 2/2 complete | ~7 min | ~3.5 min |
+| 04-workout-module | 1/3 complete | ~3.5 min | ~3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (3 min), 03-01 (4 min), 02.1-03 (1.6 min), 02.1-02 (2 min), 02.1-01 (1.5 min)
+- Last 5 plans: 04-01 (3.5 min), 03-02 (3 min), 03-01 (4 min), 02.1-03 (1.6 min), 02.1-02 (2 min)
 - Trend: Component plans faster than animation plans (~3 min vs ~4 min)
 
 *Updated after each plan completion*
@@ -80,6 +81,8 @@ Recent decisions affecting current work:
 - [03-02]: XP bar uses toLocaleString for number formatting
 - [03-02]: Photo history row uses colors.text.muted for dashed border (colors.border.default doesn't exist)
 - [03-02]: StatCard positioned top: 44px (below HudBarTop), bottom: 108px (above HudBarBottom + tab bar)
+- [04-01]: Set<string> for multi-select exercise state — O(1) toggle operations
+- [04-01]: Session ID via Date.now().toString(36) + random suffix — unique per workout
 
 ### Pending Todos
 
@@ -99,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-08
-Stopped at: Phase 3 complete — Detail mode verified
-Resume file: None — Ready for Phase 4 planning or execution
+Last session: 2026-03-09
+Stopped at: Completed 04-01-PLAN.md (Exercise Select Flow)
+Resume file: None — Ready for 04-02-PLAN.md
