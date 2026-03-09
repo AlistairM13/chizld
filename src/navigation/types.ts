@@ -1,6 +1,8 @@
 export type RootStackParamList = {
   Main: undefined;
-  // Future stack screens: WorkoutSession, ExerciseSelect, etc.
+  ExerciseSelect: { zoneId: string };
+  WorkoutSession: { sessionId: string; exercises: string[] };
+  SessionSummary: { sessionId: string };
 };
 
 export type MainTabParamList = {

@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Pressable, BackHandler, useWindowDimensions } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -19,8 +20,10 @@ import { HudBarTop } from '../../components/character/HudBar';
 import { useZoneStats } from '../../hooks/useZoneStats';
 import { useDetailStats } from '../../hooks/useDetailStats';
 import { ZONE_CARD_POSITIONS } from '../../constants/layout';
+import { type RootStackParamList } from '../../navigation/types';
 
 export function CharacterScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { stats, warmCount } = useZoneStats();
   const { width, height } = useWindowDimensions();
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
@@ -95,10 +98,10 @@ export function CharacterScreen() {
 
   // Handle TRAIN button press
   const handleTrain = useCallback(() => {
-    // Navigate to Train tab - for now just log, full navigation in Phase 4
-    console.log('TRAIN pressed for zone:', selectedZone);
-    // TODO: navigation.navigate('Train', { zoneId: selectedZone });
-  }, [selectedZone]);
+    if (selectedZone) {
+      navigation.navigate('ExerciseSelect', { zoneId: selectedZone });
+    }
+  }, [navigation, selectedZone]);
 
   // Handle Android back button to dismiss detail view
   useFocusEffect(
