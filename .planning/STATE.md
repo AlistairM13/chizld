@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 5 of 5 (XP & Leveling)
-Plan: 2 of 4 in current phase
-Status: In progress - Session XP integration complete
-Last activity: 2026-03-09 — Completed 05-02-PLAN.md
+Plan: 3 of 4 in current phase
+Status: In progress - Session summary XP complete
+Last activity: 2026-03-09 — Completed 05-03-PLAN.md
 
-Progress: [█████████████████] ~95% (17/19 plans complete)
+Progress: [██████████████████] ~96% (18/19 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 + Phase 4 + Phase 5)
+- Total plans completed: 18 (Phase 1 + Phase 2 + Phase 2.1 + Phase 3 + Phase 4 + Phase 5)
 - Average duration: ~3.1 min
-- Total execution time: ~52.3 min
+- Total execution time: ~55.3 min
 
 **By Phase:**
 
@@ -32,10 +32,10 @@ Progress: [█████████████████] ~95% (17/19 plan
 | 02.1-overview-polish | 3/3 complete | ~5.5 min | ~1.8 min |
 | 03-character-detail | 2/2 complete | ~7 min | ~3.5 min |
 | 04-workout-module | 4/4 complete | ~12.3 min | ~3.1 min |
-| 05-xp-leveling | 2/4 complete | ~6 min | ~3 min |
+| 05-xp-leveling | 3/4 complete | ~9 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (4 min), 05-01 (2 min), 04-04 (1.8 min), 04-03 (3.5 min), 04-02 (3.5 min)
+- Last 5 plans: 05-03 (3 min), 05-02 (4 min), 05-01 (2 min), 04-04 (1.8 min), 04-03 (3.5 min)
 - Trend: Integration plans slightly longer than pure logic
 
 *Updated after each plan completion*
@@ -98,6 +98,9 @@ Recent decisions affecting current work:
 - [05-02]: XPFloater animation 800ms upward float with 400ms fade-out
 - [05-02]: Consistency bonus applied on first set of session only
 - [05-02]: XP badge in controls row between tempo toggle and exercise nav
+- [05-03]: Pre-calculated XP passed via route params from WorkoutSession to Summary
+- [05-03]: Finalization runs once via useRef hasFinalized flag
+- [05-03]: Level-up card positioned above duration card for prominence
 
 ### Pending Todos
 
@@ -118,5 +121,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: Completed 05-02-PLAN.md (Session XP Integration)
-Resume file: None — Ready for 05-03-PLAN.md (Summary XP Finalization)
+Stopped at: Completed 05-03-PLAN.md (Summary XP Finalization)
+Resume file: None — Ready for 05-04-PLAN.md
