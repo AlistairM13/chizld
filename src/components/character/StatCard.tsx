@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import Animated, {
   useAnimatedStyle,
+  useSharedValue,
+  withTiming,
   interpolate,
   Extrapolation,
   SharedValue,
@@ -52,6 +54,17 @@ export function StatCard({
     xpInLevel = stats.totalXp - currentThreshold.xpRequired;
   }
 
+  // Animated XP bar width
+  const xpBarWidth = useSharedValue(0);
+
+  useEffect(() => {
+    xpBarWidth.value = withTiming(xpProgress, { duration: 600 });
+  }, [xpProgress, xpBarWidth]);
+
+  const xpBarAnimatedStyle = useAnimatedStyle(() => ({
+    width: `${xpBarWidth.value * 100}%`,
+  }));
+
   // Slide in from off-screen right to ~40% from left
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -91,7 +104,7 @@ export function StatCard({
               {isMaxLevel ? `${xpInLevel} XP` : `${xpInLevel} / ${xpNeeded} XP`}
             </Text>
             <View style={styles.xpBarContainer}>
-              <View style={[styles.xpBarFill, { width: `${xpProgress * 100}%` }]} />
+              <Animated.View style={[styles.xpBarFill, xpBarAnimatedStyle]} />
             </View>
           </View>
         </View>
