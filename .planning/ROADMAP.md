@@ -96,15 +96,15 @@ Plans:
   1. Tapping TRAIN from the stat card opens the exercise selection screen showing only exercises for that zone, filterable by search text
   2. User can add multiple exercises to a session and log sets with weight (kg), reps, and RPE — each logged set persists to SQLite
   3. Enabling voice tempo mode speaks the countdown sequence ("Eccentric... 5... 4... 3... 2... 1... Hold... Concentric...") via expo-speech during a set
-  4. Rest timer starts automatically between sets at 90s default, counts down visibly, and supports ±30s quick adjust
+  4. Rest timer starts automatically between sets at 90s default, counts down visibly, and supports +/-15s quick adjust
   5. Session summary screen appears on completion showing total sets, exercises completed, and total XP earned (seed XP values before Phase 5 wires real calculation)
-**Plans**: TBD
+**Plans:** 4 plans
 
 Plans:
-- [ ] 04-01: ExerciseSelectScreen (zone filter, search), navigation from TRAIN button
-- [ ] 04-02: WorkoutSessionScreen (set logging, add exercises, session data persistence)
-- [ ] 04-03: Voice tempo mode (expo-speech countdown), RestTimer component
-- [ ] 04-04: SessionSummaryScreen (completion data display, XP placeholder)
+- [ ] 04-01-PLAN.md — Navigation setup, useExercises hook, ExerciseSelectScreen with zone filter and multi-select
+- [ ] 04-02-PLAN.md — useWorkoutSession and useRestTimer hooks, WeightInput, RPESelector, SetRow, RestTimerOverlay components
+- [ ] 04-03-PLAN.md — useTempoVoice hook, TempoToggle, WorkoutSessionScreen with full set logging
+- [ ] 04-04-PLAN.md — useSessionSummary hook, SessionSummaryScreen with stats and XP placeholder
 
 ### Phase 5: XP & Leveling
 **Goal**: The XP calculation engine is wired up end-to-end — every completed set earns the correct XP (base + volume bonus + tempo multiplier + PR bonus + consistency bonus), level thresholds are enforced, zone stats update after each session, and all XP transactions are recorded in xp_history. The character screen now reflects real earned XP.
