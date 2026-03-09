@@ -16,6 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
 - [x] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
 - [x] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
+- [ ] **Phase 3.1: Workout Splits (INSERTED)** - Custom workout templates with multi-zone support, split names, and preset sets/reps
 - [x] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
 - [x] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
 
@@ -88,6 +89,24 @@ Plans:
 - [x] 03-01-PLAN.md — State machine, Reanimated slide animations, zone highlight on character, zone card fade
 - [x] 03-02-PLAN.md — Stat card UI (header, XP bar, stats grid, TRAIN button), bottom bar change, dismiss behavior
 
+### Phase 3.1: Workout Splits (INSERTED)
+**Goal**: Users can create and manage custom workout templates (splits) that combine exercises from multiple zones, with named presets like "Push", "Pull", "Legs" and configurable default sets/reps per exercise.
+**Depends on**: Phase 3
+**Requirements**: TBD (user-requested feature)
+**Success Criteria** (what must be TRUE):
+  1. Train tab shows list of saved workout splits (e.g., "Push Day", "Pull Day", "Leg Day") plus option to create new
+  2. Creating a split allows selecting exercises from ANY zone (not limited to one zone)
+  3. Each split has a name and can store default sets/reps per exercise
+  4. Starting a split pre-loads all selected exercises into the workout session
+  5. Splits persist in SQLite and survive app restart
+**Plans:** 4 plans
+
+Plans:
+- [ ] 03.1-01-PLAN.md — Split tables schema, TypeScript types, useSplits hook with CRUD
+- [ ] 03.1-02-PLAN.md — Navigation setup, SplitListScreen (Train tab), SplitCard component
+- [ ] 03.1-03-PLAN.md — SplitCreateScreen with multi-zone exercise picker and sets/reps config
+- [ ] 03.1-04-PLAN.md — SplitDetailScreen and workout integration (start workout from split)
+
 ### Phase 4: Workout Module
 **Goal**: The complete workout loop is functional — exercise selection filtered by zone, active session screen for logging sets (weight, reps, RPE), voice tempo countdown via expo-speech, configurable rest timer, and a session summary screen showing completion data.
 **Depends on**: Phase 3
@@ -127,7 +146,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 3.1 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -135,5 +154,6 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
 | 2. Character Overview | 3/3 | Complete | 2026-03-08 |
 | 2.1 Overview Polish (INSERTED) | 3/3 | Complete | 2026-03-08 |
 | 3. Character Detail | 2/2 | Complete | 2026-03-08 |
+| 3.1 Workout Splits (INSERTED) | 0/4 | Ready | - |
 | 4. Workout Module | 4/4 | Complete | 2026-03-09 |
 | 5. XP & Leveling | 4/4 | Complete | 2026-03-09 |
