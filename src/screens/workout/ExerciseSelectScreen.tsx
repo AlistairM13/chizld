@@ -56,8 +56,9 @@ export function ExerciseSelectScreen({ route, navigation }: Props) {
     navigation.navigate('WorkoutSession', {
       sessionId,
       exercises: Array.from(selectedExercises),
+      zoneId: route.params.zoneId,
     });
-  }, [navigation, selectedExercises]);
+  }, [navigation, selectedExercises, route.params.zoneId]);
 
   // Go back
   const handleBack = useCallback(() => {
