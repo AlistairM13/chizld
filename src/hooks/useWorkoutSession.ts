@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
+import { type XPResult } from '@/services/xp-calculator';
 
 /**
  * Set data for a completed set in a workout session.
@@ -48,6 +49,11 @@ export function useWorkoutSession() {
   const [exercises, setExercises] = useState<SessionExercise[]>([]);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 
+  // XP tracking state
+  const [sessionXP, setSessionXP] = useState(0);
+  const [lastSetXP, setLastSetXP] = useState<XPResult | null>(null);
+  const [sessionConsistencyApplied, setSessionConsistencyApplied] = useState(false);
+
   /**
    * Creates a new workout session and loads exercise names.
    * @param exerciseIds - Array of exercise IDs to include in this session
@@ -92,12 +98,14 @@ export function useWorkoutSession() {
    * Adds a completed set to the database and local state.
    * @param exerciseId - The exercise this set belongs to
    * @param data - Set data (weightKg, reps, rpe)
+   * @param xpResult - XP result from the XP service (optional for backward compatibility)
    * @returns The new set ID
    */
   const addSet = useCallback(
     async (
       exerciseId: string,
-      data: { weightKg: number; reps: number; rpe: number }
+      data: { weightKg: number; reps: number; rpe: number },
+      xpResult?: XPResult
     ): Promise<string> => {
       if (!sessionId) {
         throw new Error('No active session');
@@ -148,6 +156,12 @@ export function useWorkoutSession() {
         )
       );
 
+      // Track XP if provided
+      if (xpResult) {
+        setSessionXP((prev) => prev + xpResult.total);
+        setLastSetXP(xpResult);
+      }
+
       return setId;
     },
     [db, sessionId, exercises]
@@ -191,6 +205,34 @@ export function useWorkoutSession() {
     };
   }, [exercises]);
 
+  /**
+   * Returns the running XP total for this session.
+   */
+  const getSessionXP = useCallback((): number => {
+    return sessionXP;
+  }, [sessionXP]);
+
+  /**
+   * Returns the XP result from the last completed set.
+   */
+  const getLastSetXP = useCallback((): XPResult | null => {
+    return lastSetXP;
+  }, [lastSetXP]);
+
+  /**
+   * Marks that the consistency bonus has been applied for this session.
+   */
+  const markConsistencyApplied = useCallback((): void => {
+    setSessionConsistencyApplied(true);
+  }, []);
+
+  /**
+   * Returns whether the consistency bonus has been applied this session.
+   */
+  const isConsistencyApplied = useCallback((): boolean => {
+    return sessionConsistencyApplied;
+  }, [sessionConsistencyApplied]);
+
   return {
     sessionId,
     exercises,
@@ -200,5 +242,10 @@ export function useWorkoutSession() {
     addSet,
     completeSession,
     getSessionSummary,
+    // XP tracking
+    getSessionXP,
+    getLastSetXP,
+    markConsistencyApplied,
+    isConsistencyApplied,
   };
 }

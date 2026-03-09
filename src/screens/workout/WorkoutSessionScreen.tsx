@@ -16,12 +16,14 @@ import { fonts } from '@/constants/fonts';
 import { type RootStackParamList } from '@/navigation/types';
 import { useWorkoutSession, type SetData } from '@/hooks/useWorkoutSession';
 import { useTempoVoice, type TempoConfig } from '@/hooks/useTempoVoice';
+import { useXPService } from '@/hooks/useXPService';
 import { SessionHeader } from '@/components/workout/SessionHeader';
 import { TempoToggle } from '@/components/workout/TempoToggle';
 import { WeightInput } from '@/components/workout/WeightInput';
 import { RepsInput } from '@/components/workout/RepsInput';
 import { RPESelector } from '@/components/workout/RPESelector';
 import { RestTimerOverlay } from '@/components/workout/RestTimerOverlay';
+import { XPFloater } from '@/components/workout/XPFloater';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WorkoutSession'>;
 
@@ -39,11 +41,12 @@ const DEFAULT_REST_DURATION = 90; // seconds
  * Displays current exercise, set logging inputs, and rest timer.
  */
 export function WorkoutSessionScreen({ route, navigation }: Props) {
-  const { sessionId, exercises: exerciseIds } = route.params;
+  const { sessionId, exercises: exerciseIds, zoneId } = route.params;
 
   // Hooks
   const session = useWorkoutSession();
   const tempoVoice = useTempoVoice();
+  const xpService = useXPService();
 
   // State
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -55,6 +58,10 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   const [showRestTimer, setShowRestTimer] = useState(false);
   const [tempoEnabled, setTempoEnabled] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  // XP display state
+  const [showXPFloater, setShowXPFloater] = useState(false);
+  const [lastXPAmount, setLastXPAmount] = useState(0);
 
   // Initialize session on mount
   useEffect(() => {
@@ -120,7 +127,11 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   const handleFinish = async () => {
     tempoVoice.stopTempo();
     await session.completeSession();
-    navigation.replace('SessionSummary', { sessionId: session.sessionId! });
+    navigation.replace('SessionSummary', {
+      sessionId: session.sessionId!,
+      zoneId,
+      totalXP: session.getSessionXP(),
+    });
   };
 
   /**
@@ -134,12 +145,40 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
       tempoVoice.stopTempo();
     }
 
-    // Save set to database
-    await session.addSet(currentExercise.id, {
+    // Check if consistency bonus applies (only once per session)
+    const consistencyApplies =
+      !session.isConsistencyApplied() &&
+      (await xpService.getZoneConsistency(zoneId));
+
+    if (consistencyApplies) {
+      session.markConsistencyApplied();
+    }
+
+    // Calculate XP for this set
+    const xpResult = await xpService.awardSetXP({
+      zoneId,
+      exerciseId: currentExercise.id,
       weightKg: currentSet.weightKg,
       reps: currentSet.reps,
-      rpe: currentSet.rpe,
+      tempoEnabled,
+      sessionId: session.sessionId!,
+      applyConsistencyBonus: consistencyApplies,
     });
+
+    // Show XP floater
+    setLastXPAmount(xpResult.total);
+    setShowXPFloater(true);
+
+    // Save set to database with XP result
+    await session.addSet(
+      currentExercise.id,
+      {
+        weightKg: currentSet.weightKg,
+        reps: currentSet.reps,
+        rpe: currentSet.rpe,
+      },
+      xpResult
+    );
 
     // Haptic feedback
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -245,6 +284,13 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
         onFinish={handleFinish}
       />
 
+      {/* XP Floater */}
+      <XPFloater
+        xp={lastXPAmount}
+        visible={showXPFloater}
+        onComplete={() => setShowXPFloater(false)}
+      />
+
       {/* Controls row */}
       <View style={styles.controlsRow}>
         <TempoToggle
@@ -252,6 +298,13 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
           onToggle={handleTempoToggle}
           isPlaying={tempoVoice.isPlaying}
         />
+
+        {/* Session XP badge */}
+        <View style={styles.xpBadge}>
+          <Text style={styles.xpBadgeText}>
+            XP: {session.getSessionXP().toLocaleString()}
+          </Text>
+        </View>
 
         {/* Exercise navigation */}
         <View style={styles.exerciseNav}>
@@ -409,6 +462,20 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors.zone.cold,
+  },
+  xpBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: colors.ember[500],
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 140, 26, 0.1)',
+  },
+  xpBadgeText: {
+    fontFamily: fonts.mono,
+    fontSize: 12,
+    color: colors.ember[500],
+    letterSpacing: 1,
   },
   exerciseNav: {
     flexDirection: 'row',
