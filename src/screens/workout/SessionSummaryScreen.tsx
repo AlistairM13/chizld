@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,19 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
 import { type RootStackParamList } from '@/navigation/types';
 import { useSessionSummary } from '@/hooks/useSessionSummary';
+import { XPBreakdown } from '@/components/workout/XPBreakdown';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SessionSummary'>;
 
@@ -40,13 +48,72 @@ function formatNumber(value: number): string {
  * - Total sets completed
  * - Exercises count
  * - Total volume (kg)
- * - XP earned (placeholder calculation)
+ * - XP breakdown with all bonuses
+ * - Level-up celebration if zone leveled up
  * - Exercise breakdown with set counts
  * - Return to character button
  */
 export function SessionSummaryScreen({ route, navigation }: Props) {
-  const { sessionId } = route.params;
-  const { summary, isLoading } = useSessionSummary(sessionId);
+  const { sessionId, zoneId, totalXP, xpBreakdown } = route.params;
+  const hasFinalized = useRef(false);
+
+  // Prepare pre-calculated XP if provided
+  const preCalculatedXP = totalXP !== undefined && xpBreakdown
+    ? { total: totalXP, breakdown: xpBreakdown }
+    : undefined;
+
+  const { summary, isLoading, finalizeAndGetResult } = useSessionSummary({
+    sessionId,
+    zoneId,
+    preCalculatedXP,
+  });
+
+  // Level-up animation values
+  const levelUpScale = useSharedValue(1);
+  const levelUpGlow = useSharedValue(0.5);
+
+  // Finalize session on mount (only once)
+  useEffect(() => {
+    if (summary && !hasFinalized.current) {
+      hasFinalized.current = true;
+      finalizeAndGetResult();
+    }
+  }, [summary, finalizeAndGetResult]);
+
+  // Trigger level-up celebration when detected
+  useEffect(() => {
+    if (summary?.leveledUp) {
+      // Haptic feedback
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+      // Scale pulse animation: 1.0 -> 1.1 -> 1.0, repeat 2x
+      levelUpScale.value = withRepeat(
+        withSequence(
+          withTiming(1.1, { duration: 300 }),
+          withTiming(1.0, { duration: 300 })
+        ),
+        2,
+        false
+      );
+
+      // Glow pulse animation: 0.5 -> 1.0 -> 0.5
+      levelUpGlow.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 300 }),
+          withTiming(0.5, { duration: 300 })
+        ),
+        2,
+        false
+      );
+    }
+  }, [summary?.leveledUp, levelUpScale, levelUpGlow]);
+
+  // Animated styles for level-up card
+  const levelUpAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: levelUpScale.value }],
+    borderColor: `rgba(255, 140, 26, ${levelUpGlow.value})`,
+    shadowOpacity: levelUpGlow.value * 0.8,
+  }));
 
   /**
    * Navigates back to character screen, resetting navigation stack.
@@ -98,6 +165,15 @@ export function SessionSummaryScreen({ route, navigation }: Props) {
           <Text style={styles.headerTitle}>SESSION COMPLETE</Text>
         </View>
 
+        {/* Level-up celebration */}
+        {summary.leveledUp && summary.newLevel !== null && (
+          <Animated.View style={[styles.levelUpCard, levelUpAnimatedStyle]}>
+            <Text style={styles.levelUpTitle}>LEVEL UP!</Text>
+            <Text style={styles.levelUpZone}>{summary.zoneName.toUpperCase()}</Text>
+            <Text style={styles.levelUpLevel}>LEVEL {summary.newLevel}</Text>
+          </Animated.View>
+        )}
+
         {/* Duration */}
         <View style={styles.durationCard}>
           <Text style={styles.durationValue}>
@@ -126,10 +202,13 @@ export function SessionSummaryScreen({ route, navigation }: Props) {
           </View>
         </View>
 
-        {/* XP earned */}
-        <View style={styles.xpCard}>
-          <Text style={styles.xpValue}>+{formatNumber(summary.xpEarned)} XP</Text>
-          <Text style={styles.xpLabel}>XP EARNED</Text>
+        {/* XP breakdown */}
+        <View style={styles.xpSection}>
+          <XPBreakdown
+            total={summary.xpEarned}
+            breakdown={summary.xpBreakdown}
+            totalSets={summary.totalSets}
+          />
         </View>
 
         {/* Exercise breakdown */}
@@ -192,7 +271,7 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
   },
   headerLabel: {
     fontFamily: fonts.monoLight,
@@ -206,6 +285,43 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: colors.ember[500],
     letterSpacing: 4,
+  },
+  levelUpCard: {
+    alignItems: 'center',
+    backgroundColor: colors.bg.elevated,
+    borderWidth: 3,
+    borderColor: colors.ember[500],
+    borderRadius: 12,
+    paddingVertical: 24,
+    paddingHorizontal: 32,
+    marginBottom: 24,
+    shadowColor: colors.ember[500],
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  levelUpTitle: {
+    fontFamily: fonts.display,
+    fontSize: 32,
+    color: colors.ember[500],
+    letterSpacing: 6,
+    textShadowColor: colors.ember.glow,
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
+  },
+  levelUpZone: {
+    fontFamily: fonts.label,
+    fontSize: 14,
+    color: colors.text.secondary,
+    letterSpacing: 2,
+    marginTop: 8,
+  },
+  levelUpLevel: {
+    fontFamily: fonts.mono,
+    fontSize: 48,
+    color: colors.text.primary,
+    letterSpacing: 4,
+    marginTop: 4,
   },
   durationCard: {
     alignItems: 'center',
@@ -261,27 +377,8 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: colors.zone.cold,
   },
-  xpCard: {
-    alignItems: 'center',
-    backgroundColor: colors.bg.elevated,
-    borderWidth: 2,
-    borderColor: colors.ember[500],
-    borderRadius: 8,
-    paddingVertical: 28,
-    marginBottom: 32,
-  },
-  xpValue: {
-    fontFamily: fonts.mono,
-    fontSize: 48,
-    color: colors.ember[500],
-    letterSpacing: 2,
-  },
-  xpLabel: {
-    fontFamily: fonts.label,
-    fontSize: 14,
-    color: colors.text.muted,
-    letterSpacing: 2,
-    marginTop: 8,
+  xpSection: {
+    marginBottom: 24,
   },
   exerciseSection: {
     backgroundColor: colors.bg.card,
