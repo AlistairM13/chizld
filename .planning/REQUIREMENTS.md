@@ -33,42 +33,42 @@
 
 ### Character Detail
 
-- [ ] **DETL-01**: Tapping a zone card transitions screen to detail state
-- [ ] **DETL-02**: Character slides LEFT to ~30% of screen width using Reanimated animation
-- [ ] **DETL-03**: Selected zone highlighted ember-orange on the character figure
-- [ ] **DETL-04**: RPG stat card slides in from RIGHT, occupying ~60% of screen width
-- [ ] **DETL-05**: Connection line drawn from highlighted zone to stat card
-- [ ] **DETL-06**: Stat card header: fire icon + zone name (Chakra Petch 26px bold), level badge (JetBrains Mono 13px #FF8C1A)
-- [ ] **DETL-07**: XP progress bar: ember-orange fill on #2A2A3A track, with XP text (e.g., "800 / 1,200")
-- [ ] **DETL-08**: 3x2 stats grid showing: STREAK, VOLUME 7D, SESSIONS, TOTAL SETS, MAX, LAST
-- [ ] **DETL-09**: Photo history row with 5 placeholder thumbnail slots (55x40px, dashed border)
-- [ ] **DETL-10**: TRAIN button: full width, #FF8C1A background, white bold uppercase text
-- [ ] **DETL-11**: Bottom bar changes to "BUILD 2.4.1 / ESC TO RETURN"
-- [ ] **DETL-12**: Tapping outside card or pressing back returns to overview state
+- [x] **DETL-01**: Tapping a zone card transitions screen to detail state
+- [x] **DETL-02**: Character slides LEFT to ~30% of screen width using Reanimated animation
+- [x] **DETL-03**: Selected zone highlighted ember-orange on the character figure
+- [x] **DETL-04**: RPG stat card slides in from RIGHT, occupying ~60% of screen width
+- [x] **DETL-05**: Connection line drawn from highlighted zone to stat card
+- [x] **DETL-06**: Stat card header: fire icon + zone name (Chakra Petch 26px bold), level badge (JetBrains Mono 13px #FF8C1A)
+- [x] **DETL-07**: XP progress bar: ember-orange fill on #2A2A3A track, with XP text (e.g., "800 / 1,200")
+- [x] **DETL-08**: 3x2 stats grid showing: STREAK, VOLUME 7D, SESSIONS, TOTAL SETS, MAX, LAST
+- [x] **DETL-09**: Photo history row with 5 placeholder thumbnail slots (55x40px, dashed border)
+- [x] **DETL-10**: TRAIN button: full width, #FF8C1A background, white bold uppercase text
+- [x] **DETL-11**: Bottom bar changes to "BUILD 2.4.1 / ESC TO RETURN"
+- [x] **DETL-12**: Tapping outside card or pressing back returns to overview state
 
 ### Workout
 
-- [ ] **WORK-01**: Exercise selection screen shows exercises filtered by the tapped zone
-- [ ] **WORK-02**: Exercise list is searchable by name
-- [ ] **WORK-03**: Active workout session screen displays selected exercises with set rows
-- [ ] **WORK-04**: User can log sets with weight (kg), reps, and RPE per exercise
-- [ ] **WORK-05**: Voice tempo mode per exercise using expo-speech (configurable eccentric/pause-bottom/concentric/pause-top durations)
-- [ ] **WORK-06**: Voice announces phase countdown ("Eccentric... 5... 4... 3... 2... 1... Hold... Concentric...")
-- [ ] **WORK-07**: Rest timer between sets with default 90s, configurable, ±30s quick adjust buttons
-- [ ] **WORK-08**: Session summary screen shows total XP earned, exercises completed, sets completed
-- [ ] **WORK-09**: Workout session data saved to workout_sessions and workout_sets tables
-- [ ] **WORK-10**: User can add multiple exercises to a single workout session
+- [x] **WORK-01**: Exercise selection screen shows exercises filtered by the tapped zone
+- [x] **WORK-02**: Exercise list is searchable by name
+- [x] **WORK-03**: Active workout session screen displays selected exercises with set rows
+- [x] **WORK-04**: User can log sets with weight (kg), reps, and RPE per exercise
+- [x] **WORK-05**: Voice tempo mode per exercise using expo-speech (configurable eccentric/pause-bottom/concentric/pause-top durations)
+- [x] **WORK-06**: Voice announces phase countdown ("Eccentric... 5... 4... 3... 2... 1... Hold... Concentric...")
+- [x] **WORK-07**: Rest timer between sets with default 90s, configurable, ±30s quick adjust buttons
+- [x] **WORK-08**: Session summary screen shows total XP earned, exercises completed, sets completed
+- [x] **WORK-09**: Workout session data saved to workout_sessions and workout_sets tables
+- [x] **WORK-10**: User can add multiple exercises to a single workout session
 
 ### XP & Leveling
 
-- [ ] **XPLV-01**: XP earned per completed set: 10 XP base
-- [ ] **XPLV-02**: Volume bonus: +1 XP per 100kg total volume (weight x reps)
-- [ ] **XPLV-03**: Tempo mode multiplier: 1.5x when tempo is used
-- [ ] **XPLV-04**: New PR bonus: +50 XP when personal record is set
-- [ ] **XPLV-05**: Consistency bonus: +20 XP if zone was trained in last 7 days
-- [ ] **XPLV-06**: Level thresholds implemented (1-10: 0, 100, 300, 600, 1000, 1500, 2200, 3000, 4000, 5500 XP)
-- [ ] **XPLV-07**: Zone stats (total_xp, level, current_streak, last_trained_at) updated after each workout
-- [ ] **XPLV-08**: XP transactions written to xp_history table with source tracking
+- [x] **XPLV-01**: XP earned per completed set: 10 XP base
+- [x] **XPLV-02**: Volume bonus: +1 XP per 100kg total volume (weight x reps)
+- [x] **XPLV-03**: Tempo mode multiplier: 1.5x when tempo is used
+- [x] **XPLV-04**: New PR bonus: +50 XP when personal record is set
+- [x] **XPLV-05**: Consistency bonus: +20 XP if zone was trained in last 7 days
+- [x] **XPLV-06**: Level thresholds implemented (1-10: 0, 100, 300, 600, 1000, 1500, 2200, 3000, 4000, 5500 XP)
+- [x] **XPLV-07**: Zone stats (total_xp, level, current_streak, last_trained_at) updated after each workout
+- [x] **XPLV-08**: XP transactions written to xp_history table with source tracking
 
 ## v2 Requirements
 
@@ -129,36 +129,36 @@
 | CHAR-08 | Phase 2 | Complete |
 | CHAR-09 | Phase 2 | Complete |
 | CHAR-10 | Phase 2 | Complete |
-| DETL-01 | Phase 3 | Pending |
-| DETL-02 | Phase 3 | Pending |
-| DETL-03 | Phase 3 | Pending |
-| DETL-04 | Phase 3 | Pending |
-| DETL-05 | Phase 3 | Pending |
-| DETL-06 | Phase 3 | Pending |
-| DETL-07 | Phase 3 | Pending |
-| DETL-08 | Phase 3 | Pending |
-| DETL-09 | Phase 3 | Pending |
-| DETL-10 | Phase 3 | Pending |
-| DETL-11 | Phase 3 | Pending |
-| DETL-12 | Phase 3 | Pending |
-| WORK-01 | Phase 4 | Pending |
-| WORK-02 | Phase 4 | Pending |
-| WORK-03 | Phase 4 | Pending |
-| WORK-04 | Phase 4 | Pending |
-| WORK-05 | Phase 4 | Pending |
-| WORK-06 | Phase 4 | Pending |
-| WORK-07 | Phase 4 | Pending |
-| WORK-08 | Phase 4 | Pending |
-| WORK-09 | Phase 4 | Pending |
-| WORK-10 | Phase 4 | Pending |
-| XPLV-01 | Phase 5 | Pending |
-| XPLV-02 | Phase 5 | Pending |
-| XPLV-03 | Phase 5 | Pending |
-| XPLV-04 | Phase 5 | Pending |
-| XPLV-05 | Phase 5 | Pending |
-| XPLV-06 | Phase 5 | Pending |
-| XPLV-07 | Phase 5 | Pending |
-| XPLV-08 | Phase 5 | Pending |
+| DETL-01 | Phase 3 | Complete |
+| DETL-02 | Phase 3 | Complete |
+| DETL-03 | Phase 3 | Complete |
+| DETL-04 | Phase 3 | Complete |
+| DETL-05 | Phase 3 | Complete |
+| DETL-06 | Phase 3 | Complete |
+| DETL-07 | Phase 3 | Complete |
+| DETL-08 | Phase 3 | Complete |
+| DETL-09 | Phase 3 | Complete |
+| DETL-10 | Phase 3 | Complete |
+| DETL-11 | Phase 3 | Complete |
+| DETL-12 | Phase 3 | Complete |
+| WORK-01 | Phase 4 | Complete |
+| WORK-02 | Phase 4 | Complete |
+| WORK-03 | Phase 4 | Complete |
+| WORK-04 | Phase 4 | Complete |
+| WORK-05 | Phase 4 | Complete |
+| WORK-06 | Phase 4 | Complete |
+| WORK-07 | Phase 4 | Complete |
+| WORK-08 | Phase 4 | Complete |
+| WORK-09 | Phase 4 | Complete |
+| WORK-10 | Phase 4 | Complete |
+| XPLV-01 | Phase 5 | Complete |
+| XPLV-02 | Phase 5 | Complete |
+| XPLV-03 | Phase 5 | Complete |
+| XPLV-04 | Phase 5 | Complete |
+| XPLV-05 | Phase 5 | Complete |
+| XPLV-06 | Phase 5 | Complete |
+| XPLV-07 | Phase 5 | Complete |
+| XPLV-08 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 40 total
@@ -167,4 +167,4 @@
 
 ---
 *Requirements defined: 2026-03-08*
-*Last updated: 2026-03-08 — traceability completed by roadmapper*
+*Last updated: 2026-03-09 — all v1 requirements complete*

@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
 - [x] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
 - [x] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
-- [ ] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
+- [x] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
 
 ## Phase Details
 
@@ -119,10 +119,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — XP calculator service (pure functions) and useXPService hook (database operations)
-- [ ] 05-02-PLAN.md — XPFloater component, real-time XP feedback during workout session
-- [ ] 05-03-PLAN.md — XPBreakdown component, session summary with real XP and level-up celebration
-- [ ] 05-04-PLAN.md — Character screen refresh on focus, animated StatCard XP bar
+- [x] 05-01-PLAN.md — XP calculator service (pure functions) and useXPService hook (database operations)
+- [x] 05-02-PLAN.md — XPFloater component, real-time XP feedback during workout session
+- [x] 05-03-PLAN.md — XPBreakdown component, session summary with real XP and level-up celebration
+- [x] 05-04-PLAN.md — Character screen refresh on focus, animated StatCard XP bar
 
 ## Progress
 
@@ -136,4 +136,4 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
 | 2.1 Overview Polish (INSERTED) | 3/3 | Complete | 2026-03-08 |
 | 3. Character Detail | 2/2 | Complete | 2026-03-08 |
 | 4. Workout Module | 4/4 | Complete | 2026-03-09 |
-| 5. XP & Leveling | 0/4 | Not started | - |
+| 5. XP & Leveling | 4/4 | Complete | 2026-03-09 |
