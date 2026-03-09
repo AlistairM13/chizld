@@ -24,7 +24,7 @@ import { type RootStackParamList } from '../../navigation/types';
 
 export function CharacterScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { stats, warmCount } = useZoneStats();
+  const { stats, warmCount, refetch } = useZoneStats();
   const { width, height } = useWindowDimensions();
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
 
@@ -102,6 +102,13 @@ export function CharacterScreen() {
       navigation.navigate('ExerciseSelect', { zoneId: selectedZone });
     }
   }, [navigation, selectedZone]);
+
+  // Refresh zone stats when screen gains focus (after workout completion)
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   // Handle Android back button to dismiss detail view
   useFocusEffect(
