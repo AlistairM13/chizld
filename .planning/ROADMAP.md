@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
 - [x] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
 - [x] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
-- [ ] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
+- [x] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
 - [ ] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
 
 ## Phase Details
@@ -101,10 +101,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Navigation setup, useExercises hook, ExerciseSelectScreen with zone filter and multi-select
-- [ ] 04-02-PLAN.md — useWorkoutSession and useRestTimer hooks, WeightInput, RPESelector, SetRow, RestTimerOverlay components
-- [ ] 04-03-PLAN.md — useTempoVoice hook, TempoToggle, WorkoutSessionScreen with full set logging
-- [ ] 04-04-PLAN.md — useSessionSummary hook, SessionSummaryScreen with stats and XP placeholder
+- [x] 04-01-PLAN.md — Navigation setup, useExercises hook, ExerciseSelectScreen with zone filter and multi-select
+- [x] 04-02-PLAN.md — useWorkoutSession and useRestTimer hooks, WeightInput, RPESelector, SetRow, RestTimerOverlay components
+- [x] 04-03-PLAN.md — useTempoVoice hook, TempoToggle, WorkoutSessionScreen with full set logging
+- [x] 04-04-PLAN.md — useSessionSummary hook, SessionSummaryScreen with stats and XP placeholder
 
 ### Phase 5: XP & Leveling
 **Goal**: The XP calculation engine is wired up end-to-end — every completed set earns the correct XP (base + volume bonus + tempo multiplier + PR bonus + consistency bonus), level thresholds are enforced, zone stats update after each session, and all XP transactions are recorded in xp_history. The character screen now reflects real earned XP.
@@ -133,5 +133,5 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 4 → 5
 | 2. Character Overview | 3/3 | Complete | 2026-03-08 |
 | 2.1 Overview Polish (INSERTED) | 3/3 | Complete | 2026-03-08 |
 | 3. Character Detail | 2/2 | Complete | 2026-03-08 |
-| 4. Workout Module | 0/4 | Not started | - |
+| 4. Workout Module | 4/4 | Complete | 2026-03-09 |
 | 5. XP & Leveling | 0/2 | Not started | - |
