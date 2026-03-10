@@ -1,22 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { ScreenBackground } from '@/components/common/ScreenBackground';
 import { colors } from '../../constants/colors';
 import { fonts } from '../../constants/fonts';
 
 export function SleepDashboardScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>// SLEEP MODULE</Text>
-      <Text style={styles.status}>[ LOCKED ]</Text>
-      <Text style={styles.subtext}>COMING SOON</Text>
-    </View>
+    <ScreenBackground>
+      <View style={styles.content}>
+        <Text style={styles.label}>// SLEEP MODULE</Text>
+        <Text style={styles.status}>[ LOCKED ]</Text>
+        <Text style={styles.subtext}>COMING SOON</Text>
+      </View>
+    </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     flex: 1,
-    backgroundColor: colors.bg.primary,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Haptics from 'expo-haptics';
+import { ScreenBackground } from '@/components/common/ScreenBackground';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
 import { useSplits } from '@/hooks/useSplits';
@@ -63,7 +64,7 @@ export function SplitListScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScreenBackground>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>SPLITS</Text>
@@ -83,15 +84,11 @@ export function SplitListScreen() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={renderEmpty}
       />
-    </View>
+    </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg.primary,
-  },
   header: {
     height: 44,
     flexDirection: 'row',

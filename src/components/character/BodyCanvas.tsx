@@ -125,20 +125,28 @@ export function BodyCanvas({
               { scale },
             ]}
           >
-            {Object.entries(parsedZonePaths).map(([zone, paths]) =>
-              paths.map((path, idx) => (
-                <Path
-                  key={`${zone}-${idx}`}
-                  path={path}
-                  color={
-                    selectedZone === zone
-                      ? colors.zone.selected
-                      : colors.text.secondary
-                  }
-                  style="fill"
-                />
-              ))
-            )}
+            {/* Render non-selected zones first */}
+            {Object.entries(parsedZonePaths)
+              .filter(([zone]) => zone !== selectedZone)
+              .map(([zone, paths]) =>
+                paths.map((path, idx) => (
+                  <Path
+                    key={`${zone}-${idx}`}
+                    path={path}
+                    color={colors.text.secondary}
+                    style="fill"
+                  />
+                ))
+              )}
+            {/* Render selected zone last so it's always on top */}
+            {selectedZone && parsedZonePaths[selectedZone]?.map((path, idx) => (
+              <Path
+                key={`${selectedZone}-${idx}`}
+                path={path}
+                color={colors.zone.selected}
+                style="fill"
+              />
+            ))}
           </Group>
 
 

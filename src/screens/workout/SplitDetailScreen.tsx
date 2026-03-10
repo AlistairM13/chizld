@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ScreenBackground } from '@/components/common/ScreenBackground';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
 import { type RootStackParamList } from '@/navigation/types';
@@ -155,33 +156,33 @@ export function SplitDetailScreen({ route, navigation }: Props) {
   // Loading state
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <ScreenBackground>
         <View style={styles.header}>
           <Pressable onPress={handleBack} style={styles.backButton}>
             <Text style={styles.backArrow}>{'<'}</Text>
           </Pressable>
           <Text style={styles.headerTitle}>LOADING...</Text>
         </View>
-      </View>
+      </ScreenBackground>
     );
   }
 
   // Not found state
   if (!split) {
     return (
-      <View style={styles.container}>
+      <ScreenBackground>
         <View style={styles.header}>
           <Pressable onPress={handleBack} style={styles.backButton}>
             <Text style={styles.backArrow}>{'<'}</Text>
           </Pressable>
           <Text style={styles.headerTitle}>SPLIT NOT FOUND</Text>
         </View>
-      </View>
+      </ScreenBackground>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <ScreenBackground>
       {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={handleBack} style={styles.backButton}>
@@ -242,15 +243,11 @@ export function SplitDetailScreen({ route, navigation }: Props) {
           </View>
         }
       />
-    </View>
+    </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg.primary,
-  },
   header: {
     height: 44,
     flexDirection: 'row',

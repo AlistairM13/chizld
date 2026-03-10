@@ -16,6 +16,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { ScreenBackground } from '@/components/common/ScreenBackground';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
 import { type RootStackParamList } from '@/navigation/types';
@@ -130,31 +131,31 @@ export function SessionSummaryScreen({ route, navigation }: Props) {
   // Loading state
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <ScreenBackground>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.ember[500]} />
           <Text style={styles.loadingText}>LOADING SUMMARY...</Text>
         </View>
-      </View>
+      </ScreenBackground>
     );
   }
 
   // No data state
   if (!summary) {
     return (
-      <View style={styles.container}>
+      <ScreenBackground>
         <View style={styles.loadingContainer}>
           <Text style={styles.errorText}>SESSION NOT FOUND</Text>
           <Pressable style={styles.returnButton} onPress={handleReturn}>
             <Text style={styles.returnButtonText}>RETURN TO CHARACTER</Text>
           </Pressable>
         </View>
-      </View>
+      </ScreenBackground>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <ScreenBackground>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -235,15 +236,11 @@ export function SessionSummaryScreen({ route, navigation }: Props) {
           <Text style={styles.returnButtonText}>RETURN TO CHARACTER</Text>
         </Pressable>
       </View>
-    </View>
+    </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg.primary,
-  },
   loadingContainer: {
     flex: 1,
     alignItems: 'center',

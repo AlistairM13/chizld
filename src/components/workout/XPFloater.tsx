@@ -70,7 +70,7 @@ export function XPFloater({ xp, visible, onComplete }: XPFloaterProps) {
     opacity: opacity.value,
   }));
 
-  if (!visible && opacity.value === 0) {
+  if (!visible) {
     return null;
   }
 

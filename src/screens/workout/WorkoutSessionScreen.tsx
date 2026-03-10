@@ -1,36 +1,30 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { ScreenBackground } from '@/components/common/ScreenBackground';
+import { RepsInput } from '@/components/workout/RepsInput';
+import { RestTimerOverlay } from '@/components/workout/RestTimerOverlay';
+import { RPEInput } from '@/components/workout/RPEInput';
+import { TempoToggle } from '@/components/workout/TempoToggle';
+import { WeightInput } from '@/components/workout/WeightInput';
+import { XPFloater } from '@/components/workout/XPFloater';
+import { colors } from '@/constants/colors';
+import { fonts } from '@/constants/fonts';
+import { useElapsedTimer } from '@/hooks/useElapsedTimer';
+import { useTempoVoice, type TempoConfig } from '@/hooks/useTempoVoice';
+import { useWorkoutSession, type SetData } from '@/hooks/useWorkoutSession';
+import { useXPService } from '@/hooks/useXPService';
+import { type RootStackParamList } from '@/navigation/types';
+import { useFocusEffect } from '@react-navigation/native';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Haptics from 'expo-haptics';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
+  Alert,
+  BackHandler,
+  Pressable,
   StyleSheet,
   Text,
   View,
-  Pressable,
-  BackHandler,
-  Alert,
 } from 'react-native';
-import { type NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useFocusEffect } from '@react-navigation/native';
-import Animated, {
-  FadeIn,
-  FadeOut,
-  useSharedValue,
-  useAnimatedStyle,
-  withSequence,
-  withTiming,
-} from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
-import { colors } from '@/constants/colors';
-import { fonts } from '@/constants/fonts';
-import { type RootStackParamList } from '@/navigation/types';
-import { useWorkoutSession, type SetData } from '@/hooks/useWorkoutSession';
-import { useTempoVoice, type TempoConfig } from '@/hooks/useTempoVoice';
-import { useXPService } from '@/hooks/useXPService';
-import { useElapsedTimer } from '@/hooks/useElapsedTimer';
-import { TempoToggle } from '@/components/workout/TempoToggle';
-import { WeightInput } from '@/components/workout/WeightInput';
-import { RepsInput } from '@/components/workout/RepsInput';
-import { RPESlider } from '@/components/workout/RPESlider';
-import { RestTimerOverlay } from '@/components/workout/RestTimerOverlay';
-import { XPFloater } from '@/components/workout/XPFloater';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WorkoutSession'>;
 
@@ -71,17 +65,12 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   const [showRestTimer, setShowRestTimer] = useState(false);
   const [tempoEnabled, setTempoEnabled] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [showCompletedSets, setShowCompletedSets] = useState(false);
+  // Removed showCompletedSets - always visible in new layout
 
   // XP display state
   const [showXPFloater, setShowXPFloater] = useState(false);
   const [lastXPAmount, setLastXPAmount] = useState(0);
 
-  // Input pulse animation
-  const inputPulse = useSharedValue(1);
-  const inputPulseStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: inputPulse.value }],
-  }));
 
   // Initialize session on mount
   useEffect(() => {
@@ -323,29 +312,17 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   };
 
   /**
-   * Triggers a subtle scale pulse on the input row.
-   */
-  const triggerInputPulse = () => {
-    inputPulse.value = withSequence(
-      withTiming(1.05, { duration: 80 }),
-      withTiming(1, { duration: 80 })
-    );
-  };
-
-  /**
-   * Handles weight input change with pulse feedback.
+   * Handles weight input change.
    */
   const handleWeightChange = (v: number) => {
     setCurrentSet((s) => ({ ...s, weightKg: v }));
-    triggerInputPulse();
   };
 
   /**
-   * Handles reps input change with pulse feedback.
+   * Handles reps input change.
    */
   const handleRepsChange = (v: number) => {
     setCurrentSet((s) => ({ ...s, reps: v }));
-    triggerInputPulse();
   };
 
   // Validation
@@ -361,68 +338,18 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
     );
   }
 
-  // Build exercise name display
-  const exerciseNameDisplay = currentExercise.name.toUpperCase();
-  const setProgressDisplay = targetSets !== null
-    ? `(${currentSetNumber}/${targetSets})`
-    : `(SET ${currentSetNumber})`;
+  // Build exercise name display with position like "(1/3)"
+  const exercisePosition = `(${currentExerciseIndex + 1}/${session.exercises.length})`;
+  const exerciseNameDisplay = `${currentExercise.name.toUpperCase()} ${exercisePosition}`;
+  const exerciseProgressDisplay = `${currentExerciseIndex + 1}/${session.exercises.length} EXERCISE PROGRESS`;
+  const setDisplay = `SET #${currentSetNumber}`;
 
-  // Exercise counter (e.g. "2/4")
-  const exerciseCounterDisplay = `${currentExerciseIndex + 1}/${session.exercises.length}`;
+  // Calculate total volume for footer
+  const totalVolume = completedSets.reduce((sum, set) => sum + set.weightKg * set.reps, 0);
+  const totalSetsCompleted = completedSets.length;
 
   return (
-    <View style={styles.container}>
-      {/* Top-left corner: Elapsed timer + Quit */}
-      <View style={styles.cornerTopLeft}>
-        <Text style={styles.elapsedText}>{elapsedTimer.formatted}</Text>
-        <Pressable onPress={showExitConfirmation} style={styles.quitButton}>
-          <Text style={styles.quitText}>X</Text>
-        </Pressable>
-      </View>
-
-      {/* Top-right corner: XP counter + Finish */}
-      <View style={styles.cornerTopRight}>
-        <Pressable onPress={handleFinish} style={styles.finishButton}>
-          <Text style={styles.finishText}>FINISH</Text>
-        </Pressable>
-        <Text style={styles.xpText}>
-          XP: {session.getSessionXP().toLocaleString()}
-        </Text>
-      </View>
-
-      {/* Left edge: Previous exercise arrow */}
-      <Pressable
-        style={styles.leftArrow}
-        onPress={handlePrevExercise}
-        disabled={currentExerciseIndex === 0}
-      >
-        <Text
-          style={[
-            styles.arrowText,
-            currentExerciseIndex === 0 && styles.arrowTextDisabled,
-          ]}
-        >
-          {'<'}
-        </Text>
-      </Pressable>
-
-      {/* Right edge: Next exercise arrow */}
-      <Pressable
-        style={styles.rightArrow}
-        onPress={handleNextExercise}
-        disabled={currentExerciseIndex === session.exercises.length - 1}
-      >
-        <Text
-          style={[
-            styles.arrowText,
-            currentExerciseIndex === session.exercises.length - 1 &&
-              styles.arrowTextDisabled,
-          ]}
-        >
-          {'>'}
-        </Text>
-      </Pressable>
-
+    <ScreenBackground>
       {/* XP Floater */}
       <XPFloater
         xp={lastXPAmount}
@@ -430,114 +357,250 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
         onComplete={() => setShowXPFloater(false)}
       />
 
-      {/* CENTER BLOCK — vertically centered, dominates the screen */}
-      <View style={styles.centerBlock}>
-        {/* Exercise name + set progress */}
-        <View style={styles.exerciseNameRow}>
-          <Text style={styles.exerciseName}>{exerciseNameDisplay}</Text>
-          <Text style={styles.setProgress}>{' '}{setProgressDisplay}</Text>
+      {/* Top header bar: Close + time left, FINISH + XP right */}
+      <View style={styles.topHeader}>
+        <View style={styles.topHeaderLeft}>
+          <Pressable onPress={showExitConfirmation} hitSlop={8}>
+            <Text style={styles.closeButton}>✕</Text>
+          </Pressable>
+          <Text style={styles.elapsedTime}>{elapsedTimer.formatted}</Text>
         </View>
-
-        {/* Exercise position counter */}
-        <Text style={styles.exerciseCounter}>{exerciseCounterDisplay}</Text>
-
-        {/* Live tempo display */}
-        {tempoEnabled ? (
-          tempoVoice.isPlaying && tempoVoice.currentPhase ? (
-            <Text style={styles.tempoLive}>
-              {tempoVoice.currentPhase} {tempoVoice.countdown}
+        <View style={styles.topHeaderRight}>
+          <Pressable onPress={handleFinish} style={styles.finishButton}>
+            <Text style={styles.finishText}>FINISH</Text>
+          </Pressable>
+          <View style={styles.xpBadge}>
+            <Text style={styles.xpBadgeText}>
+              XP: {session.getSessionXP().toLocaleString()}
             </Text>
-          ) : (
-            <Text style={styles.tempoStatic}>{getTempoConfigString()}</Text>
-          )
-        ) : (
-          <Text style={styles.tempoOff}>TEMPO OFF</Text>
-        )}
-
-        {/* Tempo toggle */}
-        <View style={styles.tempoToggleWrapper}>
-          <TempoToggle
-            enabled={tempoEnabled}
-            onToggle={handleTempoToggle}
-            isPlaying={tempoVoice.isPlaying}
-          />
+          </View>
         </View>
-
-        {/* Completed sets summary */}
-        <Pressable
-          style={styles.completedSummary}
-          onPress={() => setShowCompletedSets((v) => !v)}
-        >
-          <Text style={styles.completedSummaryText}>
-            {completedSets.length === 0
-              ? 'no sets complete'
-              : `${completedSets.length} set${completedSets.length === 1 ? '' : 's'} complete`}
-            {completedSets.length > 0 ? (showCompletedSets ? '  ▲' : '  ▼') : ''}
-          </Text>
-
-          {showCompletedSets && completedSets.length > 0 && (
-            <Animated.View entering={FadeIn.duration(150)} exiting={FadeOut.duration(150)}>
-              {completedSets.map((set: SetData, index: number) => (
-                <Text key={index} style={styles.completedSetRow}>
-                  #{set.setNumber}{'  '}{set.weightKg.toFixed(1)}kg × {set.reps} reps @ RPE {set.rpe}
-                </Text>
-              ))}
-            </Animated.View>
-          )}
-        </Pressable>
       </View>
 
-      {/* Bottom input row */}
-      <Animated.View style={[styles.inputRow, inputPulseStyle]}>
-        <View style={styles.inputColumn}>
-          <Text style={styles.inputLabel}>WEIGHT</Text>
-          <WeightInput
-            value={currentSet.weightKg}
-            onChange={handleWeightChange}
-            step={2.5}
-            min={0}
-            max={500}
-          />
+      {/* Main two-column layout */}
+      <View style={styles.mainContent}>
+        {/* LEFT COLUMN: Exercise info, tempo, completed sets */}
+        <View style={styles.leftColumn}>
+          {/* Exercise name with inline navigation */}
+          <View style={styles.exerciseHeader}>
+            <View style={styles.exerciseNavRow}>
+              <Pressable
+                onPress={handlePrevExercise}
+                disabled={currentExerciseIndex === 0}
+                hitSlop={8}
+              >
+                <Text
+                  style={[
+                    styles.inlineArrow,
+                    currentExerciseIndex === 0 && styles.inlineArrowDisabled,
+                  ]}
+                >
+                  {'<'}
+                </Text>
+              </Pressable>
+              <Text style={styles.exerciseName}>{exerciseNameDisplay}</Text>
+              <Pressable
+                onPress={handleNextExercise}
+                disabled={currentExerciseIndex === session.exercises.length - 1}
+                hitSlop={8}
+              >
+                <Text
+                  style={[
+                    styles.inlineArrow,
+                    currentExerciseIndex === session.exercises.length - 1 &&
+                      styles.inlineArrowDisabled,
+                  ]}
+                >
+                  {'>'}
+                </Text>
+              </Pressable>
+            </View>
+            <Text style={styles.exerciseProgress}>{exerciseProgressDisplay}</Text>
+          </View>
+
+          {/* Large tempo display */}
+          <View style={styles.tempoArea}>
+            {tempoEnabled ? (
+              tempoVoice.isPlaying && tempoVoice.currentPhase ? (
+                <View style={styles.tempoLiveRow}>
+                  <Text
+                    style={[
+                      styles.tempoPhase,
+                      tempoVoice.currentPhase === 'UP'
+                        ? styles.tempoPhaseUp
+                        : styles.tempoPhaseDown,
+                    ]}
+                  >
+                    {tempoVoice.currentPhase}
+                  </Text>
+                  <Text style={styles.tempoCountdown}>{tempoVoice.countdown}</Text>
+                </View>
+              ) : (
+                <Text style={styles.tempoStatic}>{getTempoConfigString()}</Text>
+              )
+            ) : (
+              <Text style={styles.tempoOff}>TEMPO OFF</Text>
+            )}
+          </View>
+
+          {/* Completed sets section */}
+          <View style={styles.completedSetsSection}>
+            <Text style={styles.completedSetsLabel}>COMPLETED SETS</Text>
+            {completedSets.length === 0 ? (
+              <Text style={styles.noSetsText}>No sets yet</Text>
+            ) : (
+              completedSets.map((set: SetData, index: number) => (
+                <View key={index} style={styles.completedSetRow}>
+                  <Text style={styles.setNumber}>#{set.setNumber}</Text>
+                  <Text style={styles.setWeight}>{set.weightKg.toFixed(0)}kg</Text>
+                  <Text style={styles.setReps}>
+                    <Text style={styles.setRepsX}>×</Text> {set.reps}
+                  </Text>
+                  <Text style={styles.setRpeLabel}>RPE</Text>
+                  <Text style={styles.setRpeValue}>{set.rpe}</Text>
+                </View>
+              ))
+            )}
+          </View>
+
+          {/* Footer stats */}
+          <View style={styles.footerStats}>
+            <Text style={styles.footerText}>
+              VOLUME: {totalVolume.toFixed(0)} KG  •  SETS: {totalSetsCompleted}
+            </Text>
+          </View>
         </View>
 
-        <View style={styles.inputColumn}>
-          <RepsInput
-            value={currentSet.reps}
-            onChange={handleRepsChange}
-          />
-        </View>
+        {/* RIGHT COLUMN: Set label + Input cards row */}
+        <View style={styles.rightColumn}>
+          {/* SET #N label above cards */}
+          <View style={styles.setDisplayBox}>
+            <Text style={styles.setDisplayText}>{setDisplay}</Text>
+          </View>
 
-        <View style={styles.inputColumn}>
-          <Text style={styles.inputLabel}>RPE</Text>
-          <RPESlider
-            value={currentSet.rpe}
-            onChange={(v) => setCurrentSet((s) => ({ ...s, rpe: v }))}
-          />
-        </View>
-      </Animated.View>
+          {/* Input cards row: Weight, Reps, RPE */}
+          <View style={styles.inputCardsRow}>
+            {/* Weight card */}
+            <View style={[styles.inputCard, styles.inputCardWeight]}>
+              <Text style={styles.inputCardLabel}>WEIGHT</Text>
+              <View style={styles.inputCardValueRow}>
+                <Text style={styles.inputCardValue}>
+                  {currentSet.weightKg.toFixed(1)}
+                </Text>
+                <Text style={styles.inputCardUnit}>kg</Text>
+              </View>
+              <View style={styles.inputCardButtons}>
+                <Pressable
+                  style={styles.inputCardBtn}
+                  onPress={() => {
+                    Haptics.selectionAsync();
+                    handleWeightChange(Math.max(0, currentSet.weightKg - 2.5));
+                  }}
+                >
+                  <Text style={styles.inputCardBtnText}>-2.5</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.inputCardBtn}
+                  onPress={() => {
+                    Haptics.selectionAsync();
+                    handleWeightChange(Math.min(500, currentSet.weightKg + 2.5));
+                  }}
+                >
+                  <Text style={styles.inputCardBtnText}>+2.5</Text>
+                </Pressable>
+              </View>
+            </View>
 
-      {/* Full-width COMPLETE SET button */}
-      <Pressable
-        style={[
-          styles.completeButton,
-          canCompleteSet
-            ? styles.completeButtonEnabled
-            : styles.completeButtonDisabled,
-        ]}
-        onPress={handleCompleteSet}
-        disabled={!canCompleteSet}
-      >
-        <Text
-          style={[
-            styles.completeButtonText,
-            canCompleteSet
-              ? styles.completeButtonTextEnabled
-              : styles.completeButtonTextDisabled,
-          ]}
-        >
-          COMPLETE SET
-        </Text>
-      </Pressable>
+            {/* Reps card */}
+            <View style={styles.inputCard}>
+              <Text style={styles.inputCardLabel}>REPS</Text>
+              <Text style={styles.inputCardValue}>{currentSet.reps}</Text>
+              <View style={styles.inputCardButtons}>
+                <Pressable
+                  style={styles.inputCardBtn}
+                  onPress={() => {
+                    Haptics.selectionAsync();
+                    handleRepsChange(Math.max(0, currentSet.reps - 1));
+                  }}
+                >
+                  <Text style={styles.inputCardBtnText}>-</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.inputCardBtn}
+                  onPress={() => {
+                    Haptics.selectionAsync();
+                    handleRepsChange(currentSet.reps + 1);
+                  }}
+                >
+                  <Text style={styles.inputCardBtnText}>+</Text>
+                </Pressable>
+              </View>
+            </View>
+
+            {/* RPE card */}
+            <View style={styles.inputCard}>
+              <Text style={styles.inputCardLabel}>RPE</Text>
+              <Text style={styles.inputCardValue}>
+                {currentSet.rpe !== null ? currentSet.rpe : '-'}
+              </Text>
+              <View style={styles.inputCardButtons}>
+                <Pressable
+                  style={styles.inputCardBtn}
+                  onPress={() => {
+                    Haptics.selectionAsync();
+                    const newRpe = currentSet.rpe !== null ? Math.max(1, currentSet.rpe - 1) : 5;
+                    setCurrentSet((s) => ({ ...s, rpe: newRpe }));
+                  }}
+                >
+                  <Text style={styles.inputCardBtnText}>-</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.inputCardBtn}
+                  onPress={() => {
+                    Haptics.selectionAsync();
+                    const newRpe = currentSet.rpe !== null ? Math.min(10, currentSet.rpe + 1) : 5;
+                    setCurrentSet((s) => ({ ...s, rpe: newRpe }));
+                  }}
+                >
+                  <Text style={styles.inputCardBtnText}>+</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+
+          {/* Voice tempo toggle */}
+          <View style={styles.tempoToggleRow}>
+            <TempoToggle
+              enabled={tempoEnabled}
+              onToggle={handleTempoToggle}
+              isPlaying={tempoVoice.isPlaying}
+            />
+          </View>
+
+          {/* Complete set button */}
+          <Pressable
+            style={[
+              styles.completeButton,
+              canCompleteSet
+                ? styles.completeButtonEnabled
+                : styles.completeButtonDisabled,
+            ]}
+            onPress={handleCompleteSet}
+            disabled={!canCompleteSet}
+          >
+            <Text
+              style={[
+                styles.completeButtonText,
+                canCompleteSet
+                  ? styles.completeButtonTextEnabled
+                  : styles.completeButtonTextDisabled,
+              ]}
+            >
+              COMPLETE SET
+            </Text>
+          </Pressable>
+        </View>
+      </View>
 
       {/* Rest timer overlay */}
       {showRestTimer && (
@@ -554,15 +617,11 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
           />
         </Animated.View>
       )}
-    </View>
+    </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg.primary,
-  },
   loadingText: {
     fontFamily: fonts.monoLight,
     fontSize: 12,
@@ -572,180 +631,310 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
 
-  // Corner indicators
-  cornerTopLeft: {
-    position: 'absolute',
-    top: 12,
-    left: 16,
+  // Top header bar
+  topHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+  },
+  topHeaderLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    zIndex: 10,
+    gap: 16,
   },
-  elapsedText: {
-    fontFamily: fonts.monoLight,
-    fontSize: 11,
+  closeButton: {
+    fontFamily: fonts.display,
+    fontSize: 18,
     color: colors.text.muted,
   },
-  quitButton: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  quitText: {
-    fontFamily: fonts.mono,
-    fontSize: 11,
-    color: colors.text.muted,
-  },
-  cornerTopRight: {
-    position: 'absolute',
-    top: 12,
-    right: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    zIndex: 10,
-  },
-  finishButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  finishText: {
-    fontFamily: fonts.monoLight,
-    fontSize: 11,
-    color: colors.ember[500],
-    letterSpacing: 1,
-  },
-  xpText: {
+  elapsedTime: {
     fontFamily: fonts.mono,
     fontSize: 12,
-    color: colors.ember[500],
-  },
-
-  // Edge arrows
-  leftArrow: {
-    position: 'absolute',
-    left: 8,
-    top: '40%',
-    zIndex: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 12,
-  },
-  rightArrow: {
-    position: 'absolute',
-    right: 8,
-    top: '40%',
-    zIndex: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 12,
-  },
-  arrowText: {
-    fontFamily: fonts.display,
-    fontSize: 20,
-    color: colors.ember[500],
-  },
-  arrowTextDisabled: {
     color: colors.text.muted,
+    letterSpacing: 1,
+  },
+  topHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
   },
 
-  // Center block
-  centerBlock: {
+  // Main two-column layout
+  mainContent: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 48, // room for edge arrows
-  },
-  exerciseNameRow: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginBottom: 4,
+    paddingLeft: 24,
+    paddingRight: 16,
+    paddingBottom: 16,
+  },
+
+  // Left column - takes more space (~60%)
+  leftColumn: {
+    flex: 3,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingRight: 24,
+  },
+  exerciseHeader: {
+    marginBottom: 8,
+  },
+  exerciseNavRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  inlineArrow: {
+    fontFamily: fonts.display,
+    fontSize: 16,
+    color: colors.ember[500],
+    paddingHorizontal: 4,
+  },
+  inlineArrowDisabled: {
+    color: colors.text.muted,
   },
   exerciseName: {
     fontFamily: fonts.display,
-    fontSize: 22,
+    fontSize: 20,
     color: colors.text.primary,
     letterSpacing: 2,
   },
-  setProgress: {
-    fontFamily: fonts.mono,
-    fontSize: 14,
-    color: colors.text.muted,
-  },
-  exerciseCounter: {
+  exerciseProgress: {
     fontFamily: fonts.monoLight,
-    fontSize: 11,
+    fontSize: 10,
     color: colors.text.muted,
-    marginBottom: 24,
+    letterSpacing: 1,
+    marginTop: 4,
+    textAlign: 'center',
   },
-  tempoLive: {
+
+  // Tempo area
+  tempoArea: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  tempoLiveRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 12,
+  },
+  tempoPhase: {
     fontFamily: fonts.mono,
-    fontSize: 48,
+    fontSize: 64,
+    letterSpacing: 4,
+  },
+  tempoPhaseUp: {
+    color: '#22C55E',
+  },
+  tempoPhaseDown: {
     color: colors.ember[500],
-    letterSpacing: 2,
-    marginBottom: 16,
+  },
+  tempoCountdown: {
+    fontFamily: fonts.mono,
+    fontSize: 64,
+    color: colors.text.primary,
+    letterSpacing: 4,
   },
   tempoStatic: {
     fontFamily: fonts.mono,
-    fontSize: 32,
+    fontSize: 48,
     color: colors.ember[700],
     letterSpacing: 2,
-    marginBottom: 16,
   },
   tempoOff: {
     fontFamily: fonts.monoLight,
-    fontSize: 16,
+    fontSize: 24,
     color: colors.text.muted,
-    letterSpacing: 1,
-    marginBottom: 16,
-  },
-  tempoToggleWrapper: {
-    marginBottom: 24,
+    letterSpacing: 2,
   },
 
-  // Completed sets summary
-  completedSummary: {
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+  // Completed sets
+  completedSetsSection: {
+    marginBottom: 16,
   },
-  completedSummaryText: {
+  completedSetsLabel: {
+    fontFamily: fonts.label,
+    fontSize: 10,
+    color: colors.text.muted,
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  noSetsText: {
     fontFamily: fonts.monoLight,
     fontSize: 11,
     color: colors.text.muted,
   },
   completedSetRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2a2d33',
+    borderLeftWidth: 3,
+    borderLeftColor: colors.ember[500],
+    borderRadius: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    marginBottom: 6,
+  },
+  setNumber: {
+    fontFamily: fonts.mono,
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text.muted,
+    minWidth: 40,
+  },
+  setWeight: {
+    fontFamily: fonts.mono,
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.text.primary,
+    minWidth: 70,
+  },
+  setReps: {
+    fontFamily: fonts.mono,
+    fontSize: 16,
+    fontWeight: '500',
+    color: colors.text.primary,
+    minWidth: 60,
+  },
+  setRepsX: {
+    color: colors.text.muted,
+  },
+  setRpeLabel: {
+    fontFamily: fonts.mono,
+    fontSize: 12,
+    color: colors.text.muted,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginLeft: 'auto',
+    marginRight: 8,
+  },
+  setRpeValue: {
+    fontFamily: fonts.mono,
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.text.primary,
+  },
+
+  // Footer stats
+  footerStats: {
+    alignSelf: 'stretch',
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: colors.zone.cold,
+  },
+  footerText: {
     fontFamily: fonts.monoLight,
-    fontSize: 11,
-    color: colors.text.secondary,
-    marginTop: 4,
+    fontSize: 10,
+    color: colors.text.muted,
+    letterSpacing: 1,
     textAlign: 'center',
   },
 
-  // Bottom input row
-  inputRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'flex-end',
-    paddingHorizontal: 24,
-    paddingBottom: 8,
+  // Right column - compact input area
+  rightColumn: {
+    flex: 3,
+    paddingLeft: 16,
+    paddingRight: 8,
   },
-  inputColumn: {
+  setDisplayBox: {
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  setDisplayText: {
+    fontFamily: fonts.display,
+    fontSize: 22,
+    fontWeight: '700',
+    color: colors.ember[500],
+    letterSpacing: 1,
+    textAlign: 'center',
+  },
+
+  // Input cards row (3 columns)
+  inputCardsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  },
+  inputCard: {
+    flex: 1,
+    backgroundColor: colors.bg.card,
+    borderWidth: 1.5,
+    borderColor: '#3a3a3e',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
     alignItems: 'center',
   },
-  inputLabel: {
-    fontFamily: fonts.label,
-    fontSize: 11,
+  inputCardWeight: {
+    flex: 1.4,
+  },
+  inputCardLabel: {
+    fontFamily: fonts.mono,
+    fontSize: 10,
+    fontWeight: '600',
     color: colors.text.muted,
-    letterSpacing: 1,
-    marginBottom: 4,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    marginBottom: 6,
+  },
+  inputCardValueRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  inputCardValue: {
+    fontFamily: fonts.display,
+    fontSize: 36,
+    fontWeight: '600',
+    color: colors.text.primary,
+    lineHeight: 40,
+  },
+  inputCardUnit: {
+    fontFamily: fonts.display,
+    fontSize: 16,
+    fontWeight: '400',
+    color: colors.text.muted,
+    marginLeft: 2,
+  },
+  inputCardButtons: {
+    flexDirection: 'row',
+    gap: 6,
+    marginTop: 8,
+    width: '100%',
+    paddingHorizontal: 4,
+  },
+  inputCardBtn: {
+    flex: 1,
+    backgroundColor: '#232327',
+    borderWidth: 1.5,
+    borderColor: '#3a3a3e',
+    borderRadius: 6,
+    paddingVertical: 8,
+    alignItems: 'center',
+  },
+  inputCardBtnText: {
+    fontFamily: fonts.mono,
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text.primary,
+  },
+
+  // Voice tempo toggle row
+  tempoToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 8,
+    marginBottom: 16,
   },
 
   // Complete set button
   completeButton: {
+    marginTop: 'auto',
     paddingVertical: 14,
     alignItems: 'center',
-    width: '100%',
+    borderRadius: 8,
   },
   completeButtonEnabled: {
     backgroundColor: colors.ember[500],
@@ -755,7 +944,7 @@ const styles = StyleSheet.create({
   },
   completeButtonText: {
     fontFamily: fonts.display,
-    fontSize: 16,
+    fontSize: 12,
     letterSpacing: 2,
   },
   completeButtonTextEnabled: {
@@ -763,5 +952,27 @@ const styles = StyleSheet.create({
   },
   completeButtonTextDisabled: {
     color: colors.text.muted,
+  },
+
+  finishButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+  },
+  finishText: {
+    fontFamily: fonts.mono,
+    fontSize: 12,
+    color: colors.ember[500],
+    letterSpacing: 2,
+  },
+  xpBadge: {
+    backgroundColor: colors.ember[500],
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  xpBadgeText: {
+    fontFamily: fonts.mono,
+    fontSize: 12,
+    color: '#FFFFFF',
   },
 });

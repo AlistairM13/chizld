@@ -11,6 +11,7 @@ import {
 import * as Haptics from 'expo-haptics';
 import { useSQLiteContext } from 'expo-sqlite';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ScreenBackground } from '@/components/common/ScreenBackground';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
 import { zones } from '@/constants/zones';
@@ -231,7 +232,7 @@ export function SplitCreateScreen({ navigation }: Props) {
   const keyExtractor = useCallback((item: Exercise) => item.id, []);
 
   return (
-    <View style={styles.container}>
+    <ScreenBackground>
       {/* Header with editable title and save button */}
       <View style={styles.header}>
         <Pressable onPress={handleBack} style={styles.backButton}>
@@ -321,8 +322,7 @@ export function SplitCreateScreen({ navigation }: Props) {
           </View>
         )}
       </View>
-
-    </View>
+    </ScreenBackground>
   );
 }
 

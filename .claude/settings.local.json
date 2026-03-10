@@ -3,7 +3,9 @@
     "allow": [
       "Bash(C:/Users/alist/AppData/Local/Android/Sdk/platform-tools/adb -s emulator-5554 shell df -h /data)",
       "Bash(adb devices:*)",
-      "Bash(adb exec-out:*)"
+      "Bash(adb exec-out:*)",
+      "mcp__claude_ai_Context7__query-docs",
+      "mcp__claude_ai_Context7__resolve-library-id"
     ]
   }
 }

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ScreenBackground } from '@/components/common/ScreenBackground';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
 import { zones } from '@/constants/zones';
@@ -99,7 +100,7 @@ export function ExerciseSelectScreen({ route, navigation }: Props) {
   const keyExtractor = useCallback((item: Exercise) => item.id, []);
 
   return (
-    <View style={styles.container}>
+    <ScreenBackground>
       {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={handleBack} style={styles.backButton}>
@@ -158,15 +159,11 @@ export function ExerciseSelectScreen({ route, navigation }: Props) {
         onClose={() => setShowAddModal(false)}
         onAdd={handleAddExercise}
       />
-    </View>
+    </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg.primary,
-  },
   header: {
     height: 44,
     flexDirection: 'row',

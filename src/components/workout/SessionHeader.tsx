@@ -9,6 +9,7 @@ interface SessionHeaderProps {
   currentSet: number;
   totalSets: number;
   onFinish: () => void;
+  onQuit: () => void;
 }
 
 /**
@@ -20,14 +21,25 @@ export function SessionHeader({
   currentSet,
   totalSets,
   onFinish,
+  onQuit,
 }: SessionHeaderProps) {
   const handleFinish = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     onFinish();
   };
 
+  const handleQuit = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onQuit();
+  };
+
   return (
     <View style={styles.container}>
+      {/* Quit button */}
+      <Pressable style={styles.quitButton} onPress={handleQuit}>
+        <Text style={styles.quitButtonText}>✕</Text>
+      </Pressable>
+
       {/* Exercise name */}
       <Text style={styles.exerciseName} numberOfLines={1}>
         {exerciseName}
@@ -57,6 +69,21 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors.ember[700],
+  },
+  quitButton: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: colors.text.muted,
+    borderRadius: 4,
+  },
+  quitButtonText: {
+    fontFamily: fonts.display,
+    fontSize: 16,
+    color: colors.text.muted,
   },
   exerciseName: {
     flex: 1,
