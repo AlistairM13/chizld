@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 3.1 — Workout Splits (database schema complete)
+**Current focus:** Phase 3.1 — Workout Splits (split list screen complete)
 
 ## Current Position
 
 Phase: 3.1 of 5 (Workout Splits - INSERTED)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-03-10 — Completed 03.1-01-PLAN.md (Database Schema)
+Last activity: 2026-03-10 — Completed 03.1-02-PLAN.md (Split List Screen)
 
-Progress: [████████████████████░░░░] 83% (20/24 plans complete)
-Note: Phase 3.1 plan 01 complete — 3 more plans in phase
+Progress: [█████████████████████░░░] 88% (21/24 plans complete)
+Note: Phase 3.1 plan 02 complete — 2 more plans in phase
 
 ## Performance Metrics
 
@@ -107,6 +107,8 @@ Recent decisions affecting current work:
 - [03.1-01]: PRAGMA foreign_keys = ON at database init for cascade deletes
 - [03.1-01]: split_exercises uses sort_order for exercise ordering within split
 - [03.1-01]: getSplitExercises JOINs with exercises table to include names
+- [03.1-02]: Placeholder screens inline in RootNavigator for type safety before real implementation
+- [03.1-02]: Empty state has both inline CREATE SPLIT button and header + NEW button
 
 ### Pending Todos
 
@@ -128,8 +130,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-10
-Stopped at: Completed 03.1-01-PLAN.md (Database Schema)
-Resume file: .planning/phases/03.1-workout-splits/03.1-02-PLAN.md
+Stopped at: Completed 03.1-02-PLAN.md (Split List Screen)
+Resume file: .planning/phases/03.1-workout-splits/03.1-03-PLAN.md
 
 ## Project Status
 
@@ -138,8 +140,8 @@ Original 5 phases (19 plans) completed. Phase 3.1 inserted:
 - Phase 2: Character Overview (hex grid, body canvas, zone cards)
 - Phase 2.1: Overview Polish (zone labels, photo slots, HUD)
 - Phase 3: Character Detail (stat card, animations)
-- Phase 3.1: Workout Splits (IN PROGRESS - 1/4 plans)
+- Phase 3.1: Workout Splits (IN PROGRESS - 2/4 plans)
 - Phase 4: Workout Module (exercise selection, set logging, summary)
 - Phase 5: XP & Leveling (XP calculation, floaters, persistence, refresh)
 
-Total execution time: ~57 minutes across 20 plans.
+Total execution time: ~59 minutes across 21 plans.
