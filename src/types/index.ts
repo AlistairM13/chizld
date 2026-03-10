@@ -76,3 +76,37 @@ export interface LevelThreshold {
   xpRequired: number;
   title: string;
 }
+
+/**
+ * A workout split template containing multiple exercises.
+ */
+export interface WorkoutSplit {
+  id: string;
+  name: string;
+  exerciseCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * An exercise within a split with default sets/reps configuration.
+ */
+export interface SplitExercise {
+  id: string;
+  splitId: string;
+  exerciseId: string;
+  exerciseName: string;
+  primaryZone: string;
+  defaultSets: number;
+  defaultReps: number;
+  sortOrder: number;
+}
+
+/**
+ * Input for creating a split exercise entry.
+ */
+export interface SplitExerciseInput {
+  exerciseId: string;
+  sets: number;
+  reps: number;
+}
