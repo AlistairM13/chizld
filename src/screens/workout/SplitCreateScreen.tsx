@@ -232,7 +232,7 @@ export function SplitCreateScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      {/* Header with editable title */}
+      {/* Header with editable title and save button */}
       <View style={styles.header}>
         <Pressable onPress={handleBack} style={styles.backButton}>
           <Text style={styles.backArrow}>{'<'}</Text>
@@ -247,7 +247,15 @@ export function SplitCreateScreen({ navigation }: Props) {
           autoCorrect={false}
           autoFocus
         />
-        <View style={styles.headerSpacer} />
+        <Pressable
+          style={[styles.saveButton, !canSave && styles.saveButtonDisabled]}
+          onPress={handleSave}
+          disabled={!canSave}
+        >
+          <Text style={[styles.saveButtonText, !canSave && styles.saveButtonTextDisabled]}>
+            {isSaving ? 'SAVING...' : 'SAVE SPLIT'}
+          </Text>
+        </Pressable>
       </View>
 
       {/* Zone Filter */}
@@ -314,18 +322,6 @@ export function SplitCreateScreen({ navigation }: Props) {
         )}
       </View>
 
-      {/* Bottom Save Bar */}
-      <View style={styles.bottomBar}>
-        <Pressable
-          style={[styles.saveButton, !canSave && styles.saveButtonDisabled]}
-          onPress={handleSave}
-          disabled={!canSave}
-        >
-          <Text style={[styles.saveButtonText, !canSave && styles.saveButtonTextDisabled]}>
-            {isSaving ? 'SAVING...' : 'SAVE SPLIT'}
-          </Text>
-        </Pressable>
-      </View>
     </View>
   );
 }
@@ -363,9 +359,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     paddingVertical: 8,
     textAlignVertical: 'center',
-  },
-  headerSpacer: {
-    width: 32,
   },
   mainContent: {
     flex: 1,
@@ -413,29 +406,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
-  bottomBar: {
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: colors.zone.cold,
-    backgroundColor: colors.bg.primary,
-  },
   saveButton: {
     backgroundColor: colors.ember[500],
     borderRadius: 4,
-    paddingVertical: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   saveButtonDisabled: {
-    backgroundColor: colors.bg.card,
+    backgroundColor: 'transparent',
     borderWidth: 1,
     borderColor: colors.zone.cold,
   },
   saveButtonText: {
     fontFamily: fonts.display,
-    fontSize: 14,
+    fontSize: 12,
     color: colors.bg.primary,
-    letterSpacing: 2,
+    letterSpacing: 1,
   },
   saveButtonTextDisabled: {
     color: colors.text.muted,
