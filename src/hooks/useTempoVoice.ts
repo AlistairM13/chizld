@@ -54,21 +54,25 @@ export function useTempoVoice() {
   const [currentPhase, setCurrentPhase] = useState<string | null>(null); // 'DOWN' | 'HOLD' | 'UP' | null
   const [countdown, setCountdown] = useState<number>(0);
   const isActiveRef = useRef(false);
+  const generationRef = useRef(0); // Tracks cycle generation to detect superseded loops
 
   /**
    * Plays the tempo cycle continuously until stopped.
+   * Uses generation to detect if this cycle has been superseded.
    */
-  const playTempoCycle = useCallback(async (config: TempoConfig) => {
-    while (isActiveRef.current) {
+  const playTempoCycle = useCallback(async (config: TempoConfig, generation: number) => {
+    const isCurrentGeneration = () => isActiveRef.current && generationRef.current === generation;
+
+    while (isCurrentGeneration()) {
       // Eccentric phase
-      if (!isActiveRef.current) break;
+      if (!isCurrentGeneration()) break;
       setCurrentPhase('DOWN');
       setCountdown(config.eccentric);
       await speakAndWait('Down');
 
       // Countdown eccentric
       for (let i = config.eccentric; i >= 1; i--) {
-        if (!isActiveRef.current) break;
+        if (!isCurrentGeneration()) break;
         setCountdown(i);
         await speakAndWait(i.toString());
         if (i > 1) {
@@ -78,7 +82,7 @@ export function useTempoVoice() {
 
       // Bottom hold
       if (config.pauseBottom > 0) {
-        if (!isActiveRef.current) break;
+        if (!isCurrentGeneration()) break;
         setCurrentPhase('HOLD');
         setCountdown(config.pauseBottom);
         await speakAndWait('Hold');
@@ -86,14 +90,14 @@ export function useTempoVoice() {
       }
 
       // Concentric phase
-      if (!isActiveRef.current) break;
+      if (!isCurrentGeneration()) break;
       setCurrentPhase('UP');
       setCountdown(config.concentric);
       await speakAndWait('Up');
 
       // Countdown concentric
       for (let i = config.concentric; i >= 1; i--) {
-        if (!isActiveRef.current) break;
+        if (!isCurrentGeneration()) break;
         setCountdown(i);
         await speakAndWait(i.toString());
         if (i > 1) {
@@ -103,7 +107,7 @@ export function useTempoVoice() {
 
       // Top hold
       if (config.pauseTop > 0) {
-        if (!isActiveRef.current) break;
+        if (!isCurrentGeneration()) break;
         setCurrentPhase('HOLD');
         setCountdown(config.pauseTop);
         await speakAndWait('Hold');
@@ -111,7 +115,7 @@ export function useTempoVoice() {
       }
 
       // Brief pause between reps
-      if (isActiveRef.current) {
+      if (isCurrentGeneration()) {
         await delay(500);
       }
     }
@@ -122,11 +126,16 @@ export function useTempoVoice() {
    */
   const startTempo = useCallback(
     (config: TempoConfig = DEFAULT_TEMPO) => {
-      if (isActiveRef.current) return; // Already playing
+      // Stop any existing cycle first
+      Speech.stop();
+
+      // Increment generation to supersede any running loops
+      generationRef.current += 1;
+      const currentGeneration = generationRef.current;
 
       isActiveRef.current = true;
       setIsPlaying(true);
-      playTempoCycle(config);
+      playTempoCycle(config, currentGeneration);
     },
     [playTempoCycle]
   );
