@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Pressable, Vibration } from 'react-native';
-import { Canvas, Path, Skia } from '@shopify/react-native-skia';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
@@ -12,38 +11,13 @@ interface RestTimerOverlayProps {
   onSkip: () => void;
 }
 
-const RING_SIZE = 200;
-const STROKE_WIDTH = 8;
-const RADIUS = (RING_SIZE - STROKE_WIDTH) / 2;
-const CENTER = RING_SIZE / 2;
-
 /**
- * Creates a circular arc path for the progress ring.
- */
-function createArcPath(progress: number): string {
-  // Progress: 1 = full circle, 0 = no arc
-  const endAngle = progress * Math.PI * 2;
-  const startAngle = -Math.PI / 2; // Start from top
-
-  if (progress <= 0) {
-    return '';
-  }
-
-  if (progress >= 1) {
-    // Full circle
-    return `M ${CENTER} ${CENTER - RADIUS} A ${RADIUS} ${RADIUS} 0 1 1 ${CENTER - 0.001} ${CENTER - RADIUS}`;
-  }
-
-  const endX = CENTER + RADIUS * Math.cos(startAngle + endAngle);
-  const endY = CENTER + RADIUS * Math.sin(startAngle + endAngle);
-  const largeArc = progress > 0.5 ? 1 : 0;
-
-  return `M ${CENTER} ${CENTER - RADIUS} A ${RADIUS} ${RADIUS} 0 ${largeArc} 1 ${endX} ${endY}`;
-}
-
-/**
- * Full-screen rest timer overlay with animated Skia progress ring.
- * Auto-starts on mount, supports +/-15s adjust and skip.
+ * Full-black rest timer overlay with large countdown number.
+ * Shows -15s / SKIP / +15s controls during countdown.
+ * On completion, shows "REST COMPLETE" — user taps to dismiss.
+ *
+ * NOTE: No FadeIn/FadeOut animation here — the parent (WorkoutSessionScreen)
+ * wraps this component in an Animated.View with fade transitions (Plan 04).
  */
 export function RestTimerOverlay({
   duration,
@@ -51,6 +25,7 @@ export function RestTimerOverlay({
   onSkip,
 }: RestTimerOverlayProps) {
   const timer = useRestTimer(duration);
+  const [isComplete, setIsComplete] = useState(false);
 
   // Start timer on mount
   useEffect(() => {
@@ -60,12 +35,11 @@ export function RestTimerOverlay({
   // Handle timer completion
   useEffect(() => {
     if (!timer.isRunning && timer.remaining === 0 && duration > 0) {
-      // Timer finished naturally
+      setIsComplete(true);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-      Vibration.vibrate([0, 200, 100, 200]);
-      onComplete();
+      // Do NOT auto-call onComplete — user must tap
     }
-  }, [timer.isRunning, timer.remaining, duration, onComplete]);
+  }, [timer.isRunning, timer.remaining, duration]);
 
   const handleAdjust = (delta: number) => {
     Haptics.selectionAsync();
@@ -78,124 +52,77 @@ export function RestTimerOverlay({
     onSkip();
   };
 
-  // Calculate progress for arc (1 = full, 0 = empty)
-  const progress = timer.remaining / duration;
-
-  // Create the arc path
-  const arcPathString = createArcPath(progress);
-  const arcPath = arcPathString ? Skia.Path.MakeFromSVGString(arcPathString) : null;
-
-  // Format remaining time as MM:SS
-  const minutes = Math.floor(timer.remaining / 60);
-  const seconds = timer.remaining % 60;
-  const timeDisplay =
-    minutes > 0
-      ? `${minutes}:${seconds.toString().padStart(2, '0')}`
-      : seconds.toString();
+  const handleDismiss = () => {
+    if (isComplete) {
+      onComplete();
+    }
+  };
 
   return (
-    <View style={styles.overlay}>
-      {/* Progress ring with Skia */}
-      <View style={styles.ringContainer}>
-        <Canvas style={styles.canvas}>
-          {/* Background circle */}
-          <Path
-            path={Skia.Path.MakeFromSVGString(
-              `M ${CENTER} ${CENTER - RADIUS} A ${RADIUS} ${RADIUS} 0 1 1 ${CENTER - 0.001} ${CENTER - RADIUS}`
-            )!}
-            style="stroke"
-            strokeWidth={STROKE_WIDTH}
-            color={colors.zone.cold}
-          />
-          {/* Progress arc */}
-          {arcPath && (
-            <Path
-              path={arcPath}
-              style="stroke"
-              strokeWidth={STROKE_WIDTH}
-              color={colors.ember[500]}
-              strokeCap="round"
-            />
-          )}
-        </Canvas>
-
-        {/* Time display centered */}
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeText}>{timeDisplay}</Text>
-          <Text style={styles.restLabel}>REST</Text>
+    <Pressable style={styles.overlay} onPress={handleDismiss}>
+      {isComplete ? (
+        // REST COMPLETE state
+        <View style={styles.completeContainer}>
+          <Text style={styles.completeText}>REST COMPLETE</Text>
+          <Text style={styles.tapToContinueText}>TAP TO CONTINUE</Text>
         </View>
-      </View>
-
-      {/* Adjust buttons */}
-      <View style={styles.adjustRow}>
-        <Pressable
-          style={styles.adjustButton}
-          onPress={() => handleAdjust(-15)}
-        >
-          <Text style={styles.adjustButtonText}>-15s</Text>
-        </Pressable>
-        <Pressable
-          style={styles.adjustButton}
-          onPress={() => handleAdjust(15)}
-        >
-          <Text style={styles.adjustButtonText}>+15s</Text>
-        </Pressable>
-      </View>
-
-      {/* Skip button */}
-      <Pressable style={styles.skipButton} onPress={handleSkip}>
-        <Text style={styles.skipButtonText}>SKIP REST</Text>
-      </Pressable>
-    </View>
+      ) : (
+        // Active countdown state
+        <View style={styles.countdownContainer}>
+          <Text style={styles.countdownText}>{timer.remaining}</Text>
+          <View style={styles.buttonRow}>
+            <Pressable
+              style={styles.adjustButton}
+              onPress={() => handleAdjust(-15)}
+            >
+              <Text style={styles.adjustButtonText}>-15s</Text>
+            </Pressable>
+            <Pressable style={styles.skipButton} onPress={handleSkip}>
+              <Text style={styles.skipButtonText}>SKIP</Text>
+            </Pressable>
+            <Pressable
+              style={styles.adjustButton}
+              onPress={() => handleAdjust(15)}
+            >
+              <Text style={styles.adjustButtonText}>+15s</Text>
+            </Pressable>
+          </View>
+        </View>
+      )}
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(10, 10, 15, 0.95)',
+    backgroundColor: '#000000',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 100,
   },
-  ringContainer: {
-    width: RING_SIZE,
-    height: RING_SIZE,
-    justifyContent: 'center',
+  // Active countdown
+  countdownContainer: {
     alignItems: 'center',
   },
-  canvas: {
-    position: 'absolute',
-    width: RING_SIZE,
-    height: RING_SIZE,
-  },
-  timeContainer: {
-    alignItems: 'center',
-  },
-  timeText: {
+  countdownText: {
     fontFamily: fonts.mono,
-    fontSize: 72,
-    color: colors.ember[500],
+    fontSize: 120,
+    color: colors.text.primary,
+    letterSpacing: 4,
   },
-  restLabel: {
-    fontFamily: fonts.label,
-    fontSize: 14,
-    color: colors.text.muted,
-    letterSpacing: 2,
-    marginTop: 4,
-  },
-  adjustRow: {
+  buttonRow: {
     flexDirection: 'row',
-    gap: 24,
-    marginTop: 40,
+    gap: 32,
+    marginTop: 48,
+    alignItems: 'center',
   },
   adjustButton: {
-    backgroundColor: colors.bg.card,
     borderWidth: 1,
     borderColor: colors.ember[700],
     borderRadius: 4,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   adjustButtonText: {
     fontFamily: fonts.mono,
@@ -203,14 +130,33 @@ const styles = StyleSheet.create({
     color: colors.ember[500],
   },
   skipButton: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: colors.ember[700],
+    borderRadius: 4,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   skipButtonText: {
-    fontFamily: fonts.label,
+    fontFamily: fonts.display,
     fontSize: 14,
     color: colors.text.muted,
     letterSpacing: 2,
+  },
+  // REST COMPLETE state
+  completeContainer: {
+    alignItems: 'center',
+  },
+  completeText: {
+    fontFamily: fonts.display,
+    fontSize: 28,
+    color: colors.ember[500],
+    letterSpacing: 4,
+  },
+  tapToContinueText: {
+    fontFamily: fonts.monoLight,
+    fontSize: 12,
+    color: colors.text.muted,
+    letterSpacing: 2,
+    marginTop: 16,
   },
 });
