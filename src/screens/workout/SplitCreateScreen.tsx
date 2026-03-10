@@ -232,27 +232,22 @@ export function SplitCreateScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* Header with editable title */}
       <View style={styles.header}>
         <Pressable onPress={handleBack} style={styles.backButton}>
           <Text style={styles.backArrow}>{'<'}</Text>
         </Pressable>
-        <Text style={styles.headerTitle}>NEW SPLIT</Text>
-        <View style={styles.headerSpacer} />
-      </View>
-
-      {/* Split Name Input */}
-      <View style={styles.nameSection}>
-        <Text style={styles.nameLabel}>SPLIT NAME</Text>
         <TextInput
-          style={styles.nameInput}
-          placeholder="e.g., Push Day, Pull Day..."
+          style={styles.headerTitleInput}
+          placeholder="New Split"
           placeholderTextColor={colors.text.muted}
           value={splitName}
           onChangeText={setSplitName}
           autoCapitalize="words"
           autoCorrect={false}
+          autoFocus
         />
+        <View style={styles.headerSpacer} />
       </View>
 
       {/* Zone Filter */}
@@ -341,7 +336,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg.primary,
   },
   header: {
-    height: 44,
+    height: 52,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -359,39 +354,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.ember[500],
   },
-  headerTitle: {
+  headerTitleInput: {
+    flex: 1,
     fontFamily: fonts.display,
     fontSize: 18,
     color: colors.text.primary,
     letterSpacing: 2,
     marginLeft: 8,
+    paddingVertical: 8,
+    textAlignVertical: 'center',
   },
   headerSpacer: {
-    flex: 1,
-  },
-  nameSection: {
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.zone.cold,
-  },
-  nameLabel: {
-    fontFamily: fonts.monoLight,
-    fontSize: 10,
-    color: colors.text.muted,
-    letterSpacing: 1,
-    marginBottom: 6,
-  },
-  nameInput: {
-    backgroundColor: colors.bg.card,
-    borderWidth: 1,
-    borderColor: colors.zone.cold,
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontFamily: fonts.label,
-    fontSize: 14,
-    color: colors.text.primary,
+    width: 32,
   },
   mainContent: {
     flex: 1,

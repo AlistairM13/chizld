@@ -78,63 +78,56 @@ export function SplitExerciseRow({
 
   return (
     <View style={styles.container}>
-      {/* Top row: Exercise info, sets/reps, remove */}
-      <View style={styles.topRow}>
-        {/* Left section: Exercise name and zone */}
-        <View style={styles.leftSection}>
-          <Text style={styles.exerciseName} numberOfLines={1}>
-            {exerciseName}
-          </Text>
-          <Text style={styles.zoneName}>{zoneName.toUpperCase()}</Text>
-        </View>
-
-        {/* Middle section: Sets and Reps steppers */}
-        <View style={styles.middleSection}>
-          {/* Sets stepper */}
-          <View style={styles.stepperGroup}>
-            <Text style={styles.stepperLabel}>SETS</Text>
-            <View style={styles.stepperRow}>
-              <Pressable style={styles.stepperButton} onPress={handleSetsDecrement}>
-                <Text style={styles.stepperButtonText}>-</Text>
-              </Pressable>
-              <View style={styles.valueDisplay}>
-                <Text style={styles.valueText}>{sets}</Text>
-              </View>
-              <Pressable style={styles.stepperButton} onPress={handleSetsIncrement}>
-                <Text style={styles.stepperButtonText}>+</Text>
-              </Pressable>
-            </View>
+      {/* Content area */}
+      <View style={styles.contentArea}>
+        {/* Top row: Exercise info + sets/reps */}
+        <View style={styles.topRow}>
+          <View style={styles.leftSection}>
+            <Text style={styles.exerciseName} numberOfLines={1}>
+              {exerciseName}
+            </Text>
+            <Text style={styles.zoneName}>{zoneName.toUpperCase()}</Text>
           </View>
 
-          {/* Reps stepper */}
-          <View style={styles.stepperGroup}>
-            <Text style={styles.stepperLabel}>REPS</Text>
-            <View style={styles.stepperRow}>
-              <Pressable style={styles.stepperButton} onPress={handleRepsDecrement}>
-                <Text style={styles.stepperButtonText}>-</Text>
-              </Pressable>
-              <View style={styles.valueDisplay}>
-                <Text style={styles.valueText}>{reps}</Text>
+          <View style={styles.steppersSection}>
+            {/* Sets stepper */}
+            <View style={styles.stepperGroup}>
+              <Text style={styles.stepperLabel}>SETS</Text>
+              <View style={styles.stepperRow}>
+                <Pressable style={styles.stepperButton} onPress={handleSetsDecrement}>
+                  <Text style={styles.stepperButtonText}>-</Text>
+                </Pressable>
+                <View style={styles.valueDisplay}>
+                  <Text style={styles.valueText}>{sets}</Text>
+                </View>
+                <Pressable style={styles.stepperButton} onPress={handleSetsIncrement}>
+                  <Text style={styles.stepperButtonText}>+</Text>
+                </Pressable>
               </View>
-              <Pressable style={styles.stepperButton} onPress={handleRepsIncrement}>
-                <Text style={styles.stepperButtonText}>+</Text>
-              </Pressable>
+            </View>
+
+            {/* Reps stepper */}
+            <View style={styles.stepperGroup}>
+              <Text style={styles.stepperLabel}>REPS</Text>
+              <View style={styles.stepperRow}>
+                <Pressable style={styles.stepperButton} onPress={handleRepsDecrement}>
+                  <Text style={styles.stepperButtonText}>-</Text>
+                </Pressable>
+                <View style={styles.valueDisplay}>
+                  <Text style={styles.valueText}>{reps}</Text>
+                </View>
+                <Pressable style={styles.stepperButton} onPress={handleRepsIncrement}>
+                  <Text style={styles.stepperButtonText}>+</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </View>
 
-        {/* Right section: Remove button */}
-        <Pressable style={styles.removeButton} onPress={handleRemove}>
-          <Text style={styles.removeButtonText}>X</Text>
-        </Pressable>
-      </View>
-
-      {/* Bottom row: Tempo controls */}
-      <View style={styles.tempoRow}>
-        <Text style={styles.tempoLabel}>TEMPO</Text>
-        <View style={styles.tempoControls}>
-          {/* Eccentric */}
-          <View style={styles.tempoItem}>
+        {/* Bottom row: Tempo controls */}
+        <View style={styles.tempoRow}>
+          <Text style={styles.tempoLabel}>TEMPO</Text>
+          <View style={styles.tempoControls}>
             <Pressable
               style={styles.tempoButton}
               onPress={() => handleTempoChange('eccentric', -1)}
@@ -148,10 +141,7 @@ export function SplitExerciseRow({
             >
               <Text style={styles.tempoButtonText}>+</Text>
             </Pressable>
-          </View>
-          <Text style={styles.tempoDash}>-</Text>
-          {/* Pause Bottom */}
-          <View style={styles.tempoItem}>
+            <Text style={styles.tempoDash}>-</Text>
             <Pressable
               style={styles.tempoButton}
               onPress={() => handleTempoChange('pauseBottom', -1)}
@@ -165,10 +155,7 @@ export function SplitExerciseRow({
             >
               <Text style={styles.tempoButtonText}>+</Text>
             </Pressable>
-          </View>
-          <Text style={styles.tempoDash}>-</Text>
-          {/* Concentric */}
-          <View style={styles.tempoItem}>
+            <Text style={styles.tempoDash}>-</Text>
             <Pressable
               style={styles.tempoButton}
               onPress={() => handleTempoChange('concentric', -1)}
@@ -182,10 +169,7 @@ export function SplitExerciseRow({
             >
               <Text style={styles.tempoButtonText}>+</Text>
             </Pressable>
-          </View>
-          <Text style={styles.tempoDash}>-</Text>
-          {/* Pause Top */}
-          <View style={styles.tempoItem}>
+            <Text style={styles.tempoDash}>-</Text>
             <Pressable
               style={styles.tempoButton}
               onPress={() => handleTempoChange('pauseTop', -1)}
@@ -202,19 +186,28 @@ export function SplitExerciseRow({
           </View>
         </View>
       </View>
+
+      {/* Remove button - spans full height */}
+      <Pressable style={styles.removeButton} onPress={handleRemove}>
+        <Text style={styles.removeButtonText}>X</Text>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    flexDirection: 'row',
     backgroundColor: colors.bg.card,
     borderWidth: 1,
     borderColor: colors.zone.cold,
     borderRadius: 4,
     marginBottom: 8,
+  },
+  contentArea: {
+    flex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
   topRow: {
     flexDirection: 'row',
@@ -236,7 +229,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginTop: 2,
   },
-  middleSection: {
+  steppersSection: {
     flexDirection: 'row',
     gap: 16,
   },
@@ -280,21 +273,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.text.primary,
   },
-  removeButton: {
-    width: 24,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 12,
-  },
-  removeButtonText: {
-    fontFamily: fonts.mono,
-    fontSize: 14,
-    color: colors.ember[500],
-  },
   tempoRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 8,
     paddingTop: 8,
     borderTopWidth: 1,
@@ -305,13 +287,8 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: colors.text.muted,
     letterSpacing: 1,
-    marginRight: 8,
   },
   tempoControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  tempoItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -342,5 +319,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.text.muted,
     marginHorizontal: 4,
+  },
+  removeButton: {
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderLeftWidth: 1,
+    borderLeftColor: colors.zone.cold,
+  },
+  removeButtonText: {
+    fontFamily: fonts.mono,
+    fontSize: 16,
+    color: colors.ember[500],
   },
 });
