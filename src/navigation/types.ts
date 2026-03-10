@@ -12,7 +12,12 @@ export interface XPBreakdownParams {
 export type RootStackParamList = {
   Main: undefined;
   ExerciseSelect: { zoneId: string };
-  WorkoutSession: { sessionId: string; exercises: string[]; zoneId: string };
+  WorkoutSession: {
+    sessionId: string;
+    exercises: string[];
+    zoneId: string;
+    splitId?: string;
+  };
   SessionSummary: {
     sessionId: string;
     zoneId: string;
