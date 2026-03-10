@@ -1,0 +1,11 @@
+appId: com.thealister.chizldapp
+---
+- launchApp:
+    clearState: false
+- tapOn:
+    text: "Continue"
+    optional: true
+- tapOn:
+    text: "Close"
+    optional: true
+- tapOn: "HOME"

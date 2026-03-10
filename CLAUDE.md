@@ -72,6 +72,29 @@ import { fonts } from '@/constants/fonts';
 
 After making any UI changes, use `/expo-emulator-screenshot` to capture the Android emulator screen and verify your changes visually before declaring the task done.
 
+## Maestro UI Automation
+
+Maestro is configured for navigating the app before taking screenshots. Flows are in `.maestro/`.
+
+**Prerequisites** (must be running):
+1. Windows ADB server: `adb -a nodaemon server start` (in PowerShell, keep open)
+2. Android emulator with app installed
+3. App running via `npx expo run:android`
+
+**Available flows:**
+- `launch.yml` — Just launch the app
+- `go-to-home.yml` — Navigate to Home/Character screen
+- `go-to-train.yml` — Navigate to Train/Workout screen
+- `go-to-sleep.yml` — Navigate to Sleep screen
+- `go-to-fuel.yml` — Navigate to Fuel/Diet screen
+
+**Run a flow from Claude Code:**
+```bash
+wsl bash -c 'export PATH="$PATH:$HOME/.maestro/bin" && cd /mnt/d/projects/chizld/chizld-app && maestro --host 172.24.112.1 test .maestro/go-to-train.yml'
+```
+
+**Tab names in flows:** Use uppercase (HOME, TRAIN, SLEEP, FUEL) — matches rendered text.
+
 ## Planning Documents
 
 The `.planning/` directory contains project context:
