@@ -26,6 +26,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'SplitCreate'>;
 interface ExerciseConfig {
   sets: number;
   reps: number;
+  tempoEccentric: number;
+  tempoPauseBottom: number;
+  tempoConcentric: number;
+  tempoPauseTop: number;
 }
 
 interface ExerciseRow {
@@ -108,7 +112,14 @@ export function SplitCreateScreen({ navigation }: Props) {
       if (next.has(exerciseId)) {
         next.delete(exerciseId);
       } else {
-        next.set(exerciseId, { sets: 3, reps: 10 });
+        next.set(exerciseId, {
+          sets: 3,
+          reps: 10,
+          tempoEccentric: 2,
+          tempoPauseBottom: 0,
+          tempoConcentric: 1,
+          tempoPauseTop: 0,
+        });
       }
       return next;
     });
@@ -138,6 +149,35 @@ export function SplitCreateScreen({ navigation }: Props) {
     });
   }, []);
 
+  // Update tempo for an exercise
+  const handleTempoChange = useCallback(
+    (
+      exerciseId: string,
+      tempo: {
+        eccentric: number;
+        pauseBottom: number;
+        concentric: number;
+        pauseTop: number;
+      }
+    ) => {
+      setSelectedExercises((prev) => {
+        const next = new Map(prev);
+        const current = next.get(exerciseId);
+        if (current) {
+          next.set(exerciseId, {
+            ...current,
+            tempoEccentric: tempo.eccentric,
+            tempoPauseBottom: tempo.pauseBottom,
+            tempoConcentric: tempo.concentric,
+            tempoPauseTop: tempo.pauseTop,
+          });
+        }
+        return next;
+      });
+    },
+    []
+  );
+
   // Remove exercise from selection
   const handleRemove = useCallback((exerciseId: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -159,6 +199,10 @@ export function SplitCreateScreen({ navigation }: Props) {
         exerciseId: id,
         sets: config.sets,
         reps: config.reps,
+        tempoEccentric: config.tempoEccentric,
+        tempoPauseBottom: config.tempoPauseBottom,
+        tempoConcentric: config.tempoConcentric,
+        tempoPauseTop: config.tempoPauseTop,
       }));
 
       await createSplit(splitName, exercises);
@@ -258,8 +302,15 @@ export function SplitCreateScreen({ navigation }: Props) {
                   zoneName={item.zoneName}
                   sets={item.sets}
                   reps={item.reps}
+                  tempo={{
+                    eccentric: item.tempoEccentric,
+                    pauseBottom: item.tempoPauseBottom,
+                    concentric: item.tempoConcentric,
+                    pauseTop: item.tempoPauseTop,
+                  }}
                   onSetsChange={(value) => handleSetsChange(item.id, value)}
                   onRepsChange={(value) => handleRepsChange(item.id, value)}
+                  onTempoChange={(tempo) => handleTempoChange(item.id, tempo)}
                   onRemove={() => handleRemove(item.id)}
                 />
               ))}
