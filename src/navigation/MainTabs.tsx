@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CharacterScreen } from '../screens/character/CharacterScreen';
-import { WorkoutListScreen } from '../screens/workout/WorkoutListScreen';
+import { SplitListScreen } from '../screens/workout/SplitListScreen';
 import { SleepDashboardScreen } from '../screens/sleep/SleepDashboardScreen';
 import { DailyViewScreen } from '../screens/diet/DailyViewScreen';
 import { colors } from '../constants/colors';
@@ -44,7 +44,7 @@ export function MainTabs() {
       />
       <Tab.Screen
         name="Train"
-        component={WorkoutListScreen}
+        component={SplitListScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="dumbbell" size={22} color={color} />
