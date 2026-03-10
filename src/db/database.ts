@@ -1,8 +1,10 @@
 import { type SQLiteDatabase } from 'expo-sqlite';
 
 export async function initDatabase(db: SQLiteDatabase): Promise<void> {
-  // Create all 11 tables with WAL journal mode for performance
+  // Create all tables with WAL journal mode for performance
+  // Enable foreign keys for cascade deletes
   await db.execAsync(`
+    PRAGMA foreign_keys = ON;
     PRAGMA journal_mode = WAL;
 
     CREATE TABLE IF NOT EXISTS exercises (
@@ -122,6 +124,25 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
       message TEXT,
       created_at TEXT DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS workout_splits (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS split_exercises (
+      id TEXT PRIMARY KEY,
+      split_id TEXT NOT NULL REFERENCES workout_splits(id) ON DELETE CASCADE,
+      exercise_id TEXT NOT NULL REFERENCES exercises(id),
+      default_sets INTEGER DEFAULT 3,
+      default_reps INTEGER DEFAULT 10,
+      sort_order INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_split_exercises_split_id ON split_exercises(split_id);
   `);
 
   // Seed data only on first launch (when exercises table is empty)
