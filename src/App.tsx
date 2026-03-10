@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { SQLiteProvider } from 'expo-sqlite';
 import * as SplashScreen from 'expo-splash-screen';
@@ -62,10 +63,12 @@ export default function App() {
   }
 
   return (
-    <SQLiteProvider databaseName="chizld.db" onInit={initDatabase}>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </SQLiteProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SQLiteProvider databaseName="chizld.db" onInit={initDatabase}>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </SQLiteProvider>
+    </GestureHandlerRootView>
   );
 }
