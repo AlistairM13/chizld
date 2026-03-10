@@ -1,21 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MainTabs } from './MainTabs';
 import { ExerciseSelectScreen } from '@/screens/workout/ExerciseSelectScreen';
 import { WorkoutSessionScreen } from '@/screens/workout/WorkoutSessionScreen';
 import { SessionSummaryScreen } from '@/screens/workout/SessionSummaryScreen';
 import { SplitCreateScreen } from '@/screens/workout/SplitCreateScreen';
+import { SplitDetailScreen } from '@/screens/workout/SplitDetailScreen';
 import { type RootStackParamList } from './types';
-
-// Temporary placeholder until Plan 03.1-04 creates real screen
-function SplitDetailScreen() {
-  return (
-    <View style={{ flex: 1, backgroundColor: '#0A0A0F', alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ color: '#F0F0F5' }}>Split Detail</Text>
-    </View>
-  );
-}
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
