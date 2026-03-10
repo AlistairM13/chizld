@@ -90,8 +90,9 @@ export function BodyCanvas({
 
   const handlePress = useCallback(
     (event: GestureResponderEvent) => {
-      // In detail mode, body taps are handled by dismiss handler (not here)
+      // In detail mode, any tap on the body dismisses the detail view
       if (selectedZone !== null) {
+        onSelectZone?.(null);
         return;
       }
       const { locationX, locationY } = event.nativeEvent;
