@@ -18,6 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
 - [x] **Phase 3.1: Workout Splits (INSERTED)** - Custom workout templates with multi-zone support, split names, and preset sets/reps
 - [x] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
+- [ ] **Phase 4.1: Workout Session Polish (INSERTED)** - Improve look and feel of workout session screen
 - [x] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
 
 ## Phase Details
@@ -125,6 +126,25 @@ Plans:
 - [x] 04-03-PLAN.md — useTempoVoice hook, TempoToggle, WorkoutSessionScreen with full set logging
 - [x] 04-04-PLAN.md — useSessionSummary hook, SessionSummaryScreen with stats and XP placeholder
 
+### Phase 4.1: Workout Session Polish (INSERTED)
+**Goal**: Improve the look and feel of the workout session screen — better visual hierarchy, refined input controls, and enhanced UX for the set logging flow.
+**Depends on**: Phase 4
+**Requirements**: TBD (user-requested improvement)
+**Success Criteria** (what must be TRUE):
+  1. Active set view shows a focused, minimal layout with exercise name + tempo as center block, inputs at bottom, and corner indicators
+  2. RPE input is a horizontal slider (6-10) with pan gesture and haptic feedback, replacing the tappable button row
+  3. Rest timer shows a full-black screen with only a large countdown number and -15s/SKIP/+15s buttons — no progress ring
+  4. Fade transitions between active set view and rest timer view
+  5. Completed sets hidden by default behind a count label, tappable to expand
+  6. Visual pulse feedback on weight/reps input changes
+**Plans:** 4 plans
+
+Plans:
+- [ ] 04.1-01-PLAN.md — GestureHandlerRootView, useElapsedTimer hook, RPESlider component
+- [ ] 04.1-02-PLAN.md — WorkoutSessionScreen restructure (focused center-block layout)
+- [ ] 04.1-03-PLAN.md — RestTimerOverlay simplification (full-black minimal timer)
+- [ ] 04.1-04-PLAN.md — Fade transitions, input pulse animations, visual verification
+
 ### Phase 5: XP & Leveling
 **Goal**: The XP calculation engine is wired up end-to-end — every completed set earns the correct XP (base + volume bonus + tempo multiplier + PR bonus + consistency bonus), level thresholds are enforced, zone stats update after each session, and all XP transactions are recorded in xp_history. The character screen now reflects real earned XP.
 **Depends on**: Phase 4
@@ -146,7 +166,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 3.1 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 3.1 → 4 → 4.1 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -156,4 +176,5 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 3.1 → 4 → 5
 | 3. Character Detail | 2/2 | Complete | 2026-03-08 |
 | 3.1 Workout Splits (INSERTED) | 4/4 | Complete | 2026-03-10 |
 | 4. Workout Module | 4/4 | Complete | 2026-03-09 |
+| 4.1 Workout Session Polish (INSERTED) | 0/? | Not Started | - |
 | 5. XP & Leveling | 4/4 | Complete | 2026-03-09 |
