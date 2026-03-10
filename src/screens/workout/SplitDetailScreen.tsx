@@ -100,11 +100,21 @@ export function SplitDetailScreen({ route, navigation }: Props) {
     const sessionId =
       Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
 
+    // Build tempo defaults for each exercise
+    const tempoDefaults = exercises.map((e) => ({
+      exerciseId: e.exerciseId,
+      tempoEccentric: e.defaultTempoEccentric,
+      tempoPauseBottom: e.defaultTempoPauseBottom,
+      tempoConcentric: e.defaultTempoConcentric,
+      tempoPauseTop: e.defaultTempoPauseTop,
+    }));
+
     navigation.navigate('WorkoutSession', {
       sessionId,
       exercises: exercises.map((e) => e.exerciseId),
       zoneId: primaryZone,
       splitId,
+      tempoDefaults,
     });
   }, [exercises, splitId, navigation]);
 
@@ -119,9 +129,15 @@ export function SplitDetailScreen({ route, navigation }: Props) {
           <Text style={styles.exerciseName}>{item.exerciseName}</Text>
           <Text style={styles.exerciseZone}>{item.primaryZone.toUpperCase()}</Text>
         </View>
-        <Text style={styles.exerciseSetsReps}>
-          {item.defaultSets}x{item.defaultReps}
-        </Text>
+        <View style={styles.exerciseConfig}>
+          <Text style={styles.exerciseSetsReps}>
+            {item.defaultSets}x{item.defaultReps}
+          </Text>
+          <Text style={styles.exerciseTempo}>
+            {item.defaultTempoEccentric}-{item.defaultTempoPauseBottom}-
+            {item.defaultTempoConcentric}-{item.defaultTempoPauseTop}
+          </Text>
+        </View>
       </View>
     ),
     []
@@ -348,11 +364,21 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginTop: 2,
   },
+  exerciseConfig: {
+    alignItems: 'flex-end',
+  },
   exerciseSetsReps: {
     fontFamily: fonts.mono,
     fontSize: 14,
     color: colors.ember[500],
     letterSpacing: 1,
+  },
+  exerciseTempo: {
+    fontFamily: fonts.monoLight,
+    fontSize: 10,
+    color: colors.text.muted,
+    letterSpacing: 1,
+    marginTop: 2,
   },
   emptyContainer: {
     paddingVertical: 40,

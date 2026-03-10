@@ -41,7 +41,7 @@ const DEFAULT_REST_DURATION = 90; // seconds
  * Displays current exercise, set logging inputs, and rest timer.
  */
 export function WorkoutSessionScreen({ route, navigation }: Props) {
-  const { sessionId, exercises: exerciseIds, zoneId } = route.params;
+  const { sessionId, exercises: exerciseIds, zoneId, tempoDefaults } = route.params;
 
   // Hooks
   const session = useWorkoutSession();
@@ -76,6 +76,24 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   const currentExercise = session.exercises[currentExerciseIndex];
   const completedSets = currentExercise?.sets || [];
   const currentSetNumber = completedSets.length + 1;
+
+  // Get tempo for current exercise (from split defaults or use default)
+  const getCurrentTempo = useCallback((): TempoConfig => {
+    if (tempoDefaults && currentExercise) {
+      const exerciseTempo = tempoDefaults.find(
+        (t) => t.exerciseId === currentExercise.id
+      );
+      if (exerciseTempo) {
+        return {
+          eccentric: exerciseTempo.tempoEccentric,
+          pauseBottom: exerciseTempo.tempoPauseBottom,
+          concentric: exerciseTempo.tempoConcentric,
+          pauseTop: exerciseTempo.tempoPauseTop,
+        };
+      }
+    }
+    return DEFAULT_TEMPO;
+  }, [tempoDefaults, currentExercise]);
 
   // Handle back button
   useFocusEffect(
@@ -200,7 +218,7 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   const handleRestComplete = () => {
     setShowRestTimer(false);
     if (tempoEnabled) {
-      tempoVoice.startTempo(DEFAULT_TEMPO);
+      tempoVoice.startTempo(getCurrentTempo());
     }
   };
 
@@ -210,7 +228,7 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   const handleRestSkip = () => {
     setShowRestTimer(false);
     if (tempoEnabled) {
-      tempoVoice.startTempo(DEFAULT_TEMPO);
+      tempoVoice.startTempo(getCurrentTempo());
     }
   };
 
@@ -222,7 +240,7 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
     setTempoEnabled(newEnabled);
 
     if (newEnabled) {
-      tempoVoice.startTempo(DEFAULT_TEMPO);
+      tempoVoice.startTempo(getCurrentTempo());
     } else {
       tempoVoice.stopTempo();
     }
@@ -236,6 +254,11 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
       Haptics.selectionAsync();
       setCurrentExerciseIndex(currentExerciseIndex - 1);
       resetCurrentSet();
+      // Restart tempo with new exercise's settings if enabled
+      if (tempoEnabled) {
+        tempoVoice.stopTempo();
+        // Tempo will restart on next render via effect below
+      }
     }
   };
 
@@ -247,8 +270,20 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
       Haptics.selectionAsync();
       setCurrentExerciseIndex(currentExerciseIndex + 1);
       resetCurrentSet();
+      // Restart tempo with new exercise's settings if enabled
+      if (tempoEnabled) {
+        tempoVoice.stopTempo();
+        // Tempo will restart on next render via effect below
+      }
     }
   };
+
+  // Restart tempo when exercise changes (if enabled)
+  useEffect(() => {
+    if (tempoEnabled && currentExercise) {
+      tempoVoice.startTempo(getCurrentTempo());
+    }
+  }, [currentExerciseIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Resets current set inputs.

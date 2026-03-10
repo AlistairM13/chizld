@@ -9,6 +9,17 @@ export interface XPBreakdownParams {
   tempoBonus: number;
 }
 
+/**
+ * Tempo defaults for an exercise in a split-based workout.
+ */
+export interface ExerciseTempoDefaults {
+  exerciseId: string;
+  tempoEccentric: number;
+  tempoPauseBottom: number;
+  tempoConcentric: number;
+  tempoPauseTop: number;
+}
+
 export type RootStackParamList = {
   Main: undefined;
   ExerciseSelect: { zoneId: string };
@@ -17,6 +28,7 @@ export type RootStackParamList = {
     exercises: string[];
     zoneId: string;
     splitId?: string;
+    tempoDefaults?: ExerciseTempoDefaults[];
   };
   SessionSummary: {
     sessionId: string;
