@@ -65,27 +65,27 @@ export const ZONE_CARD_POSITIONS: Record<ZoneId, ZoneCardPosition> = {
     anchorY: 0.40,
     slotOffsetX: 40,
   },
-  tibialis: {
+  back: {
     x: 0.18,
     y: 0.72,
-    anchorX: 0.48,
-    anchorY: 0.75,
+    anchorX: 0.50,
+    anchorY: 0.35,
     slotOffsetX: 40,
   },
 
   // Right side zones - cards closer to body center, equally spaced vertically
-  neck: {
-    x: 0.82,
-    y: 0.18,
-    anchorX: 0.52,
-    anchorY: 0.17,
-    slotOffsetX: -40,
-  },
   shoulders: {
     x: 0.82,
-    y: 0.36,
+    y: 0.18,
     anchorX: 0.54,
     anchorY: 0.22,
+    slotOffsetX: -40,
+  },
+  chest: {
+    x: 0.82,
+    y: 0.36,
+    anchorX: 0.52,
+    anchorY: 0.28,
     slotOffsetX: -40,
   },
   abs: {
