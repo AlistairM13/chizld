@@ -7,6 +7,7 @@ import {
   FlatList,
   Pressable,
 } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
@@ -15,6 +16,7 @@ import { type RootStackParamList } from '@/navigation/types';
 import { useExercises, type Exercise } from '@/hooks/useExercises';
 import { ExerciseCard } from '@/components/workout/ExerciseCard';
 import { ExerciseBottomBar } from '@/components/workout/ExerciseBottomBar';
+import { AddExerciseModal } from '@/components/workout/AddExerciseModal';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ExerciseSelect'>;
 
@@ -27,6 +29,7 @@ export function ExerciseSelectScreen({ route, navigation }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedExercises, setSelectedExercises] = useState<Set<string>>(new Set());
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   // Get zone name for header
   const zoneName = useMemo(() => {
@@ -35,7 +38,23 @@ export function ExerciseSelectScreen({ route, navigation }: Props) {
   }, [zoneId]);
 
   // Fetch exercises for this zone
-  const { exercises, isLoading } = useExercises(zoneId, searchQuery);
+  const { exercises, isLoading, createExercise } = useExercises(zoneId, searchQuery);
+
+  // Open add modal
+  const handleOpenAddModal = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setShowAddModal(true);
+  }, []);
+
+  // Add new exercise
+  const handleAddExercise = useCallback(
+    async (name: string, equipment?: string) => {
+      const newExercise = await createExercise(name, equipment);
+      // Auto-select the newly created exercise
+      setSelectedExercises((prev) => new Set(prev).add(newExercise.id));
+    },
+    [createExercise]
+  );
 
   // Toggle exercise selection
   const handleToggle = useCallback((exerciseId: string) => {
@@ -87,6 +106,10 @@ export function ExerciseSelectScreen({ route, navigation }: Props) {
           <Text style={styles.backArrow}>{'<'}</Text>
         </Pressable>
         <Text style={styles.headerTitle}>{zoneName}</Text>
+        <View style={styles.headerSpacer} />
+        <Pressable onPress={handleOpenAddModal} style={styles.addButton}>
+          <Text style={styles.addIcon}>+</Text>
+        </Pressable>
       </View>
 
       {/* Search Input */}
@@ -127,6 +150,14 @@ export function ExerciseSelectScreen({ route, navigation }: Props) {
         onStart={handleStart}
         disabled={selectedExercises.size === 0}
       />
+
+      {/* Add Exercise Modal */}
+      <AddExerciseModal
+        visible={showAddModal}
+        zoneName={zoneName}
+        onClose={() => setShowAddModal(false)}
+        onAdd={handleAddExercise}
+      />
     </View>
   );
 }
@@ -161,6 +192,24 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     letterSpacing: 2,
     marginLeft: 8,
+  },
+  headerSpacer: {
+    flex: 1,
+  },
+  addButton: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.ember[500],
+    borderRadius: 4,
+  },
+  addIcon: {
+    fontFamily: fonts.mono,
+    fontSize: 20,
+    color: colors.ember[500],
+    lineHeight: 22,
   },
   searchContainer: {
     paddingHorizontal: 12,
