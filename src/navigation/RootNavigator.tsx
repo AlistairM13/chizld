@@ -5,17 +5,10 @@ import { MainTabs } from './MainTabs';
 import { ExerciseSelectScreen } from '@/screens/workout/ExerciseSelectScreen';
 import { WorkoutSessionScreen } from '@/screens/workout/WorkoutSessionScreen';
 import { SessionSummaryScreen } from '@/screens/workout/SessionSummaryScreen';
+import { SplitCreateScreen } from '@/screens/workout/SplitCreateScreen';
 import { type RootStackParamList } from './types';
 
-// Temporary placeholders until Plan 03.1-03 creates real screens
-function SplitCreateScreen() {
-  return (
-    <View style={{ flex: 1, backgroundColor: '#0A0A0F', alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ color: '#F0F0F5' }}>Create Split</Text>
-    </View>
-  );
-}
-
+// Temporary placeholder until Plan 03.1-04 creates real screen
 function SplitDetailScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: '#0A0A0F', alignItems: 'center', justifyContent: 'center' }}>
