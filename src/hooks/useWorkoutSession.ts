@@ -169,12 +169,14 @@ export function useWorkoutSession() {
 
   /**
    * Completes the workout session.
+   * No-op if session doesn't exist or was already completed.
    * @param notes - Optional session notes
    */
   const completeSession = useCallback(
     async (notes?: string): Promise<void> => {
       if (!sessionId) {
-        throw new Error('No active session');
+        // No session to complete — silently return
+        return;
       }
 
       const endedAt = new Date().toISOString();
