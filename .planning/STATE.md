@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 4.1 of 5 (Workout Session Polish - INSERTED)
-Plan: 1 of 3 in current phase
+Plan: 3 of 4 in current phase (04.1-01, 04.1-03 complete)
 Status: In progress
-Last activity: 2026-03-10 — Completed 04.1-01-PLAN.md (Foundation Pieces)
+Last activity: 2026-03-11 — Completed 04.1-03-PLAN.md (Rest Timer Simplification)
 
 Progress: [████████████████████████░] 96% (24/25 plans complete)
-Note: Phase 4.1 plan 1/3 complete
+Note: Phase 4.1 plans 1 and 3 complete (plan 2 and 4 remain)
 
 ## Performance Metrics
 
@@ -119,6 +119,9 @@ Recent decisions affecting current work:
 - [04.1-01]: useElapsedTimer uses Date.now() diff not accumulation — prevents drift over long sessions
 - [04.1-01]: RPESlider uses Gesture.Race(pan, tap) — drag takes priority, tap-to-jump also works
 - [04.1-01]: Gesture v2 pattern: Gesture.Pan() + GestureDetector + runOnJS for callbacks from worklets
+- [04.1-03]: isComplete state gate for rest timer — timer reaching zero sets state, user taps to call onComplete (not auto-dismiss)
+- [04.1-03]: RestTimerOverlay uses pure #000000 (not colors.bg.primary) for stark visual break from active set view
+- [04.1-03]: No FadeIn/FadeOut inside RestTimerOverlay — parent WorkoutSessionScreen (Plan 04) owns fade transitions
 
 ### Pending Todos
 
@@ -146,8 +149,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10
-Stopped at: Completed 04.1-01-PLAN.md (Foundation Pieces)
+Last session: 2026-03-11
+Stopped at: Completed 04.1-03-PLAN.md (Rest Timer Simplification)
 Resume file: None
 
 ## Project Status
