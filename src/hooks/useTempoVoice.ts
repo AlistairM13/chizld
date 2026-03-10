@@ -47,9 +47,12 @@ function delay(ms: number): Promise<void> {
  *
  * Uses expo-speech to announce phases and countdown numbers.
  * Supports start/stop control for integration with set logging.
+ * Exposes currentPhase and countdown for live UI display.
  */
 export function useTempoVoice() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentPhase, setCurrentPhase] = useState<string | null>(null); // 'DOWN' | 'HOLD' | 'UP' | null
+  const [countdown, setCountdown] = useState<number>(0);
   const isActiveRef = useRef(false);
 
   /**
@@ -59,11 +62,14 @@ export function useTempoVoice() {
     while (isActiveRef.current) {
       // Eccentric phase
       if (!isActiveRef.current) break;
+      setCurrentPhase('DOWN');
+      setCountdown(config.eccentric);
       await speakAndWait('Down');
 
       // Countdown eccentric
       for (let i = config.eccentric; i >= 1; i--) {
         if (!isActiveRef.current) break;
+        setCountdown(i);
         await speakAndWait(i.toString());
         if (i > 1) {
           await delay(100); // Small gap between numbers
@@ -73,17 +79,22 @@ export function useTempoVoice() {
       // Bottom hold
       if (config.pauseBottom > 0) {
         if (!isActiveRef.current) break;
+        setCurrentPhase('HOLD');
+        setCountdown(config.pauseBottom);
         await speakAndWait('Hold');
         await delay(config.pauseBottom * 1000);
       }
 
       // Concentric phase
       if (!isActiveRef.current) break;
+      setCurrentPhase('UP');
+      setCountdown(config.concentric);
       await speakAndWait('Up');
 
       // Countdown concentric
       for (let i = config.concentric; i >= 1; i--) {
         if (!isActiveRef.current) break;
+        setCountdown(i);
         await speakAndWait(i.toString());
         if (i > 1) {
           await delay(100);
@@ -93,6 +104,8 @@ export function useTempoVoice() {
       // Top hold
       if (config.pauseTop > 0) {
         if (!isActiveRef.current) break;
+        setCurrentPhase('HOLD');
+        setCountdown(config.pauseTop);
         await speakAndWait('Hold');
         await delay(config.pauseTop * 1000);
       }
@@ -125,11 +138,15 @@ export function useTempoVoice() {
     isActiveRef.current = false;
     Speech.stop();
     setIsPlaying(false);
+    setCurrentPhase(null);
+    setCountdown(0);
   }, []);
 
   return {
     startTempo,
     stopTempo,
     isPlaying,
+    currentPhase,
+    countdown,
   };
 }

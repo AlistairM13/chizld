@@ -109,12 +109,19 @@ export function SplitDetailScreen({ route, navigation }: Props) {
       tempoPauseTop: e.defaultTempoPauseTop,
     }));
 
+    // Build defaultSets map from split exercise config
+    const defaultSetsMap: Record<string, number> = {};
+    exercises.forEach((e) => {
+      defaultSetsMap[e.exerciseId] = e.defaultSets;
+    });
+
     navigation.navigate('WorkoutSession', {
       sessionId,
       exercises: exercises.map((e) => e.exerciseId),
       zoneId: primaryZone,
       splitId,
       tempoDefaults,
+      defaultSets: defaultSetsMap,
     });
   }, [exercises, splitId, navigation]);
 
@@ -185,6 +192,23 @@ export function SplitDetailScreen({ route, navigation }: Props) {
         <Pressable onPress={handleDelete} style={styles.deleteButton}>
           <Text style={styles.deleteText}>DELETE</Text>
         </Pressable>
+        <Pressable
+          style={[
+            styles.startButton,
+            exercises.length === 0 && styles.startButtonDisabled,
+          ]}
+          onPress={handleStartWorkout}
+          disabled={exercises.length === 0}
+        >
+          <Text
+            style={[
+              styles.startButtonText,
+              exercises.length === 0 && styles.startButtonTextDisabled,
+            ]}
+          >
+            START
+          </Text>
+        </Pressable>
       </View>
 
       {/* Stats summary */}
@@ -218,27 +242,6 @@ export function SplitDetailScreen({ route, navigation }: Props) {
           </View>
         }
       />
-
-      {/* Bottom bar */}
-      <View style={styles.bottomBar}>
-        <Pressable
-          style={[
-            styles.startButton,
-            exercises.length === 0 && styles.startButtonDisabled,
-          ]}
-          onPress={handleStartWorkout}
-          disabled={exercises.length === 0}
-        >
-          <Text
-            style={[
-              styles.startButtonText,
-              exercises.length === 0 && styles.startButtonTextDisabled,
-            ]}
-          >
-            START WORKOUT
-          </Text>
-        </Pressable>
-      </View>
     </View>
   );
 }
@@ -289,6 +292,28 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: colors.text.muted,
     letterSpacing: 1,
+  },
+  startButton: {
+    marginLeft: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: colors.ember[500],
+    borderRadius: 4,
+    backgroundColor: colors.ember[500],
+  },
+  startButtonDisabled: {
+    backgroundColor: 'transparent',
+    borderColor: colors.zone.cold,
+  },
+  startButtonText: {
+    fontFamily: fonts.monoLight,
+    fontSize: 10,
+    color: '#FFFFFF',
+    letterSpacing: 1,
+  },
+  startButtonTextDisabled: {
+    color: colors.text.muted,
   },
   statsBar: {
     flexDirection: 'row',
@@ -389,32 +414,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.text.muted,
     letterSpacing: 2,
-  },
-  bottomBar: {
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: colors.zone.cold,
-    backgroundColor: colors.bg.primary,
-  },
-  startButton: {
-    backgroundColor: colors.ember[500],
-    borderRadius: 4,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  startButtonDisabled: {
-    backgroundColor: colors.bg.card,
-    borderWidth: 1,
-    borderColor: colors.zone.cold,
-  },
-  startButtonText: {
-    fontFamily: fonts.display,
-    fontSize: 16,
-    color: '#FFFFFF',
-    letterSpacing: 2,
-  },
-  startButtonTextDisabled: {
-    color: colors.text.muted,
   },
 });

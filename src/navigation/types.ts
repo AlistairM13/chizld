@@ -29,6 +29,7 @@ export type RootStackParamList = {
     zoneId: string;
     splitId?: string;
     tempoDefaults?: ExerciseTempoDefaults[];
+    defaultSets?: Record<string, number>; // exerciseId -> target set count
   };
   SessionSummary: {
     sessionId: string;
