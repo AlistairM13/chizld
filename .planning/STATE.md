@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 3.1 — Workout Splits (create screen complete)
+**Current focus:** Phase 3.1 — Workout Splits (COMPLETE)
 
 ## Current Position
 
 Phase: 3.1 of 5 (Workout Splits - INSERTED)
-Plan: 3 of 4 in current phase
-Status: In progress
-Last activity: 2026-03-10 — Completed 03.1-03-PLAN.md (Split Create Screen)
+Plan: 4 of 4 in current phase
+Status: Phase complete
+Last activity: 2026-03-10 — Completed 03.1-04-PLAN.md (Split Detail Screen)
 
-Progress: [██████████████████████░░] 92% (22/24 plans complete)
-Note: Phase 3.1 plans 01-03 complete — 1 more plan in phase
+Progress: [████████████████████████] 100% (23/23 plans complete)
+Note: Phase 3.1 complete — all phases done
 
 ## Performance Metrics
 
@@ -36,7 +36,7 @@ Note: Phase 3.1 plans 01-03 complete — 1 more plan in phase
 | 05-xp-leveling | 4/4 complete | ~10 min | ~2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03.1-03 (2 min), 03.1-02 (2 min), 03.1-01 (2 min), 05-04 (1 min), 05-03 (3 min)
+- Last 5 plans: 03.1-04 (2 min), 03.1-03 (2 min), 03.1-02 (2 min), 03.1-01 (2 min), 05-04 (1 min)
 - Trend: UI component plans consistently fast
 
 *Updated after each plan completion*
@@ -112,6 +112,9 @@ Recent decisions affecting current work:
 - [03.1-03]: Map<exerciseId, {sets, reps}> for selection state preserves config across zone filter changes
 - [03.1-03]: Inline SQLite query for all exercises (simpler than modifying useExercises hook)
 - [03.1-03]: Side-by-side layout (exercises left, selected right) for landscape orientation
+- [03.1-04]: Primary zone calculated from most common zone in split exercises
+- [03.1-04]: Delete split with confirmation (no edit functionality in v1)
+- [03.1-04]: Optional splitId param for tracking split-sourced workouts
 
 ### Pending Todos
 
@@ -133,18 +136,18 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-10
-Stopped at: Completed 03.1-03-PLAN.md (Split Create Screen)
-Resume file: .planning/phases/03.1-workout-splits/03.1-04-PLAN.md
+Stopped at: Completed 03.1-04-PLAN.md (Split Detail Screen)
+Resume file: None (all plans complete)
 
 ## Project Status
 
-Original 5 phases (19 plans) completed. Phase 3.1 inserted:
-- Phase 1: Foundation (database, fonts, navigation)
-- Phase 2: Character Overview (hex grid, body canvas, zone cards)
-- Phase 2.1: Overview Polish (zone labels, photo slots, HUD)
-- Phase 3: Character Detail (stat card, animations)
-- Phase 3.1: Workout Splits (IN PROGRESS - 3/4 plans)
-- Phase 4: Workout Module (exercise selection, set logging, summary)
-- Phase 5: XP & Leveling (XP calculation, floaters, persistence, refresh)
+All phases complete:
+- Phase 1: Foundation (database, fonts, navigation) - 3 plans
+- Phase 2: Character Overview (hex grid, body canvas, zone cards) - 3 plans
+- Phase 2.1: Overview Polish (zone labels, photo slots, HUD) - 3 plans
+- Phase 3: Character Detail (stat card, animations) - 2 plans
+- Phase 3.1: Workout Splits (COMPLETE - 4/4 plans)
+- Phase 4: Workout Module (exercise selection, set logging, summary) - 4 plans
+- Phase 5: XP & Leveling (XP calculation, floaters, persistence, refresh) - 4 plans
 
-Total execution time: ~61 minutes across 22 plans.
+Total execution time: ~63 minutes across 23 plans.
