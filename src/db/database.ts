@@ -138,6 +138,10 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
       exercise_id TEXT NOT NULL REFERENCES exercises(id),
       default_sets INTEGER DEFAULT 3,
       default_reps INTEGER DEFAULT 10,
+      default_tempo_eccentric INTEGER DEFAULT 2,
+      default_tempo_pause_bottom INTEGER DEFAULT 0,
+      default_tempo_concentric INTEGER DEFAULT 1,
+      default_tempo_pause_top INTEGER DEFAULT 0,
       sort_order INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))
     );
@@ -169,15 +173,25 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
         { id: 'forearms-02', name: 'Reverse Wrist Curl', zone: 'forearms' },
         { id: 'forearms-03', name: "Farmer's Walk", zone: 'forearms' },
         { id: 'forearms-04', name: 'Dead Hang', zone: 'forearms' },
-        // tibialis (3)
+        // tibialis (3) - kept for future use
         { id: 'tibialis-01', name: 'Tibialis Raise', zone: 'tibialis' },
         { id: 'tibialis-02', name: 'Toe Walk', zone: 'tibialis' },
         { id: 'tibialis-03', name: 'Ankle Dorsiflexion', zone: 'tibialis' },
-        // neck (4)
+        // neck (4) - kept for future use
         { id: 'neck-01', name: 'Neck Curl', zone: 'neck' },
         { id: 'neck-02', name: 'Neck Extension', zone: 'neck' },
         { id: 'neck-03', name: 'Neck Side Raise', zone: 'neck' },
         { id: 'neck-04', name: 'Jaw Clench', zone: 'neck' },
+        // back (4)
+        { id: 'back-01', name: 'Lat Pulldown', zone: 'back' },
+        { id: 'back-02', name: 'Barbell Row', zone: 'back' },
+        { id: 'back-03', name: 'Seated Cable Row', zone: 'back' },
+        { id: 'back-04', name: 'Pull-up', zone: 'back' },
+        // chest (4)
+        { id: 'chest-01', name: 'Bench Press', zone: 'chest' },
+        { id: 'chest-02', name: 'Incline Dumbbell Press', zone: 'chest' },
+        { id: 'chest-03', name: 'Cable Fly', zone: 'chest' },
+        { id: 'chest-04', name: 'Dips', zone: 'chest' },
         // shoulders (5)
         { id: 'shoulders-01', name: 'Overhead Press', zone: 'shoulders' },
         { id: 'shoulders-02', name: 'Lateral Raise', zone: 'shoulders' },
@@ -213,8 +227,8 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
         'traps',
         'biceps',
         'forearms',
-        'tibialis',
-        'neck',
+        'back',
+        'chest',
         'shoulders',
         'abs',
         'quads',
@@ -227,5 +241,51 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
         );
       }
     });
+  }
+
+  // Migration: Add chest and back zone_stats for existing users (if not exists)
+  await db.runAsync(
+    `INSERT OR IGNORE INTO zone_stats (zone_id) VALUES ('back')`
+  );
+  await db.runAsync(
+    `INSERT OR IGNORE INTO zone_stats (zone_id) VALUES ('chest')`
+  );
+
+  // Migration: Add chest and back exercises for existing users (if not exists)
+  const newExercises = [
+    { id: 'back-01', name: 'Lat Pulldown', zone: 'back' },
+    { id: 'back-02', name: 'Barbell Row', zone: 'back' },
+    { id: 'back-03', name: 'Seated Cable Row', zone: 'back' },
+    { id: 'back-04', name: 'Pull-up', zone: 'back' },
+    { id: 'chest-01', name: 'Bench Press', zone: 'chest' },
+    { id: 'chest-02', name: 'Incline Dumbbell Press', zone: 'chest' },
+    { id: 'chest-03', name: 'Cable Fly', zone: 'chest' },
+    { id: 'chest-04', name: 'Dips', zone: 'chest' },
+  ];
+  for (const ex of newExercises) {
+    await db.runAsync(
+      'INSERT OR IGNORE INTO exercises (id, name, primary_zone) VALUES (?, ?, ?)',
+      ex.id,
+      ex.name,
+      ex.zone
+    );
+  }
+
+  // Migration: Add tempo columns to split_exercises for existing users
+  const tempoColumns = [
+    'default_tempo_eccentric',
+    'default_tempo_pause_bottom',
+    'default_tempo_concentric',
+    'default_tempo_pause_top',
+  ];
+  for (const col of tempoColumns) {
+    try {
+      const defaultVal = col === 'default_tempo_eccentric' ? 2 : col === 'default_tempo_concentric' ? 1 : 0;
+      await db.runAsync(
+        `ALTER TABLE split_exercises ADD COLUMN ${col} INTEGER DEFAULT ${defaultVal}`
+      );
+    } catch {
+      // Column already exists, ignore
+    }
   }
 }
