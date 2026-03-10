@@ -18,6 +18,10 @@ interface SplitExerciseRow {
   primary_zone: string;
   default_sets: number;
   default_reps: number;
+  default_tempo_eccentric: number;
+  default_tempo_pause_bottom: number;
+  default_tempo_concentric: number;
+  default_tempo_pause_top: number;
   sort_order: number;
 }
 
@@ -100,14 +104,25 @@ export function useSplits(): {
           [splitId, trimmedName]
         );
 
-        // Insert split exercises with sort order
+        // Insert split exercises with sort order and tempo
         for (let i = 0; i < exercises.length; i++) {
           const ex = exercises[i];
           const exerciseEntryId = generateExerciseId();
           await txn.runAsync(
-            `INSERT INTO split_exercises (id, split_id, exercise_id, default_sets, default_reps, sort_order)
-             VALUES (?, ?, ?, ?, ?, ?)`,
-            [exerciseEntryId, splitId, ex.exerciseId, ex.sets, ex.reps, i]
+            `INSERT INTO split_exercises (id, split_id, exercise_id, default_sets, default_reps, default_tempo_eccentric, default_tempo_pause_bottom, default_tempo_concentric, default_tempo_pause_top, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              exerciseEntryId,
+              splitId,
+              ex.exerciseId,
+              ex.sets,
+              ex.reps,
+              ex.tempoEccentric ?? 2,
+              ex.tempoPauseBottom ?? 0,
+              ex.tempoConcentric ?? 1,
+              ex.tempoPauseTop ?? 0,
+              i,
+            ]
           );
         }
       });
@@ -122,7 +137,9 @@ export function useSplits(): {
     async (splitId: string): Promise<SplitExercise[]> => {
       const rows = await db.getAllAsync<SplitExerciseRow>(
         `SELECT se.id, se.split_id, se.exercise_id, e.name as exercise_name,
-                e.primary_zone, se.default_sets, se.default_reps, se.sort_order
+                e.primary_zone, se.default_sets, se.default_reps,
+                se.default_tempo_eccentric, se.default_tempo_pause_bottom,
+                se.default_tempo_concentric, se.default_tempo_pause_top, se.sort_order
          FROM split_exercises se
          JOIN exercises e ON e.id = se.exercise_id
          WHERE se.split_id = ?
@@ -138,6 +155,10 @@ export function useSplits(): {
         primaryZone: row.primary_zone,
         defaultSets: row.default_sets,
         defaultReps: row.default_reps,
+        defaultTempoEccentric: row.default_tempo_eccentric,
+        defaultTempoPauseBottom: row.default_tempo_pause_bottom,
+        defaultTempoConcentric: row.default_tempo_concentric,
+        defaultTempoPauseTop: row.default_tempo_pause_top,
         sortOrder: row.sort_order,
       }));
     },
@@ -164,14 +185,25 @@ export function useSplits(): {
           splitId,
         ]);
 
-        // Insert new exercises with sort order
+        // Insert new exercises with sort order and tempo
         for (let i = 0; i < exercises.length; i++) {
           const ex = exercises[i];
           const exerciseEntryId = generateExerciseId();
           await txn.runAsync(
-            `INSERT INTO split_exercises (id, split_id, exercise_id, default_sets, default_reps, sort_order)
-             VALUES (?, ?, ?, ?, ?, ?)`,
-            [exerciseEntryId, splitId, ex.exerciseId, ex.sets, ex.reps, i]
+            `INSERT INTO split_exercises (id, split_id, exercise_id, default_sets, default_reps, default_tempo_eccentric, default_tempo_pause_bottom, default_tempo_concentric, default_tempo_pause_top, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              exerciseEntryId,
+              splitId,
+              ex.exerciseId,
+              ex.sets,
+              ex.reps,
+              ex.tempoEccentric ?? 2,
+              ex.tempoPauseBottom ?? 0,
+              ex.tempoConcentric ?? 1,
+              ex.tempoPauseTop ?? 0,
+              i,
+            ]
           );
         }
       });
