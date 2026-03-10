@@ -19,6 +19,8 @@ export type RootStackParamList = {
     totalXP?: number;
     xpBreakdown?: XPBreakdownParams;
   };
+  SplitCreate: undefined;
+  SplitDetail: { splitId: string };
 };
 
 export type MainTabParamList = {
