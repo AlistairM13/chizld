@@ -5,16 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** The character screen must feel like a game — tapping zones, seeing RPG stats, and launching workouts.
-**Current focus:** Phase 5 COMPLETE — XP & Leveling system finished
+**Current focus:** Phase 3.1 — Workout Splits (database schema complete)
 
 ## Current Position
 
-Phase: 5 of 5 (XP & Leveling)
-Plan: 4 of 4 in current phase
-Status: PHASE COMPLETE - Character screen refresh implemented
-Last activity: 2026-03-09 — Completed 05-04-PLAN.md
+Phase: 3.1 of 5 (Workout Splits - INSERTED)
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-03-10 — Completed 03.1-01-PLAN.md (Database Schema)
 
-Progress: [████████████████████] 100% (19/19 plans complete)
+Progress: [████████████████████░░░░] 83% (20/24 plans complete)
+Note: Phase 3.1 plan 01 complete — 3 more plans in phase
 
 ## Performance Metrics
 
@@ -103,6 +104,9 @@ Recent decisions affecting current work:
 - [05-03]: Level-up card positioned above duration card for prominence
 - [05-04]: refetch exposed from hook, useFocusEffect stays in screen (screen-level concern)
 - [05-04]: XP bar animation duration 600ms for smooth but responsive feedback
+- [03.1-01]: PRAGMA foreign_keys = ON at database init for cascade deletes
+- [03.1-01]: split_exercises uses sort_order for exercise ordering within split
+- [03.1-01]: getSplitExercises JOINs with exercises table to include names
 
 ### Pending Todos
 
@@ -111,6 +115,7 @@ None yet.
 ### Roadmap Evolution
 
 - Phase 2.1 inserted after Phase 2: Overview screen polish — card redesign with photo slots, warm/cold zone states, tab bar and system text (URGENT)
+- Phase 3.1 inserted after Phase 3: Workout Splits — custom workout templates with multi-zone support, split names (Push/Pull/Legs), preset sets/reps (URGENT)
 
 ### Blockers/Concerns
 
@@ -122,18 +127,19 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-09
-Stopped at: Completed 05-04-PLAN.md (Character Screen Refresh)
-Resume file: None — ALL PHASES COMPLETE
+Last session: 2026-03-10
+Stopped at: Completed 03.1-01-PLAN.md (Database Schema)
+Resume file: .planning/phases/03.1-workout-splits/03.1-02-PLAN.md
 
-## Project Completion
+## Project Status
 
-All 5 phases (19 plans) executed successfully:
+Original 5 phases (19 plans) completed. Phase 3.1 inserted:
 - Phase 1: Foundation (database, fonts, navigation)
 - Phase 2: Character Overview (hex grid, body canvas, zone cards)
 - Phase 2.1: Overview Polish (zone labels, photo slots, HUD)
 - Phase 3: Character Detail (stat card, animations)
+- Phase 3.1: Workout Splits (IN PROGRESS - 1/4 plans)
 - Phase 4: Workout Module (exercise selection, set logging, summary)
 - Phase 5: XP & Leveling (XP calculation, floaters, persistence, refresh)
 
-Total execution time: ~56 minutes across 19 plans.
+Total execution time: ~57 minutes across 20 plans.
