@@ -32,12 +32,14 @@ const RPE_VALUES = [6, 7, 8, 9, 10] as const;
 
 /** Map RPE value to x position on track (center of thumb). */
 function rpeToX(rpe: number): number {
+  'worklet';
   const ratio = (rpe - RPE_MIN) / RPE_RANGE;
   return ratio * (TRACK_WIDTH - THUMB_SIZE) + THUMB_SIZE / 2;
 }
 
 /** Map x position (from left edge of track) to snapped RPE value. */
 function xToRpe(x: number): number {
+  'worklet';
   const clampedX = Math.max(0, Math.min(x, TRACK_WIDTH));
   const ratio = clampedX / TRACK_WIDTH;
   const raw = ratio * RPE_RANGE + RPE_MIN;
