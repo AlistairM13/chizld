@@ -2,8 +2,8 @@ export type ZoneId =
   | 'traps'
   | 'biceps'
   | 'forearms'
-  | 'tibialis'
-  | 'neck'
+  | 'back'
+  | 'chest'
   | 'shoulders'
   | 'abs'
   | 'quads';
@@ -89,7 +89,7 @@ export interface WorkoutSplit {
 }
 
 /**
- * An exercise within a split with default sets/reps configuration.
+ * An exercise within a split with default sets/reps/tempo configuration.
  */
 export interface SplitExercise {
   id: string;
@@ -99,6 +99,10 @@ export interface SplitExercise {
   primaryZone: string;
   defaultSets: number;
   defaultReps: number;
+  defaultTempoEccentric: number;
+  defaultTempoPauseBottom: number;
+  defaultTempoConcentric: number;
+  defaultTempoPauseTop: number;
   sortOrder: number;
 }
 
@@ -109,4 +113,8 @@ export interface SplitExerciseInput {
   exerciseId: string;
   sets: number;
   reps: number;
+  tempoEccentric?: number;
+  tempoPauseBottom?: number;
+  tempoConcentric?: number;
+  tempoPauseTop?: number;
 }
