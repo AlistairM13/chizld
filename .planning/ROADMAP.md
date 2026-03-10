@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Character Overview** - Skia canvas, zone cards, HUD bars, glow states
 - [x] **Phase 2.1: Overview Polish (INSERTED)** - Card redesign with photo slots, warm/cold zone states, tab bar and system text
 - [x] **Phase 3: Character Detail** - Zone tap transition, stat card, TRAIN button
-- [ ] **Phase 3.1: Workout Splits (INSERTED)** - Custom workout templates with multi-zone support, split names, and preset sets/reps
+- [x] **Phase 3.1: Workout Splits (INSERTED)** - Custom workout templates with multi-zone support, split names, and preset sets/reps
 - [x] **Phase 4: Workout Module** - Exercise select, session logging, voice tempo, rest timer, summary
 - [x] **Phase 5: XP & Leveling** - XP calculation, level thresholds, zone stats write-back
 
@@ -102,10 +102,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 03.1-01-PLAN.md — Split tables schema, TypeScript types, useSplits hook with CRUD
-- [ ] 03.1-02-PLAN.md — Navigation setup, SplitListScreen (Train tab), SplitCard component
-- [ ] 03.1-03-PLAN.md — SplitCreateScreen with multi-zone exercise picker and sets/reps config
-- [ ] 03.1-04-PLAN.md — SplitDetailScreen and workout integration (start workout from split)
+- [x] 03.1-01-PLAN.md — Split tables schema, TypeScript types, useSplits hook with CRUD
+- [x] 03.1-02-PLAN.md — Navigation setup, SplitListScreen (Train tab), SplitCard component
+- [x] 03.1-03-PLAN.md — SplitCreateScreen with multi-zone exercise picker and sets/reps config
+- [x] 03.1-04-PLAN.md — SplitDetailScreen and workout integration (start workout from split)
 
 ### Phase 4: Workout Module
 **Goal**: The complete workout loop is functional — exercise selection filtered by zone, active session screen for logging sets (weight, reps, RPE), voice tempo countdown via expo-speech, configurable rest timer, and a session summary screen showing completion data.
@@ -154,6 +154,6 @@ Phases execute in numeric order: 1 → 2 → 2.1 → 3 → 3.1 → 4 → 5
 | 2. Character Overview | 3/3 | Complete | 2026-03-08 |
 | 2.1 Overview Polish (INSERTED) | 3/3 | Complete | 2026-03-08 |
 | 3. Character Detail | 2/2 | Complete | 2026-03-08 |
-| 3.1 Workout Splits (INSERTED) | 0/4 | Ready | - |
+| 3.1 Workout Splits (INSERTED) | 4/4 | Complete | 2026-03-10 |
 | 4. Workout Module | 4/4 | Complete | 2026-03-09 |
 | 5. XP & Leveling | 4/4 | Complete | 2026-03-09 |
