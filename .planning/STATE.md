@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 4.1 of 5 (Workout Session Polish - INSERTED)
-Plan: 3 of 4 in current phase (04.1-01, 04.1-03 complete)
+Plan: 3 of 4 in current phase (04.1-01, 04.1-02, 04.1-03 complete)
 Status: In progress
-Last activity: 2026-03-11 — Completed 04.1-03-PLAN.md (Rest Timer Simplification)
+Last activity: 2026-03-11 — Completed 04.1-02-PLAN.md (Active Set View Layout) and 04.1-03-PLAN.md (Rest Timer Simplification)
 
 Progress: [████████████████████████░] 96% (24/25 plans complete)
-Note: Phase 4.1 plans 1 and 3 complete (plan 2 and 4 remain)
+Note: Phase 4.1 plans 1, 2, and 3 complete (plan 4 remains)
 
 ## Performance Metrics
 
@@ -119,6 +119,10 @@ Recent decisions affecting current work:
 - [04.1-01]: useElapsedTimer uses Date.now() diff not accumulation — prevents drift over long sessions
 - [04.1-01]: RPESlider uses Gesture.Race(pan, tap) — drag takes priority, tap-to-jump also works
 - [04.1-01]: Gesture v2 pattern: Gesture.Pan() + GestureDetector + runOnJS for callbacks from worklets
+- [04.1-02]: defaultSets passed as Record<string,number> route param — exerciseId key matches useWorkoutSession exercise.id
+- [04.1-02]: currentPhase and countdown are React state in useTempoVoice (not refs) — triggers re-renders for live display
+- [04.1-02]: Completed sets collapsed by default, expanded via showCompletedSets toggle — one thing at a time philosophy
+- [04.1-02]: Static tempo string at fontSize 32 ember[700], live phase at fontSize 48 ember[500] — visual hierarchy
 - [04.1-03]: isComplete state gate for rest timer — timer reaching zero sets state, user taps to call onComplete (not auto-dismiss)
 - [04.1-03]: RestTimerOverlay uses pure #000000 (not colors.bg.primary) for stark visual break from active set view
 - [04.1-03]: No FadeIn/FadeOut inside RestTimerOverlay — parent WorkoutSessionScreen (Plan 04) owns fade transitions
@@ -150,7 +154,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-11
-Stopped at: Completed 04.1-03-PLAN.md (Rest Timer Simplification)
+Stopped at: Completed 04.1-02-PLAN.md (Active Set View Layout) and 04.1-03-PLAN.md (Rest Timer Simplification)
 Resume file: None
 
 ## Project Status
