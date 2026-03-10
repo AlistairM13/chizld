@@ -9,7 +9,14 @@ import {
 } from 'react-native';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { colors } from '@/constants/colors';
 import { fonts } from '@/constants/fonts';
@@ -69,6 +76,12 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
   // XP display state
   const [showXPFloater, setShowXPFloater] = useState(false);
   const [lastXPAmount, setLastXPAmount] = useState(0);
+
+  // Input pulse animation
+  const inputPulse = useSharedValue(1);
+  const inputPulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: inputPulse.value }],
+  }));
 
   // Initialize session on mount
   useEffect(() => {
@@ -309,6 +322,32 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
     });
   };
 
+  /**
+   * Triggers a subtle scale pulse on the input row.
+   */
+  const triggerInputPulse = () => {
+    inputPulse.value = withSequence(
+      withTiming(1.05, { duration: 80 }),
+      withTiming(1, { duration: 80 })
+    );
+  };
+
+  /**
+   * Handles weight input change with pulse feedback.
+   */
+  const handleWeightChange = (v: number) => {
+    setCurrentSet((s) => ({ ...s, weightKg: v }));
+    triggerInputPulse();
+  };
+
+  /**
+   * Handles reps input change with pulse feedback.
+   */
+  const handleRepsChange = (v: number) => {
+    setCurrentSet((s) => ({ ...s, reps: v }));
+    triggerInputPulse();
+  };
+
   // Validation
   const canCompleteSet =
     currentSet.weightKg > 0 && currentSet.reps > 0 && currentSet.rpe !== null;
@@ -449,12 +488,12 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
       </View>
 
       {/* Bottom input row */}
-      <View style={styles.inputRow}>
+      <Animated.View style={[styles.inputRow, inputPulseStyle]}>
         <View style={styles.inputColumn}>
           <Text style={styles.inputLabel}>WEIGHT</Text>
           <WeightInput
             value={currentSet.weightKg}
-            onChange={(v) => setCurrentSet((s) => ({ ...s, weightKg: v }))}
+            onChange={handleWeightChange}
             step={2.5}
             min={0}
             max={500}
@@ -464,7 +503,7 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
         <View style={styles.inputColumn}>
           <RepsInput
             value={currentSet.reps}
-            onChange={(v) => setCurrentSet((s) => ({ ...s, reps: v }))}
+            onChange={handleRepsChange}
           />
         </View>
 
@@ -475,7 +514,7 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
             onChange={(v) => setCurrentSet((s) => ({ ...s, rpe: v }))}
           />
         </View>
-      </View>
+      </Animated.View>
 
       {/* Full-width COMPLETE SET button */}
       <Pressable
@@ -502,11 +541,18 @@ export function WorkoutSessionScreen({ route, navigation }: Props) {
 
       {/* Rest timer overlay */}
       {showRestTimer && (
-        <RestTimerOverlay
-          duration={DEFAULT_REST_DURATION}
-          onComplete={handleRestComplete}
-          onSkip={handleRestSkip}
-        />
+        <Animated.View
+          key="rest-view"
+          entering={FadeIn.duration(400)}
+          exiting={FadeOut.duration(400)}
+          style={StyleSheet.absoluteFill}
+        >
+          <RestTimerOverlay
+            duration={DEFAULT_REST_DURATION}
+            onComplete={handleRestComplete}
+            onSkip={handleRestSkip}
+          />
+        </Animated.View>
       )}
     </View>
   );
