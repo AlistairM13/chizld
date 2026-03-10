@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 Phase: 3.1 of 5 (Workout Splits - INSERTED)
 Plan: 4 of 4 in current phase
 Status: Phase complete
-Last activity: 2026-03-10 — Completed 03.1-04-PLAN.md (Split Detail Screen)
+Last activity: 2026-03-10 — Completed quick task 001: Add tempo to splits
 
 Progress: [████████████████████████] 100% (23/23 plans complete)
 Note: Phase 3.1 complete — all phases done
@@ -132,6 +132,12 @@ None yet.
 - [Phase 1]: ~~app.json portrait orientation~~ RESOLVED — orientation is now "landscape", ScreenOrientation.lockAsync also called in useEffect
 - [Phase 1]: ~~Human verification of app visual output~~ RESOLVED — user verified on device: 4 tabs, correct fonts, landscape locked, Cyberpunk HUD screens rendering correctly
 - [Phase 2]: tsc --noEmit shows Skia type declaration errors (esModuleInterop) — does not affect Expo build/runtime, known issue in library types
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 001 | Add tempo configuration to workout splits | 2026-03-10 | ae5d696 | [001-add-tempo-to-splits](./quick/001-add-tempo-to-splits/) |
 
 ## Session Continuity
 
