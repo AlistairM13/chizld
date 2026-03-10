@@ -9,13 +9,13 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 
 ## Current Position
 
-Phase: 3.1 of 5 (Workout Splits - INSERTED)
-Plan: 4 of 4 in current phase
-Status: Phase complete
-Last activity: 2026-03-10 — Completed quick task 001: Add tempo to splits
+Phase: 4.1 of 5 (Workout Session Polish - INSERTED)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-03-10 — Completed 04.1-01-PLAN.md (Foundation Pieces)
 
-Progress: [████████████████████████] 100% (23/23 plans complete)
-Note: Phase 3.1 complete — all phases done
+Progress: [████████████████████████░] 96% (24/25 plans complete)
+Note: Phase 4.1 plan 1/3 complete
 
 ## Performance Metrics
 
@@ -115,6 +115,10 @@ Recent decisions affecting current work:
 - [03.1-04]: Primary zone calculated from most common zone in split exercises
 - [03.1-04]: Delete split with confirmation (no edit functionality in v1)
 - [03.1-04]: Optional splitId param for tracking split-sourced workouts
+- [04.1-01]: GestureHandlerRootView outermost (outside SQLiteProvider) — prerequisite for all Gesture.Pan() components
+- [04.1-01]: useElapsedTimer uses Date.now() diff not accumulation — prevents drift over long sessions
+- [04.1-01]: RPESlider uses Gesture.Race(pan, tap) — drag takes priority, tap-to-jump also works
+- [04.1-01]: Gesture v2 pattern: Gesture.Pan() + GestureDetector + runOnJS for callbacks from worklets
 
 ### Pending Todos
 
@@ -124,6 +128,7 @@ None yet.
 
 - Phase 2.1 inserted after Phase 2: Overview screen polish — card redesign with photo slots, warm/cold zone states, tab bar and system text (URGENT)
 - Phase 3.1 inserted after Phase 3: Workout Splits — custom workout templates with multi-zone support, split names (Push/Pull/Legs), preset sets/reps (URGENT)
+- Phase 4.1 inserted after Phase 4: Workout Session Polish — improve look and feel of workout session screen (URGENT)
 
 ### Blockers/Concerns
 
@@ -142,8 +147,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-10
-Stopped at: Completed 03.1-04-PLAN.md (Split Detail Screen)
-Resume file: None (all plans complete)
+Stopped at: Completed 04.1-01-PLAN.md (Foundation Pieces)
+Resume file: None
 
 ## Project Status
 
